@@ -6,5 +6,5 @@
 # Datasource local storage ignored files
 /dataSources/
 /dataSources.local.xml
-# Plugin
+# Discord plugin
 /discord.xml
