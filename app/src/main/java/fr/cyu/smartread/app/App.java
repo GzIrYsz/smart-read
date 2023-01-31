@@ -3,10 +3,10 @@
  */
 package fr.cyu.smartread.app;
 
-import fr.cyu.smartread.list.LinkedList;
+import fr.cyu.smartread.deeplearning.LinkedList;
 
-import static fr.cyu.smartread.utilities.StringUtils.join;
-import static fr.cyu.smartread.utilities.StringUtils.split;
+import static fr.cyu.smartread.spellchecking.StringUtils.join;
+import static fr.cyu.smartread.spellchecking.StringUtils.split;
 import static fr.cyu.smartread.app.MessageUtils.getMessage;
 
 import org.apache.commons.text.WordUtils;
