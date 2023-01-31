@@ -7,7 +7,3 @@
 plugins {
     id("fr.cyu.smartread.java-library-conventions")
 }
-
-dependencies {
-    api(project(":list"))
-}

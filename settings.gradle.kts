@@ -14,4 +14,4 @@ pluginManagement {
 }
 
 rootProject.name = "smart-read"
-include("app", "list", "utilities")
+include("app", "deeplearning", "spellchecking")
