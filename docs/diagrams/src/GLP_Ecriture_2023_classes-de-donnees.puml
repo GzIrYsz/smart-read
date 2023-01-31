@@ -1,0 +1,14 @@
+@startuml "GLP_Ecriture_2023_classes-de-donnees"
+
+skinparam linetype ortho
+'skinparam ClassAttributeIconSize 0
+
+set namespaceSeparator .
+
+title Projet Ecriture - Classes de données
+
+package fr.cyu.smartread {
+    package test
+}
+
+@enduml
