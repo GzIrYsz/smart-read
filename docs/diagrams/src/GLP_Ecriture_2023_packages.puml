@@ -1,0 +1,30 @@
+@startuml "GLP_Ecriture_2023_packages"
+
+skinparam linetype ortho
+'skinparam ClassAtributeIconSize 0
+
+set namespaceSeparator .
+
+title Projet Ecriture - Packages
+
+package fr.cyu.smartread {
+    package spellchecker {
+        package dictionary
+        package similaritymeasure
+    }
+
+    package app {
+        package gui
+        package preprocessing
+        package wrappers
+        package users
+    }
+
+    package machinelearning {
+        package layers
+        package activationfunctions
+        package lossfunctions
+    }
+}   
+
+@enduml
