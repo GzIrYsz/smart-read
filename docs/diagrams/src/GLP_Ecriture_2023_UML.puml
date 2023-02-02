@@ -1,0 +1,80 @@
+@startuml "GLP_Ecriture_2023"
+
+skinparam linetype ortho
+
+set namespaceSeparator .
+
+title Projet Ecriture - UML
+
+package fr.cyu.smartread {
+    package "module deeplearning" <<Frame>> {
+        package activationfunctions <<Folder>> {
+        }
+
+        package layers <<Folder>> {
+        }
+
+        package lossfunctions <<Folder>> {
+        }
+    }
+
+    package "module app" <<Frame>> {
+        package gui <<Folder>> {
+        }
+
+        package preprocessing <<Folder>> {
+        }
+
+        package wrappers <<Folder>> {
+            package corrector <<Folder>> {
+                class Corrector {
+                    -Dictionary dict
+                    -SpellChecker spellChecker;
+                    +Collection<CorrectionWords> getCorrections(String strTest, Collection<String> listWords)
+                }
+                package Dictionary <<Folder>> {
+                    interface Dictionary {
+                        +Collection<String> getAssociedWordDict(String word)
+                    }
+
+                    class DictionaryByNumberOfCharacterLoader implements Dictionary{
+                        -HashMap<short, String> hm_wordByNbCharacter
+                        +DictionaryByNumberOfCharacterLoader(Path path)
+                        +Collection<String> getAssociedWordDict(String word)
+                    }
+                }
+            }
+        }
+
+        package users <<Folder>> {
+        }
+    }
+
+    package "module spellchecking" <<Frame>> {
+        class SpellChecker {
+            - InterfaceStringMetrics similarityDistanceComputer
+            + ArrayList<String> getCorrections(String strTest, Collection<String> listWords)
+        }
+
+        package stringmetrics <<Folder>> {
+            interface InterfaceStringMetrics {
+                +float computeDistance(String strRef, strTest)
+            }
+
+            class LevenshteinDistance implements InterfaceStringMetrics {
+                - int insertionCost
+                - int deletionCost
+                - int substitutionCost
+                +LevenshteinDistance(int insertionCost, int deletionCost, int substitutionCost)
+                +float computeDistance(String strRef, String strTest)
+            }
+
+            class JaroWinklerDistance implements InterfaceStringMetrics {
+                +JaroWinklerDistance()
+                +float computeDistance(String strRef, String strTest)
+            }
+        }
+    }
+}
+
+@enduml
