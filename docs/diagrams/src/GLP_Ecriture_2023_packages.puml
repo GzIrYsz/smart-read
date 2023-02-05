@@ -8,7 +8,7 @@ set namespaceSeparator .
 title Projet Ecriture - Packages
 
 package fr.cyu.smartread {
-    package spellchecker {
+    package spellchecking {
         package dictionary
         package similaritymeasure
     }
@@ -20,7 +20,7 @@ package fr.cyu.smartread {
         package users
     }
 
-    package machinelearning {
+    package deeplearning {
         package layers
         package activationfunctions
         package lossfunctions

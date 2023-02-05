@@ -8,7 +8,41 @@ set namespaceSeparator .
 title Projet Ecriture - Classes de données
 
 package fr.cyu.smartread {
-    package test
+    package app {
+        class User {
+            -pseudo: String
+            -userDict: Dictionary
+            -userDataset: Dataset
+        }
+        class Dataset {
+            -imageList: DatasetImage[*]
+        }
+    }
+    package deeplearning {
+        class Image {
+            -height: short
+            -width: short
+            -pixels: [height][width]
+        }
+        class DatasetImage {
+            -label: short
+        }
+        Image <|-- DatasetImage
+
+        class PredictionLetter {
+            -letter: char
+            -probability: float
+        }
+    }
+    package spellchecking {
+        class PredictionWord {
+            -word: String
+            -levenshteinDistance: short
+        }
+        class Dictionary {
+            -words: String[*]
+        }
+    }
 }
 
 @enduml
