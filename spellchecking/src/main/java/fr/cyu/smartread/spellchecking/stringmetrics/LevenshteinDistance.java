@@ -11,8 +11,14 @@ public class LevenshteinDistance implements InterfaceStringMetrics {
         this.substitutionCost = substitutionCost;
     }
 
+    public LevenshteinDistance() {
+        this(1, 1, 1);
+    }
+
+
     @Override
     public float computeDistance(String source, String target) {
+        // TODO faire une version itérative de cette fonction
         final int strRefLength = source.length();
         final int strTestLength = target.length();
 

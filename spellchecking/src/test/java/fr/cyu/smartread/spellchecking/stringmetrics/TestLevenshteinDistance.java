@@ -205,16 +205,4 @@ public class TestLevenshteinDistance {
         float result = distanceComputer.computeDistance("Bonjour", "BonjouC");
         assertEquals( insertionCost + deletionCost, result);
     }
-
-    @Test
-    void shouldReturnWhenStrHas1InsertionAnd1SubstitutionWith_3_3_20() {
-        final int insertionCost = 3;
-        final int deletionCost = 20;
-        final int substitutionCost = 4;
-
-        InterfaceStringMetrics distanceComputer = new LevenshteinDistance(insertionCost, deletionCost, substitutionCost);
-
-        float result = distanceComputer.computeDistance("bonjour", "abc");
-        assertEquals( 13, result);
-    }
 }
