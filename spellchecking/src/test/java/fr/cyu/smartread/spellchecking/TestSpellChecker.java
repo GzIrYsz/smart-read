@@ -2,6 +2,7 @@ package fr.cyu.smartread.spellchecking;
 
 import fr.cyu.smartread.spellchecking.stringmetrics.InterfaceStringMetrics;
 import fr.cyu.smartread.spellchecking.stringmetrics.LevenshteinDistance;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -10,8 +11,15 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class TestSpellChecker {
 
-    private final InterfaceStringMetrics similarityDistanceComputer = new LevenshteinDistance();
-    private final SpellChecker spellChecker = new SpellChecker(similarityDistanceComputer);
+    private InterfaceStringMetrics similarityDistanceComputer;
+    private SpellChecker spellChecker;
+
+    @BeforeEach
+    void initAttributes() {
+        similarityDistanceComputer = new LevenshteinDistance();
+        spellChecker = new SpellChecker(similarityDistanceComputer);
+    }
+
     @Test
     void shouldReturnAnEmptyArrayIfListWordsIsEmpty() {
         String source = "Bonjour";
@@ -27,7 +35,6 @@ public class TestSpellChecker {
         ArrayList<String> listWords = new ArrayList<>();
         listWords.add("mot 1");
         ArrayList<WordScore> listWordsScore = spellChecker.computeSimilarityDistance(source, listWords);
-        System.out.println(listWordsScore.get(0));
 
         assertEquals(1, listWordsScore.size());
     }
