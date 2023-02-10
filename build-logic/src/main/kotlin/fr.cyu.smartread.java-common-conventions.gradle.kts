@@ -15,6 +15,7 @@ repositories {
 }
 
 dependencies {
+    implementation("org.ejml:ejml-all:0.41")
     constraints {
         // Define dependency versions as constraints
         implementation("org.apache.commons:commons-text:1.9")
