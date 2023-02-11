@@ -28,20 +28,10 @@ package fr.cyu.smartread {
         package wrappers <<Folder>> {
             package corrector <<Folder>> {
                 class Corrector {
-                    -Dictionary dict
-                    -SpellChecker spellChecker;
-                    +Collection<CorrectionWords> getCorrections(String source, Collection<WordScore> listWords)
-                }
-                package Dictionary <<Folder>> {
-                    interface Dictionary {
-                        +Collection<String> getAssociatedWordDict(String word)
-                    }
+                    -Dictionary: dict
+                    -SpellChecker: spellChecker
 
-                    class DictionaryByNumberOfCharacterLoader implements Dictionary{
-                        -HashMap<short, String> hm_wordByNbCharacter
-                        +DictionaryByNumberOfCharacterLoader(Path path)
-                        +Collection<String> getAssociatedWordDict(String word)
-                    }
+                    +getCorrections(String source, Collection<WordScore> listWords): Collection<CorrectionWords>
                 }
             }
         }
@@ -52,33 +42,55 @@ package fr.cyu.smartread {
 
     package "module spellchecking" <<Frame>> {
         class SpellChecker {
-            - InterfaceStringMetrics similarityDistanceComputer
-            + ArrayList<WordScore> getCorrections(String source, Collection<String> listWords)
+            -InterfaceStringMetrics: similarityDistanceComputer
+
+            +getCorrections(String source): ArrayList<WordScore>
         }
 
         class WordScore {
-            - String target
-            - float score
+            - String: target
+            - float: score
         }
 
         package stringmetrics <<Folder>> {
             interface InterfaceStringMetrics {
-                +float computeDistance(String source, String target)
+                +computeDistance(String source, String target): float
             }
 
             class LevenshteinDistance implements InterfaceStringMetrics {
-                - int insertionCost
-                - int deletionCost
-                - int substitutionCost
+                - int: insertionCost
+                - int: deletionCost
+                - int: substitutionCost
+
                 +LevenshteinDistance(int insertionCost, int deletionCost, int substitutionCost)
-                +float computeDistance(String source, String target)
+                +computeDistance(String source, String target): float
             }
 
             class JaroWinklerDistance implements InterfaceStringMetrics {
                 +JaroWinklerDistance()
-                +float computeDistance(String source, String target)
+                +computeDistance(String source, String target): float
             }
         }
+        package Dictionary <<Folder>> {
+                    interface DictionaryLoader {
+                        +getAssociatedWordDict(String word): Dictionary
+                    }
+
+                    class DictionaryByNumberOfCharacterLoader implements DictionaryLoader {
+                        -HashMap<short, DictionaryByNumberOfCharacter>: hm_wordByNbCharacter
+
+                        +DictionaryByNumberOfCharacterLoader(String path)
+                        +getAssociatedWordDict(String word): Dictionary
+                    }
+
+                    abstract class Dictionary {
+                        -ArrayList<String>: wordList
+                    }
+
+                    class DictionaryByNumberOfCharacter implements Dictionary {
+                        -short: wordLength
+                    }
+                }
     }
 }
 
