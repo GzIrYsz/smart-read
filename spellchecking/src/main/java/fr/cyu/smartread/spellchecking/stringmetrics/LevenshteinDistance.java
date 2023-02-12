@@ -1,6 +1,6 @@
 package fr.cyu.smartread.spellchecking.stringmetrics;
 
-public class LevenshteinDistance implements InterfaceStringMetrics {
+public class LevenshteinDistance implements StringMetricsInterface {
     private final int substitutionCost;
     private final int deletionCost;
     private final int insertionCost;
