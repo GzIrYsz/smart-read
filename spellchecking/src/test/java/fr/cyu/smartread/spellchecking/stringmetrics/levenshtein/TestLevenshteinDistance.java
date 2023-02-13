@@ -1,5 +1,7 @@
-package fr.cyu.smartread.spellchecking.stringmetrics;
+package fr.cyu.smartread.spellchecking.stringmetrics.levenshtein;
 
+import fr.cyu.smartread.spellchecking.stringmetrics.StringMetricsInterface;
+import fr.cyu.smartread.spellchecking.stringmetrics.levenshtein.LevenshteinDistance;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -74,7 +76,7 @@ public class TestLevenshteinDistance {
     }
 
     @Test
-    void shouldReturn1SubstitutionWhenStrHasThreeWrongLetter() {
+    void shouldReturn1SubstitutionWhenStrHasOneWrongLetter() {
         final int substitutionCost = 2;
 
         StringMetricsInterface distanceComputer = new LevenshteinDistance(1, 1, substitutionCost);

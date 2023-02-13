@@ -12,9 +12,4 @@ class DictionaryByNumberOfCharacterLoaderTest {
     void setUp() {
         dictLoader = new DictionaryByNumberOfCharacterLoader();
     }
-
-    @Test
-    void testGetAssociatedWordDict() {
-        fail("Not yet implemented !");
-    }
 }
