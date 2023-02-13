@@ -1,7 +1,7 @@
 package fr.cyu.smartread.spellchecking;
 
 import fr.cyu.smartread.spellchecking.stringmetrics.StringMetricsInterface;
-import fr.cyu.smartread.spellchecking.stringmetrics.LevenshteinDistance;
+import fr.cyu.smartread.spellchecking.stringmetrics.levenshtein.LevenshteinDistance;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
