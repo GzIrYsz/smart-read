@@ -57,13 +57,24 @@ package fr.cyu.smartread {
                 +computeDistance(String source, String target): float
             }
 
-            class LevenshteinDistance implements InterfaceStringMetrics {
-                - int: insertionCost
-                - int: deletionCost
-                - int: substitutionCost
+            package levenshtein <<Folder>> {
+                class LevenshteinDistance implements InterfaceStringMetrics {
+                    - int: insertionCost
+                    - int: deletionCost
+                    - int: substitutionCost
 
-                +LevenshteinDistance(int insertionCost, int deletionCost, int substitutionCost)
-                +computeDistance(String source, String target): float
+                    +LevenshteinDistance(int insertionCost, int deletionCost, int substitutionCost)
+                    +computeDistance(String source, String target): float
+                }
+
+                class CellLevArray {
+                    - short x
+                    - short y
+                    - short value
+                    +getX(): short
+                    +getY(): short
+                    +getValue(): short
+                }
             }
 
             class JaroWinklerDistance implements InterfaceStringMetrics {
