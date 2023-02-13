@@ -1,5 +1,6 @@
 package fr.cyu.smartread.spellchecking.stringmetrics.levenshtein;
 
+
 import fr.cyu.smartread.spellchecking.stringmetrics.StringMetricsInterface;
 public class LevenshteinDistance implements StringMetricsInterface {
     private final short insertionCost;
@@ -70,15 +71,15 @@ public class LevenshteinDistance implements StringMetricsInterface {
         return " " + str;
     }
 
-    private short getLocalMinValueFromLevArray(CellLevArray actualCell, short [][] levArray) {
+    private short getLocalMinValueFromLevArray(CellLevArray actualCell, short[][] levArray) {
         short x = actualCell.getX();
         short y = actualCell.getY();
         short xMinus1 = (short) (x - 1);
         short yMinus1 = (short) (y - 1);
 
-        CellLevArray cell1 = new CellLevArray(x, yMinus1, levArray[x][yMinus1]);
-        CellLevArray cell2 = new CellLevArray(xMinus1, yMinus1, levArray[xMinus1][yMinus1]);
-        CellLevArray cell3 = new CellLevArray(xMinus1, y, levArray[xMinus1][y]);
+        CellLevArray cell1 = new CellLevArray(x, yMinus1, levArray[x][yMinus1]); // deletion case
+        CellLevArray cell2 = new CellLevArray(xMinus1, yMinus1, levArray[xMinus1][yMinus1]); // substitution case
+        CellLevArray cell3 = new CellLevArray(xMinus1, y, levArray[xMinus1][y]); // insertion case
 
        return (short) Math.min(cell1.getValue() + deletionCost, Math.min(cell2.getValue() + substitutionCost, cell3.getValue() + insertionCost));
     }
