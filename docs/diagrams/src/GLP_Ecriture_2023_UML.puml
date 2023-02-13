@@ -72,23 +72,46 @@ package fr.cyu.smartread {
             }
         }
         package Dictionary <<Folder>> {
-                    interface DictionaryLoader {
+                    interface DictionaryLoaderInterface {
                         +getAssociatedWordDict(String word): Dictionary
+                        +addDictionary(Dictionary dict): DictionaryLoaderInterface
                     }
 
-                    class DictionaryByNumberOfCharacterLoader implements DictionaryLoader {
-                        -HashMap<short, DictionaryByNumberOfCharacter>: hm_wordByNbCharacter
+                    class DictionaryByNumberOfCharacterLoader implements DictionaryLoaderInterface {
+                        -HashMap<Short, DictionaryByNumberOfCharacter>: hmWordByNbCharacter
+                        -String: minNbCharacters
+                        -String: maxNbCharacters
 
-                        +DictionaryByNumberOfCharacterLoader(String path)
+                        +DictionaryByNumberOfCharacterLoader()
                         +getAssociatedWordDict(String word): Dictionary
+                        +addDictionary(Dictionary dict): DictionaryLoaderInterface
+                        -updateNbCharacters(DictionaryByNumberOfCharacter dict): DictionaryByNumberOfCharacterLoader
                     }
 
-                    abstract class Dictionary {
+                    class Dictionary {
                         -ArrayList<String>: wordList
+
+                        +Dictionary()
+                        +addWord(String word): Dictionary
+                        +populateFromFile(String path): Dictionary
+                        +serialize(String path): Dictionary
+                        +load(String path): Dictionary
+                        +getWordList(): ArrayList<String>
                     }
 
-                    class DictionaryByNumberOfCharacter implements Dictionary {
+                    class DictionaryByNumberOfCharacter extends Dictionary {
                         -short: wordLength
+
+                        +getWordLength(): short
+                        -setWordLength(short wordLength): void
+                    }
+
+                    class WordNotSupportedException extends IllegalArgumentException {
+                        -String word
+
+                        +WordNotSupportedException(String word)
+                        +WordNotSupportedException(String word, String message)
+                        +getWord(): String
                     }
                 }
     }
