@@ -15,10 +15,6 @@ class DictionaryTest {
         dict = new Dictionary();
     }
 
-    @AfterEach
-    void tearDown() {
-    }
-
     @Test
     void testGetEmptyListAtInstantiation() {
         assertEquals(0, dict.getWordList().size());

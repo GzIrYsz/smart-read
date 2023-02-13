@@ -9,14 +9,6 @@ import static org.junit.jupiter.api.Assertions.*;
 class DictionaryByNumberOfCharacterTest {
     DictionaryByNumberOfCharacter dict;
 
-    @BeforeEach
-    void setUp() {
-    }
-
-    @AfterEach
-    void tearDown() {
-    }
-
     @Test
     void testInstantiateCorrectWordLength() {
         assertThrowsExactly(IllegalArgumentException.class, () -> {
