@@ -5,6 +5,11 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.util.ArrayList;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class DictionaryTest {
@@ -24,5 +29,13 @@ class DictionaryTest {
     void testAddNewStringToList() {
         dict.addWord("test");
         assertEquals(1, dict.getWordList().size());
+    }
+
+    @Test
+    void testPopulateFromFile() {
+        assertDoesNotThrow(() -> {
+            dict.populateFromFile("src/test/resources/test-dictionary.csv");
+        });
+        assertEquals(3, dict.getWordList().size());
     }
 }
