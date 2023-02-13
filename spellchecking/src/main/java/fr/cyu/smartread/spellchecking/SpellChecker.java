@@ -1,13 +1,13 @@
 package fr.cyu.smartread.spellchecking;
 
-import fr.cyu.smartread.spellchecking.stringmetrics.InterfaceStringMetrics;
+import fr.cyu.smartread.spellchecking.stringmetrics.StringMetricsInterface;
 
 import java.util.ArrayList;
 
 public class SpellChecker {
-    private final InterfaceStringMetrics similarityDistanceComputer;
+    private final StringMetricsInterface similarityDistanceComputer;
 
-    public SpellChecker(InterfaceStringMetrics similarityDistanceComputer) {
+    public SpellChecker(StringMetricsInterface similarityDistanceComputer) {
         this.similarityDistanceComputer = similarityDistanceComputer;
     }
 

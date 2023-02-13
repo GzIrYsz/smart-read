@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class TestLevenshteinDistance {
     @Test
     void shouldReturn0WhenStrAreEquals() {
-        InterfaceStringMetrics distanceComputer = new LevenshteinDistance(1, 1, 1);
+        StringMetricsInterface distanceComputer = new LevenshteinDistance(1, 1, 1);
 
         float result = distanceComputer.computeDistance("Bonjour", "Bonjour");
         assertEquals(0, result);
@@ -17,7 +17,7 @@ public class TestLevenshteinDistance {
     void shouldReturn1InsertionWhenStrHasOneExtraLetter() {
         final int insertionCost = 2;
 
-        InterfaceStringMetrics distanceComputer = new LevenshteinDistance(insertionCost, 1, 1);
+        StringMetricsInterface distanceComputer = new LevenshteinDistance(insertionCost, 1, 1);
 
         float result = distanceComputer.computeDistance("Bonjour", "Bonjoura");
         assertEquals(insertionCost, result);
@@ -27,7 +27,7 @@ public class TestLevenshteinDistance {
     void shouldReturn2InsertionWhenStrHasTwoExtraLetter() {
         final int insertionCost = 2;
 
-        InterfaceStringMetrics distanceComputer = new LevenshteinDistance(insertionCost, 1, 1);
+        StringMetricsInterface distanceComputer = new LevenshteinDistance(insertionCost, 1, 1);
 
         float result = distanceComputer.computeDistance("Bonjour", "Bonjourac");
         assertEquals(2 * insertionCost, result);
@@ -37,7 +37,7 @@ public class TestLevenshteinDistance {
     void shouldReturn3InsertionWhenStrHasTwoExtraLetter() {
         final int insertionCost = 2;
 
-        InterfaceStringMetrics distanceComputer = new LevenshteinDistance(insertionCost, 1, 1);
+        StringMetricsInterface distanceComputer = new LevenshteinDistance(insertionCost, 1, 1);
 
         float result = distanceComputer.computeDistance("Bonjour", "Bonjouracd");
         assertEquals(3 * insertionCost, result);
@@ -47,7 +47,7 @@ public class TestLevenshteinDistance {
     void shouldReturn1DeletionWhenStrHasOneLetterLess() {
         final int deletionCost = 2;
 
-        InterfaceStringMetrics distanceComputer = new LevenshteinDistance(1, deletionCost, 1);
+        StringMetricsInterface distanceComputer = new LevenshteinDistance(1, deletionCost, 1);
 
         float result = distanceComputer.computeDistance("Bonjour", "Bonjou");
         assertEquals(deletionCost, result);
@@ -57,7 +57,7 @@ public class TestLevenshteinDistance {
     void shouldReturn2DeletionWhenStrHasTwoLetterLess() {
         final int deletionCost = 2;
 
-        InterfaceStringMetrics distanceComputer = new LevenshteinDistance(1, deletionCost, 1);
+        StringMetricsInterface distanceComputer = new LevenshteinDistance(1, deletionCost, 1);
 
         float result = distanceComputer.computeDistance("Bonjour", "Bonjo");
         assertEquals(2 * deletionCost, result);
@@ -67,7 +67,7 @@ public class TestLevenshteinDistance {
     void shouldReturn3DeletionWhenStrHasThreeLetterLess() {
         final int deletionCost = 2;
 
-        InterfaceStringMetrics distanceComputer = new LevenshteinDistance(1, deletionCost, 1);
+        StringMetricsInterface distanceComputer = new LevenshteinDistance(1, deletionCost, 1);
 
         float result = distanceComputer.computeDistance("Bonjour", "Bonj");
         assertEquals(3 * deletionCost, result);
@@ -77,7 +77,7 @@ public class TestLevenshteinDistance {
     void shouldReturn1SubstitutionWhenStrHasThreeWrongLetter() {
         final int substitutionCost = 2;
 
-        InterfaceStringMetrics distanceComputer = new LevenshteinDistance(1, 1, substitutionCost);
+        StringMetricsInterface distanceComputer = new LevenshteinDistance(1, 1, substitutionCost);
 
         float result = distanceComputer.computeDistance("Bonjour", "Bonjouc");
         assertEquals(substitutionCost, result);
@@ -87,7 +87,7 @@ public class TestLevenshteinDistance {
     void shouldReturn2SubstitutionWhenStrHasTwoWrongLetter() {
         final int substitutionCost = 2;
 
-        InterfaceStringMetrics distanceComputer = new LevenshteinDistance(1, 1, substitutionCost);
+        StringMetricsInterface distanceComputer = new LevenshteinDistance(1, 1, substitutionCost);
 
         float result = distanceComputer.computeDistance("Bonjour", "Bonjocc");
         assertEquals(2 * substitutionCost, result);
@@ -97,7 +97,7 @@ public class TestLevenshteinDistance {
     void shouldReturn3SubstitutionWhenStrHasThreeWrongLetter() {
         final int substitutionCost = 2;
 
-        InterfaceStringMetrics distanceComputer = new LevenshteinDistance(1, 1, substitutionCost);
+        StringMetricsInterface distanceComputer = new LevenshteinDistance(1, 1, substitutionCost);
 
         float result = distanceComputer.computeDistance("Bonjour", "Bonjccc");
         assertEquals(3 * substitutionCost, result);
@@ -108,7 +108,7 @@ public class TestLevenshteinDistance {
         final int insertionCost = 2;
         final int substitutionCost = 2;
 
-        InterfaceStringMetrics distanceComputer = new LevenshteinDistance(insertionCost, 1, substitutionCost);
+        StringMetricsInterface distanceComputer = new LevenshteinDistance(insertionCost, 1, substitutionCost);
 
         float result = distanceComputer.computeDistance("Bonjour", "BonCoure");
         assertEquals(substitutionCost + insertionCost, result);
@@ -119,7 +119,7 @@ public class TestLevenshteinDistance {
         final int insertionCost = 2;
         final int substitutionCost = 2;
 
-        InterfaceStringMetrics distanceComputer = new LevenshteinDistance(insertionCost, 1, substitutionCost);
+        StringMetricsInterface distanceComputer = new LevenshteinDistance(insertionCost, 1, substitutionCost);
 
         float result = distanceComputer.computeDistance("Bonjour", "BonCoCre");
         assertEquals(2 * substitutionCost + insertionCost, result);
@@ -131,7 +131,7 @@ public class TestLevenshteinDistance {
         final int substitutionCost = 2;
         final int deletionCost = 10;
 
-        InterfaceStringMetrics distanceComputer = new LevenshteinDistance(insertionCost, 10, substitutionCost);
+        StringMetricsInterface distanceComputer = new LevenshteinDistance(insertionCost, 10, substitutionCost);
 
         float result = distanceComputer.computeDistance("Bonjour", "ConCouCe");
         assertEquals(3 * substitutionCost + insertionCost, result);
@@ -142,7 +142,7 @@ public class TestLevenshteinDistance {
         final int insertionCost = 2;
         final int substitutionCost = 2;
 
-        InterfaceStringMetrics distanceComputer = new LevenshteinDistance(insertionCost, 1, substitutionCost);
+        StringMetricsInterface distanceComputer = new LevenshteinDistance(insertionCost, 1, substitutionCost);
 
         float result = distanceComputer.computeDistance("Bonjour", "Conjouree");
         assertEquals(substitutionCost + 2 * insertionCost, result);
@@ -153,7 +153,7 @@ public class TestLevenshteinDistance {
         final int insertionCost = 2;
         final int substitutionCost = 2;
 
-        InterfaceStringMetrics distanceComputer = new LevenshteinDistance(insertionCost, 1, substitutionCost);
+        StringMetricsInterface distanceComputer = new LevenshteinDistance(insertionCost, 1, substitutionCost);
 
         float result = distanceComputer.computeDistance("Bonjour", "Conjoureee");
         assertEquals(substitutionCost + 3 * insertionCost, result);
@@ -165,7 +165,7 @@ public class TestLevenshteinDistance {
         final int substitutionCost = 2;
         final int deletionCost = 10;
 
-        InterfaceStringMetrics distanceComputer = new LevenshteinDistance(insertionCost, 10, substitutionCost);
+        StringMetricsInterface distanceComputer = new LevenshteinDistance(insertionCost, 10, substitutionCost);
 
         float result = distanceComputer.computeDistance("Bonjour", "ConCouCeee");
         assertEquals(3 * substitutionCost + 3 * insertionCost, result);
@@ -176,7 +176,7 @@ public class TestLevenshteinDistance {
         final int deletionCost = 3;
         final int substitutionCost = 2;
 
-        InterfaceStringMetrics distanceComputer = new LevenshteinDistance(1, deletionCost, substitutionCost);
+        StringMetricsInterface distanceComputer = new LevenshteinDistance(1, deletionCost, substitutionCost);
 
         float result = distanceComputer.computeDistance("Bonjour", "Conjou");
         assertEquals(substitutionCost + deletionCost, result);
@@ -188,7 +188,7 @@ public class TestLevenshteinDistance {
         final int substitutionCost = 2;
         final int insertionCost = 100;
 
-        InterfaceStringMetrics distanceComputer = new LevenshteinDistance(insertionCost, deletionCost, substitutionCost);
+        StringMetricsInterface distanceComputer = new LevenshteinDistance(insertionCost, deletionCost, substitutionCost);
 
         float result = distanceComputer.computeDistance("Bonjour", "CCCj");
         assertEquals( 3 * substitutionCost + 3 * deletionCost, result);
@@ -200,7 +200,7 @@ public class TestLevenshteinDistance {
         final int deletionCost = 3;
         final int substitutionCost = 20;
 
-        InterfaceStringMetrics distanceComputer = new LevenshteinDistance(insertionCost, deletionCost, substitutionCost);
+        StringMetricsInterface distanceComputer = new LevenshteinDistance(insertionCost, deletionCost, substitutionCost);
 
         float result = distanceComputer.computeDistance("Bonjour", "BonjouC");
         assertEquals( insertionCost + deletionCost, result);
