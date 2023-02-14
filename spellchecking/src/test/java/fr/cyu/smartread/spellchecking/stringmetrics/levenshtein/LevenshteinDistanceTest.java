@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class TestLevenshteinDistance {
+public class LevenshteinDistanceTest {
     @Test
     void shouldReturn0WhenStrAreEquals() {
         StringMetricsInterface distanceComputer = new LevenshteinDistance(1, 1, 1);
@@ -132,7 +132,7 @@ public class TestLevenshteinDistance {
         final int substitutionCost = 2;
         final int deletionCost = 10;
 
-        StringMetricsInterface distanceComputer = new LevenshteinDistance(insertionCost, 10, substitutionCost);
+        StringMetricsInterface distanceComputer = new LevenshteinDistance(insertionCost, deletionCost, substitutionCost);
 
         float result = distanceComputer.computeDistance("Bonjour", "ConCouCe");
         assertEquals(3 * substitutionCost + insertionCost, result);
@@ -166,7 +166,7 @@ public class TestLevenshteinDistance {
         final int substitutionCost = 2;
         final int deletionCost = 10;
 
-        StringMetricsInterface distanceComputer = new LevenshteinDistance(insertionCost, 10, substitutionCost);
+        StringMetricsInterface distanceComputer = new LevenshteinDistance(insertionCost, deletionCost, substitutionCost);
 
         float result = distanceComputer.computeDistance("Bonjour", "ConCouCeee");
         assertEquals(3 * substitutionCost + 3 * insertionCost, result);
