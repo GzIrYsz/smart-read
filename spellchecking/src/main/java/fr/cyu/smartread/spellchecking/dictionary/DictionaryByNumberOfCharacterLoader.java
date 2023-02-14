@@ -3,7 +3,7 @@ package fr.cyu.smartread.spellchecking.dictionary;
 import java.util.HashMap;
 
 public class DictionaryByNumberOfCharacterLoader implements DictionaryLoaderInterface {
-    private HashMap<Short, DictionaryByNumberOfCharacter> hmWordByNbCharacters;
+    private final HashMap<Short, DictionaryByNumberOfCharacter> hmWordByNbCharacters;
     private short minNbCharacters = 0;
     private short maxNbCharacters = 0;
 
@@ -12,11 +12,14 @@ public class DictionaryByNumberOfCharacterLoader implements DictionaryLoaderInte
     }
 
     @Override
-    public Dictionary getAssociatedWordDict(String word) throws WordNotSupportedException {
+    public Dictionary getAssociatedWordDict(String word) throws WordNotSupportedException, NoDictionarySuitableForThisWordException {
         if (word.length() < minNbCharacters || word.length() > maxNbCharacters) {
             throw new WordNotSupportedException(word, "This word length is not supported !");
         }
-        return hmWordByNbCharacters.get(word.length());
+
+        if (!hasDictForThisWord(word))
+            throw new NoDictionarySuitableForThisWordException("This loader don't have any dictionary for words of " + word.length() + " characters");
+        return hmWordByNbCharacters.get((short) word.length());
     }
 
     @Override
@@ -34,5 +37,9 @@ public class DictionaryByNumberOfCharacterLoader implements DictionaryLoaderInte
             maxNbCharacters = dict.getWordsLength();
         }
         return this;
+    }
+
+    private boolean hasDictForThisWord(String word) {
+        return hmWordByNbCharacters.containsKey((short) word.length());
     }
 }
