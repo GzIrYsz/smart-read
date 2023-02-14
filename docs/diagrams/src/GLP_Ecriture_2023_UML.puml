@@ -126,7 +126,10 @@ package fr.cyu.smartread {
                     }
 
                     class NoDictionarySuitableForThisWord extends Exception {
+<<<<<<< HEAD
                         -String word
+=======
+>>>>>>> 2b67f92 (docs(uml): update UML)
                         +NoDictionarySuitableForThisWord(String word)
                     }
                 }
