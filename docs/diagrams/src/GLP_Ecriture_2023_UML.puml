@@ -44,7 +44,7 @@ package fr.cyu.smartread {
         class SpellChecker {
             -InterfaceStringMetrics: similarityDistanceComputer
 
-            +getCorrections(String source): ArrayList<WordScore>
+            +getSimilarityScore(String source): ArrayList<WordScore>
         }
 
         class WordScore {
@@ -123,6 +123,11 @@ package fr.cyu.smartread {
                         +WordNotSupportedException(String word)
                         +WordNotSupportedException(String word, String message)
                         +getWord(): String
+                    }
+
+                    class NoDictionarySuitableForThisWord extends Exception {
+                        -String word
+                        +NoDictionarySuitableForThisWord(String word)
                     }
                 }
     }
