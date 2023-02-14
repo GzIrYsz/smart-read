@@ -3,9 +3,16 @@ package fr.cyu.smartread.spellchecking.dictionary;
 public class DictionaryByNumberOfCharacter extends Dictionary {
     private short wordsLength;
 
-    public DictionaryByNumberOfCharacter(short wordsLength) {
+    public DictionaryByNumberOfCharacter(int wordsLength) {
         super();
-        setWordsLength(wordsLength);
+        setWordsLength((short) wordsLength);
+    }
+
+    @Override
+    public Dictionary addWord(String word) {
+        if (word.length() != getWordsLength())
+            throw new WordNotSupportedException(word, "The number of characters in the word does not match this dictionary");
+        return super.addWord(word);
     }
 
     public short getWordsLength() {
