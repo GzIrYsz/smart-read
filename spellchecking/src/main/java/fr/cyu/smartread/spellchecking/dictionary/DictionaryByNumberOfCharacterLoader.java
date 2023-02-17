@@ -30,7 +30,7 @@ public class DictionaryByNumberOfCharacterLoader implements DictionaryLoaderInte
         return this;
     }
 
-    public DictionaryByNumberOfCharacterLoader updateNbCharacters(DictionaryByNumberOfCharacter dict) {
+    private DictionaryByNumberOfCharacterLoader updateNbCharacters(DictionaryByNumberOfCharacter dict) {
         if (dict.getWordsLength() < minNbCharacters) {
             minNbCharacters = dict.getWordsLength();
         } else if (dict.getWordsLength() > maxNbCharacters) {
