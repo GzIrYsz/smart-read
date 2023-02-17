@@ -20,6 +20,15 @@ package fr.cyu.smartread {
 
     package "module app" <<Frame>> {
         package gui <<Folder>> {
+            package components {
+                class MenuBar
+                class Cards
+            }
+
+            package palettes {
+                class ColorPallet
+                class BorderPallet
+            }
         }
 
         package preprocessing <<Folder>> {
