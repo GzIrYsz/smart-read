@@ -3,12 +3,12 @@ package fr.cyu.smartread.spellchecking.dictionary;
 import java.util.HashMap;
 
 public class DictionaryByNumberOfCharacterLoader implements DictionaryLoaderInterface {
-    private final HashMap<Short, DictionaryByNumberOfCharacter> hmWordByNbCharacters;
+    private final HashMap<Short, DictionaryByNumberOfCharacter> wordByNbCharactersHm;
     private short minNbCharacters = 0;
     private short maxNbCharacters = 0;
 
     public DictionaryByNumberOfCharacterLoader() {
-        hmWordByNbCharacters = new HashMap<>(0);
+        wordByNbCharactersHm = new HashMap<>(0);
     }
 
     @Override
@@ -19,13 +19,13 @@ public class DictionaryByNumberOfCharacterLoader implements DictionaryLoaderInte
 
         if (!hasDictForThisWord(word))
             throw new NoDictionarySuitableForThisWordException("This loader don't have any dictionary for words of " + word.length() + " characters");
-        return hmWordByNbCharacters.get((short) word.length());
+        return wordByNbCharactersHm.get((short) word.length());
     }
 
     @Override
     public DictionaryLoaderInterface addDictionary(Dictionary dict) {
         DictionaryByNumberOfCharacter dictByNbCharacters = (DictionaryByNumberOfCharacter) dict;
-        hmWordByNbCharacters.put(dictByNbCharacters.getWordsLength(), dictByNbCharacters);
+        wordByNbCharactersHm.put(dictByNbCharacters.getWordsLength(), dictByNbCharacters);
         updateNbCharacters(dictByNbCharacters);
         return this;
     }
@@ -40,6 +40,6 @@ public class DictionaryByNumberOfCharacterLoader implements DictionaryLoaderInte
     }
 
     private boolean hasDictForThisWord(String word) {
-        return hmWordByNbCharacters.containsKey((short) word.length());
+        return wordByNbCharactersHm.containsKey((short) word.length());
     }
 }

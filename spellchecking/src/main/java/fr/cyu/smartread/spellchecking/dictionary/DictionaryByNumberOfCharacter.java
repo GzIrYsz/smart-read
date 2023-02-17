@@ -11,7 +11,7 @@ public class DictionaryByNumberOfCharacter extends Dictionary {
     @Override
     public Dictionary addWord(String word) {
         if (word.length() != getWordsLength())
-            throw new WordNotSupportedException(word, "The number of characters in the word does not match this dictionary");
+            throw new WordNotSupportedException(word, "The number of characters of the word does not match this dictionary");
         return super.addWord(word);
     }
 
