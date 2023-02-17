@@ -15,9 +15,13 @@ public class SpellChecker {
         this.dictionaryLoader = dictionaryLoader;
     }
 
-    ArrayList<WordScore> getSimilarityScore(String source) throws NoDictionarySuitableForThisWordException {
+    public SpellChecker(DictionaryLoaderInterface dictionaryLoader, StringMetricsInterface similarityDistanceComputer) {
+        this(similarityDistanceComputer, dictionaryLoader);
+    }
+
+    public ArrayList<WordScore> getSimilarityScore(String source) throws NoDictionarySuitableForThisWordException {
         ArrayList<String> listWords = dictionaryLoader.getAssociatedWordDict(source).getWordList();
-        ArrayList<WordScore> listWordsScore = new ArrayList<WordScore>();
+        ArrayList<WordScore> listWordsScore = new ArrayList<>();
 
         for (String word: listWords) {
             float similarityScore = similarityDistanceComputer.computeDistance(source, word);
