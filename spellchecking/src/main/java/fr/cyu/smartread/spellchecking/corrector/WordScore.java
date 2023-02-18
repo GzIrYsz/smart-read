@@ -1,4 +1,4 @@
-package fr.cyu.smartread.spellchecking;
+package fr.cyu.smartread.spellchecking.corrector;
 
 public class WordScore {
     private final String target;

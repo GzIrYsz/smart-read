@@ -1,4 +1,4 @@
-package fr.cyu.smartread.spellchecking;
+package fr.cyu.smartread.spellchecking.corrector;
 
 import fr.cyu.smartread.spellchecking.dictionary.DictionaryLoaderInterface;
 import fr.cyu.smartread.spellchecking.dictionary.NoDictionarySuitableForThisWordException;

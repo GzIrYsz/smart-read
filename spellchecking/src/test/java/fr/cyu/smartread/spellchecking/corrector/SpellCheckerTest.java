@@ -1,5 +1,7 @@
-package fr.cyu.smartread.spellchecking;
+package fr.cyu.smartread.spellchecking.corrector;
 
+import fr.cyu.smartread.spellchecking.corrector.SpellChecker;
+import fr.cyu.smartread.spellchecking.corrector.WordScore;
 import fr.cyu.smartread.spellchecking.dictionary.*;
 import fr.cyu.smartread.spellchecking.stringmetrics.StringMetricsInterface;
 import fr.cyu.smartread.spellchecking.stringmetrics.levenshtein.LevenshteinDistance;

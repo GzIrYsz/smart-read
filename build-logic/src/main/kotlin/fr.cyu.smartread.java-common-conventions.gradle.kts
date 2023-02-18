@@ -16,6 +16,8 @@ repositories {
 
 dependencies {
     implementation("org.ejml:ejml-all:0.41")
+    implementation("org.apache.spark:spark-core_2.12:3.3.2")
+    implementation("org.apache.spark:spark-sql_2.13:3.3.2")
     constraints {
         // Define dependency versions as constraints
         implementation("org.apache.commons:commons-text:1.9")

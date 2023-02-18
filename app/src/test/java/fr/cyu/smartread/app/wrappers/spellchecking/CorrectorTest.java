@@ -1,14 +1,14 @@
 package fr.cyu.smartread.app.wrappers.spellchecking;
 
-import fr.cyu.smartread.spellchecking.WordScore;
+import fr.cyu.smartread.spellchecking.corrector.WordScore;
 import fr.cyu.smartread.spellchecking.dictionary.NoDictionarySuitableForThisWordException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import java.io.IOException;
 import java.util.ArrayList;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class CorrectorTest {
     Corrector corrector;
@@ -19,11 +19,20 @@ class CorrectorTest {
     }
 
     @Test
-    public void testGetCorrection() throws NoDictionarySuitableForThisWordException {
+    public void shouldNotReturn2232WhentestIsGiven() throws NoDictionarySuitableForThisWordException {
         ArrayList<WordScore> corrections = corrector.getCorrections("test");
-        for (WordScore correction : corrections) {
-            System.out.println(correction.toString());
-        }
+        assertNotEquals(2232, corrections.size());
     }
 
+    @Test
+    public void shouldNotReturn26WhenaIsGiven() throws NoDictionarySuitableForThisWordException {
+        ArrayList<WordScore> corrections = corrector.getCorrections("a");
+        assertNotEquals(26, corrections.size());
+    }
+
+    @Test
+    public void shouldNotReturn107WhenabIsGiven() throws NoDictionarySuitableForThisWordException {
+        ArrayList<WordScore> corrections = corrector.getCorrections("ab");
+        assertNotEquals(107, corrections.size());
+    }
 }
