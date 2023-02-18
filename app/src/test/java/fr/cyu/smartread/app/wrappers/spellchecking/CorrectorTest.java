@@ -35,4 +35,21 @@ class CorrectorTest {
         ArrayList<WordScore> corrections = corrector.getCorrections("ab");
         assertNotEquals(107, corrections.size());
     }
+
+    @Test
+    public void shouldReturnSuitableCorrectionsFor4CharsWord() throws NoDictionarySuitableForThisWordException {
+        ArrayList<WordScore> corrections = corrector.getCorrections("test");
+        for (WordScore correction : corrections) {
+            assertTrue(correction.getScore() < 2);
+        }
+    }
+
+    @Test
+    public void shouldReturnSuitableCorrectionsFor7CharsWord() throws NoDictionarySuitableForThisWordException {
+        ArrayList<WordScore> corrections = corrector.getCorrections("bonjoue");
+        for (WordScore correction : corrections) {
+            System.out.println(correction.toString());
+            assertTrue(correction.getScore() < 3);
+        }
+    }
 }
