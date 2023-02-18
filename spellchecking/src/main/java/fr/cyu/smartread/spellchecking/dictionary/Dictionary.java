@@ -20,7 +20,7 @@ public class Dictionary {
         return this;
     }
 
-    public Dictionary populateFromFile(String path) throws FiletypeNotSupportedException, IOException {
+    public Dictionary populateFromFile(String path) throws IOException {
         File file = new File(path);
         String line;
         FileReader fr = new FileReader(file);

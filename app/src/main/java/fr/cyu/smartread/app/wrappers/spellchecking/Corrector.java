@@ -8,30 +8,24 @@ import fr.cyu.smartread.spellchecking.dictionary.NoDictionarySuitableForThisWord
 import fr.cyu.smartread.spellchecking.stringmetrics.StringMetricsInterface;
 import fr.cyu.smartread.spellchecking.stringmetrics.levenshtein.LevenshteinDistance;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Corrector {
-    DictionaryByNumberOfCharacter dict1Char = new DictionaryByNumberOfCharacter(1);
-    DictionaryByNumberOfCharacter dict2Chars  = new DictionaryByNumberOfCharacter(2);
-    DictionaryByNumberOfCharacter dict3Chars  = new DictionaryByNumberOfCharacter(3);
-    DictionaryByNumberOfCharacter dict4Chars  = new DictionaryByNumberOfCharacter(4);
-    DictionaryByNumberOfCharacter dict5Chars  = new DictionaryByNumberOfCharacter(5);
-    DictionaryByNumberOfCharacter dict6Chars  = new DictionaryByNumberOfCharacter(6);
-    DictionaryByNumberOfCharacter dict7Chars  = new DictionaryByNumberOfCharacter(7);
-    DictionaryByNumberOfCharacter dict8Chars  = new DictionaryByNumberOfCharacter(8);
-    DictionaryByNumberOfCharacter dict9Chars  = new DictionaryByNumberOfCharacter(9);
-    DictionaryByNumberOfCharacter dict10Chars  = new DictionaryByNumberOfCharacter(10);
     DictionaryByNumberOfCharacterLoader dictLoader = new DictionaryByNumberOfCharacterLoader();
     StringMetricsInterface stringMetrics = new LevenshteinDistance();
     SpellChecker spellChecker;
 
-    public Corrector() {
-        fillLoader();
+    public Corrector() throws IOException {
+        populateLoader();
         spellChecker = new SpellChecker(stringMetrics, dictLoader);
     }
 
-    private Corrector fillLoader() {
-        dictLoader.addDictionary(dict1Char);
+    private Corrector populateLoader() throws IOException {
+        for (int i = 1; i < 11; i++) {
+            dictLoader.addDictionary(new DictionaryByNumberOfCharacter(i).populateFromFile("src/main/resources/mots_" + i + ".csv"));
+        }
         return this;
     }
 
