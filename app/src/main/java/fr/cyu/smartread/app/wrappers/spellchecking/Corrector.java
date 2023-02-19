@@ -9,7 +9,6 @@ import fr.cyu.smartread.spellchecking.stringmetrics.StringMetricsInterface;
 import fr.cyu.smartread.spellchecking.stringmetrics.levenshtein.LevenshteinDistance;
 
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class Corrector {
@@ -30,9 +29,9 @@ public class Corrector {
     }
 
     public ArrayList<WordScore> getCorrections(String word) throws NoDictionarySuitableForThisWordException {
-        ArrayList<WordScore> wordSCoreList = spellChecker.getSimilarityScore(word);
+        ArrayList<WordScore> wordScoreList = spellChecker.getSimilarityScore(word);
         ArrayList<WordScore> corrections = new ArrayList<>();
-        for (WordScore wordScore : wordSCoreList) {
+        for (WordScore wordScore : wordScoreList) {
             if (isSuitableCorrection(word, wordScore)) {
                 corrections.add(wordScore);
             }
