@@ -3,19 +3,8 @@
  */
 package fr.cyu.smartread.app;
 
-import fr.cyu.smartread.deeplearning.LinkedList;
-
-import static fr.cyu.smartread.spellchecking.StringUtils.join;
-import static fr.cyu.smartread.spellchecking.StringUtils.split;
-import static fr.cyu.smartread.app.MessageUtils.getMessage;
-
-import org.apache.commons.text.WordUtils;
-
 public class App {
     public static void main(String[] args) {
-        LinkedList tokens;
-        tokens = split(getMessage());
-        String result = join(tokens);
-        System.out.println(WordUtils.capitalize(result));
+        System.out.println("Hello world");
     }
 }
