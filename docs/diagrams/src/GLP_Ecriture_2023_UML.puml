@@ -7,7 +7,7 @@ set namespaceSeparator .
 title Projet Ecriture - UML
 
 package fr.cyu.smartread {
-    package "module deeplearning" <<Frame>> {
+    package deeplearning <<Frame>> {
         package activationfunctions <<Folder>> {
         }
 
@@ -18,16 +18,62 @@ package fr.cyu.smartread {
         }
     }
 
-    package "module app" <<Frame>> {
+    package app <<Frame>> {
         package gui <<Folder>> {
+            package eventmanager {
+                abstract class AbstractEventManager {
+                    -listeners: Collection<AbstractEventListener>
+
+                    +subscribe(EventListenerInterface eventListener): void
+                    +unsubscribe(EventListenerInterface eventListener): void
+                    +notify(Object o): void
+                }
+                interface EventListenerInterface {
+                    +update(): void
+                }
+            }
             package components {
+                package card {
+                    package cardheader {
+                        class CardHeader
+                        class MainStatLabel
+                        class SecondaryStatsFrame
+                        class SecondaryStatLabel
+                    }
+
+                    package cardbody {
+                        class CardBody {
+                            -events: AbstractEventManager
+                            -drawingZone: DrawingZone
+                        }
+                        class DrawingZone extends AbstractEventManager implements EventListenerInterface {
+                            -events: AbstractEventManager
+
+                            +notify(Object o):void
+                        }
+                        class ClearDrawingZoneListener implements EventListenerInterface {
+                            +update(Object o): void
+                        }
+                    }
+
+                    package cardfooter {
+                        class CardFooter
+                        class CardFooterButton extends AbstractEventManager
+                        class CardFooterClearButton extends CardFooterButton
+                        class CardFooterStatsButton extends CardFooterButton
+                        class CardFooterCloseButton extends CardFooterButton
+                    }
+                }
+                class CardsWrapper {
+
+                }
                 class MenuBar
-                class Cards
             }
 
-            package palettes {
+            package pallet {
                 class ColorPallet
                 class BorderPallet
+                class FontPallet
             }
         }
 
@@ -52,7 +98,7 @@ package fr.cyu.smartread {
         }
     }
 
-    package "module spellchecking" <<Frame>> {
+    package spellchecking <<Frame>> {
         class SpellChecker {
             -StringMetricsInterface: similarityDistanceComputer
             -DictionaryLoaderInterface: dictionaryLoader
