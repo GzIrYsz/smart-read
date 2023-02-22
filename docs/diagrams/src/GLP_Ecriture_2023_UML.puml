@@ -21,53 +21,116 @@ package fr.cyu.smartread {
     package app <<Frame>> {
         package gui <<Folder>> {
             package eventmanager {
-                abstract class AbstractEventManager {
-                    -listeners: Collection<AbstractEventListener>
+                abstract class Subject {
+                    -listeners: Collection<Subject>
 
                     +subscribe(EventListenerInterface eventListener): void
                     +unsubscribe(EventListenerInterface eventListener): void
                     +notify(Object o): void
                 }
-                interface EventListenerInterface {
+                interface Observer {
                     +update(): void
                 }
             }
+
             package components {
                 package card {
+
+                    class CardView extends Observer {
+                        -cardHeader: CardHeaderView
+                        -cardBody: CardBodyView
+                        -cardFooter: CardFooterView
+
+                        +update(): void
+                    }
+
+                    class CardModel extends Subject {
+                        -id: in                        - cardFooterView: CardFooterViewt
+                        -predictions: ArrayList<PredictedLetter>
+                        -drawingZoneImg: BufferedImage
+                        -isBeingDeleted: boolean
+                        -static blankImage: BufferedImage
+
+                        +setDrawingZoneImg(BufferedImage img): void
+                        +computePredictionLetter(): void
+                        +setPrediction(ArrayList<PredictedLetter> newPredictions)
+                    }
+
+                    class CardDrawingZoneController implements ActionListener {
+                        - cardBodyView: CardBodyView
+                        + actionPerformed: void
+                        + updateDrawingZoneImg(): void
+                    }
+
+                    class CardButtonClearController implements ActionListener {
+                        - cardFooterView: CardFooterView
+                        + actionPerformed(): void
+                        + clearDrawingZoneImg(): void
+                    }
+
+                    class CardButtonStatController implements ActionListener {
+                        - cardFooterView: CardFooterView
+                        + actionPerformed(): void
+                        + openStatWindows(): void
+                    }
+
+                    class CardButtonCloseController implements ActionListener {
+                        - cardFooterView: CardFooterView
+                        + actionPerformed(): void
+                        + deleteCard(): void
+                        + setIsBeingDeleted(boolean isBeingDeleted): void
+                    }
+
                     package cardheader {
-                        class CardHeader
+                        class CardHeaderView
                         class MainStatLabel
                         class SecondaryStatsFrame
                         class SecondaryStatLabel
                     }
 
                     package cardbody {
-                        class CardBody {
-                            -events: AbstractEventManager
+                        class CardBodyView implements JFrame{
                             -drawingZone: DrawingZone
                         }
-                        class DrawingZone extends AbstractEventManager implements EventListenerInterface {
-                            -events: AbstractEventManager
 
-                            +notify(Object o):void
-                        }
-                        class ClearDrawingZoneListener implements EventListenerInterface {
-                            +update(Object o): void
+                        class DrawingZone extends Graphics {
+                            - drawingZoneImg: BufferedImage
+                            + getDrawingZoneImg(): BufferedImage
                         }
                     }
 
                     package cardfooter {
-                        class CardFooter
-                        class CardFooterButton extends AbstractEventManager
-                        class CardFooterClearButton extends CardFooterButton
-                        class CardFooterStatsButton extends CardFooterButton
-                        class CardFooterCloseButton extends CardFooterButton
+                        class CardFooterView extends JFrame{
+                            - closeButton: CardFooterButton
+                            - clearButton: CardFooterButton
+                            - statButton: CardFooterButton
+
+                            +getCloseButton()
+                            +getClearButton()
+                            +getStatButton()
+                        }
+                        class CardFooterButton {
+                            - button: JButton
+                            - icon: Icon
+
+                            + getButton()
+                        }
+                        class CardFooterClearButton extends CardFooterButton {
+                            - static clearIcon: Icon
+                        }
+                        class CardFooterStatsButton extends CardFooterButton {
+                            - static StatsIcon: Icon
+                        }
+                        class CardFooterCloseButton extends CardFooterButton {
+                            - static CloseIcon: Icon
+                        }
                     }
                 }
-                class CardsWrapper {
 
+                package cardwrapper {
+                    class CardsWrapperView extends JScrollPane {
+                    }
                 }
-                class MenuBar
             }
 
             package pallet {
