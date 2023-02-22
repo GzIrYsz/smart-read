@@ -35,13 +35,63 @@ package fr.cyu.smartread {
 
             package components {
                 package card {
+                    package view {
+                        class CardView extends Observer {
+                            -cardHeader: CardHeaderView
+                            -cardBody: CardBodyView
+                            -cardFooter: CardFooterView
 
-                    class CardView extends Observer {
-                        -cardHeader: CardHeaderView
-                        -cardBody: CardBodyView
-                        -cardFooter: CardFooterView
+                            +update(): void
+                        }
 
-                        +update(): void
+                        package cardheader {
+                            class CardHeaderView
+                            class MainStatLabel
+                            class SecondaryStatsFrame
+                            class SecondaryStatLabel
+                        }
+
+                        package cardbody {
+                            class CardBodyView implements JFrame{
+                                -drawingZone: DrawingZone
+                            }
+
+                            class DrawingZone extends Graphics {
+                                - drawingZoneImg: BufferedImage
+                                + getDrawingZoneImg(): BufferedImage
+                            }
+                        }
+
+                        package cardfooter {
+                            class CardFooterView extends JFrame{
+                                - closeButton: CardFooterButton
+                                - clearButton: CardFooterButton
+                                - statButton: CardFooterButton
+
+                                +getCloseButton()
+                                +getClearButton()
+                                +getStatButton()
+                            }
+
+                            class CardFooterButton {
+                                - button: JButton
+                                - icon: Icon
+
+                                + getButton()
+                            }
+
+                            class CardFooterClearButton extends CardFooterButton {
+                                - static clearIcon: Icon
+                            }
+
+                            class CardFooterStatsButton extends CardFooterButton {
+                                - static StatsIcon: Icon
+                            }
+
+                            class CardFooterCloseButton extends CardFooterButton {
+                                - static CloseIcon: Icon
+                            }
+                        }
                     }
 
                     class CardModel extends Subject {
@@ -56,73 +106,30 @@ package fr.cyu.smartread {
                         +setPrediction(ArrayList<PredictedLetter> newPredictions)
                     }
 
-                    class CardDrawingZoneController implements ActionListener {
-                        - cardBodyView: CardBodyView
-                        + actionPerformed: void
-                        + updateDrawingZoneImg(): void
-                    }
-
-                    class CardButtonClearController implements ActionListener {
-                        - cardFooterView: CardFooterView
-                        + actionPerformed(): void
-                        + clearDrawingZoneImg(): void
-                    }
-
-                    class CardButtonStatController implements ActionListener {
-                        - cardFooterView: CardFooterView
-                        + actionPerformed(): void
-                        + openStatWindows(): void
-                    }
-
-                    class CardButtonCloseController implements ActionListener {
-                        - cardFooterView: CardFooterView
-                        + actionPerformed(): void
-                        + deleteCard(): void
-                        + setIsBeingDeleted(boolean isBeingDeleted): void
-                    }
-
-                    package cardheader {
-                        class CardHeaderView
-                        class MainStatLabel
-                        class SecondaryStatsFrame
-                        class SecondaryStatLabel
-                    }
-
-                    package cardbody {
-                        class CardBodyView implements JFrame{
-                            -drawingZone: DrawingZone
+                    package controller {
+                        class CardDrawingZoneController implements ActionListener {
+                            - cardBodyView: CardBodyView
+                            + actionPerformed: void
+                            + updateDrawingZoneImg(): void
                         }
 
-                        class DrawingZone extends Graphics {
-                            - drawingZoneImg: BufferedImage
-                            + getDrawingZoneImg(): BufferedImage
+                        class CardButtonClearController implements ActionListener {
+                            - cardFooterView: CardFooterView
+                            + actionPerformed(): void
+                            + clearDrawingZoneImg(): void
                         }
-                    }
 
-                    package cardfooter {
-                        class CardFooterView extends JFrame{
-                            - closeButton: CardFooterButton
-                            - clearButton: CardFooterButton
-                            - statButton: CardFooterButton
+                        class CardButtonStatController implements ActionListener {
+                            - cardFooterView: CardFooterView
+                            + actionPerformed(): void
+                            + openStatWindows(): void
+                        }
 
-                            +getCloseButton()
-                            +getClearButton()
-                            +getStatButton()
-                        }
-                        class CardFooterButton {
-                            - button: JButton
-                            - icon: Icon
-
-                            + getButton()
-                        }
-                        class CardFooterClearButton extends CardFooterButton {
-                            - static clearIcon: Icon
-                        }
-                        class CardFooterStatsButton extends CardFooterButton {
-                            - static StatsIcon: Icon
-                        }
-                        class CardFooterCloseButton extends CardFooterButton {
-                            - static CloseIcon: Icon
+                        class CardButtonCloseController implements ActionListener {
+                            - cardFooterView: CardFooterView
+                            + actionPerformed(): void
+                            + deleteCard(): void
+                            + setIsBeingDeleted(boolean isBeingDeleted): void
                         }
                     }
                 }
