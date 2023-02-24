@@ -135,7 +135,42 @@ package fr.cyu.smartread {
                 }
 
                 package cardwrapper {
-                    class CardsWrapperView extends JScrollPane {
+                    class CardsWrapperView {
+                        -cardsScrollPaneView: CardsWrapperScrollPaneView
+                        -buttonPaneView: CardsWrapperButtonsView
+                    }
+                    class CardsWrapperButtonsView {
+                        -addButton: fef
+                        -removeButton: fef
+                    }
+                    class CardsWrapperScrollPaneView extends javax.swing.JScrollPane {
+                        -cardsList: ArrayList<CardView>
+                    }
+                    class CardsWrapperModel extends Subject {
+                        -recognizedWord: LinkedHashMap<PredictedLetter>
+                        - {static} startNumberOfCards: int
+
+                        +addPredictedLetter()
+                        +deletePredictedLetter(id: int)
+                        +deleteLastCard()
+                    }
+                    class CardsWrapperOnDrawingZoneChangeController implements Observer
+                    class CardsWrapperButtonAddController implements javax.swing.ActionListener {
+                        -view: CardsWrapperView
+
+                        +actionPerformed(): void
+                        -addNewCard(): void
+                    }
+                    class CardsWrapperButtonRemoveController implements javax.swing.ActionListener {
+                        -view: CardsWrapperView
+
+                        +actionPerformed(): void
+                        -deleteLastCard(): void
+                    }
+                    class CardsWrapperOnChangeController implements Observer {
+                        -cardsWrapperModel: CardsWrapperModel
+
+                        +update(): void
                     }
                 }
             }
