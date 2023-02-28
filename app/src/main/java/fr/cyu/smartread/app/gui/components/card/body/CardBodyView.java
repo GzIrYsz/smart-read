@@ -16,14 +16,14 @@ public class CardBodyView extends JPanel {
 
     public CardBodyView() {
         super();
-        bi = new BufferedImage(256, 256, BufferedImage.TYPE_INT_ARGB);
+        bi = new BufferedImage(128, 128, BufferedImage.TYPE_INT_ARGB);
         g2d = bi.createGraphics();
         //setOpaque(true);
         //setBackground(Color.WHITE);
 
         g2d.setColor(Color.BLACK);
         g2d.setBackground(Color.WHITE);
-        g2d.clearRect(0, 0, 256, 256);
+        g2d.clearRect(0, 0, 128, 128);
     }
 
     @Override
@@ -83,10 +83,25 @@ public class CardBodyView extends JPanel {
                 super.windowClosed(e);
                 System.out.println("Fermeture");
                 cardBodyView.getG2d().dispose();
+//                try {
+//                    ImageIO.write(cardBodyView.getBi(), "png", new File("test.png"));
+//                } catch (IOException e2) {
+//                    e2.printStackTrace();
+//                }
                 try {
-                    ImageIO.write(cardBodyView.getBi(), "png", new File("test.png"));
-                } catch (IOException e2) {
-                    e2.printStackTrace();
+                    BufferedImage bi2 = ImageIO.read(new File("app/src/main/resources/icon-effacer.png"));
+                    for (int i = 0; i < bi2.getWidth(); i++) {
+                        for (int j = 0; j < bi2.getHeight(); j++) {
+                            if (bi2.getRGB(i, j) != 0) {
+                                System.out.print("  ");
+                            } else {
+                                System.out.print(". ");
+                            }
+                        }
+                        System.out.println("");
+                    }
+                } catch (IOException e1) {
+                    e1.printStackTrace();
                 }
             }
         });
