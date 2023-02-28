@@ -8,18 +8,21 @@ import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class CardBodyView extends JPanel {
-    private int x1, y1, x2, y2;
+    private ArrayList<Point> points;
     private BufferedImage bi;
-    Graphics2D g2d;
+    private Graphics2D g2d;
 
     public CardBodyView() {
         super();
         bi = new BufferedImage(128, 128, BufferedImage.TYPE_INT_ARGB);
         g2d = bi.createGraphics();
-        //setOpaque(true);
-        //setBackground(Color.WHITE);
+        setOpaque(true);
+        setBackground(Color.WHITE);
+
+        points = new ArrayList<>();
 
         g2d.setColor(Color.BLACK);
         g2d.setBackground(Color.WHITE);
@@ -30,29 +33,12 @@ public class CardBodyView extends JPanel {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        add(new JLabel(new ImageIcon(bi)));
-        //g.setColor(Color.BLACK);
-        //g.fillRect(x1, y1, 2, 2);
-    }
-
-    public void paintImage() {
-        g2d.fillRect(x1, y1, 2, 2);
-    }
-
-    public void setX1(int x1) {
-        this.x1 = x1;
-    }
-
-    public void setY1(int y1) {
-        this.y1 = y1;
-    }
-
-    public void setX2(int x2) {
-        this.x2 = x2;
-    }
-
-    public void setY2(int y2) {
-        this.y2 = y2;
+        for (int i = 0; i < points.size() - 1; i++) {
+            Point p1 = points.get(i);
+            Point p2 = points.get(i + 1);
+            g.drawLine(p1.x, p1.y, p2.x, p2.y);
+            g2d.drawLine(p1.x, p1.y, p2.x, p2.y);
+        }
     }
 
     public Graphics2D getG2d() {
@@ -61,6 +47,10 @@ public class CardBodyView extends JPanel {
 
     public BufferedImage getBi() {
         return bi;
+    }
+
+    public ArrayList<Point> getPoints() {
+        return points;
     }
 
     public static void main(String[] args) {
@@ -73,7 +63,7 @@ public class CardBodyView extends JPanel {
         CardBodyController ctrl = new CardBodyController(cardBodyView);
         cardBodyView.addMouseListener(ctrl);
         cardBodyView.addMouseMotionListener(ctrl);
-        cardBodyView.setPreferredSize(new Dimension(256, 256));
+        cardBodyView.setPreferredSize(new Dimension(128, 128));
 
         container.add(cardBodyView);
 
@@ -88,21 +78,21 @@ public class CardBodyView extends JPanel {
 //                } catch (IOException e2) {
 //                    e2.printStackTrace();
 //                }
-                try {
-                    BufferedImage bi2 = ImageIO.read(new File("app/src/main/resources/icon-effacer.png"));
-                    for (int i = 0; i < bi2.getWidth(); i++) {
-                        for (int j = 0; j < bi2.getHeight(); j++) {
-                            if (bi2.getRGB(i, j) != 0) {
-                                System.out.print("  ");
-                            } else {
-                                System.out.print(". ");
-                            }
-                        }
-                        System.out.println("");
-                    }
-                } catch (IOException e1) {
-                    e1.printStackTrace();
-                }
+//                try {
+//                    BufferedImage bi2 = ImageIO.read(new File("app/src/main/resources/icon-effacer.png"));
+//                    for (int i = 0; i < bi2.getWidth(); i++) {
+//                        for (int j = 0; j < bi2.getHeight(); j++) {
+//                            if (bi2.getRGB(i, j) != 0) {
+//                                System.out.print("  ");
+//                            } else {
+//                                System.out.print(". ");
+//                            }
+//                        }
+//                        System.out.println("");
+//                    }
+//                } catch (IOException e1) {
+//                    e1.printStackTrace();
+//                }
             }
         });
         jf.pack();

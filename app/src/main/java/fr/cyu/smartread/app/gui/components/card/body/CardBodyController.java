@@ -1,6 +1,7 @@
 package fr.cyu.smartread.app.gui.components.card.body;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -13,19 +14,13 @@ public class CardBodyController extends MouseAdapter {
 
     @Override
     public void mousePressed(MouseEvent e) {
-        drawingZone.setX1(e.getX());
-        drawingZone.setY1(e.getY());
-
-        drawingZone.paintImage();
+        drawingZone.getPoints().add(new Point(e.getX(), e.getY()));
         drawingZone.repaint();
     }
 
     @Override
     public void mouseDragged(MouseEvent e) {
-        drawingZone.setX1(e.getX());
-        drawingZone.setY1(e.getY());
-
-        drawingZone.paintImage();
+        drawingZone.getPoints().add(new Point(e.getX(), e.getY()));
         drawingZone.repaint();
     }
 }
