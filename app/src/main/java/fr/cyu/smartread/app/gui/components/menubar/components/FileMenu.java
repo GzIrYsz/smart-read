@@ -3,20 +3,19 @@ package fr.cyu.smartread.app.gui.components.menubar.components;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
 
 public class FileMenu extends JMenu {
-    private JMenuItem exit;
+    private JMenuItem exitItem;
     public FileMenu() {
         super("File");
         init();
     }
 
     protected void init() {
-        exit = new JMenuItem("Quit");
-        exit.addActionListener(new ExitAction());
+        exitItem = new JMenuItem("Quit");
+        exitItem.addActionListener(new ExitAction());
 
-        add(exit);
+        add(exitItem);
     }
 
     private class ExitAction implements ActionListener {
