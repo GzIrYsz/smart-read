@@ -9,16 +9,16 @@ import javax.swing.*;
 import java.awt.*;
 
 public class CardView extends JPanel {
-    CardHeaderView cardHeaderView;
-    CardBodyView cardBodyView;
-    CardFooterView cardFooterView;
+    private CardHeaderView cardHeaderView;
+    private CardBodyView cardBodyView;
+    private CardFooterView cardFooterView;
 
     public CardView() {
         super();
         init();
     }
 
-    public void init() {
+    protected void init() {
         setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 
         cardHeaderView = new CardHeaderView();
