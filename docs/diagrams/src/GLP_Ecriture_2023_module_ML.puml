@@ -1,0 +1,180 @@
+@startuml "GLP_Ecriture_2023_UML"
+
+skinparam linetype ortho
+
+set namespaceSeparator .
+
+package fr.cyu.smartread {
+    package "module deeplearning" <<Frame>> {
+        package utility <<Folder>> {
+            class Shape() {
+                +Dim: Collection<int>
+                A voir la suite
+            }
+
+            class Matrix() {
+                -matrix: SimpleMatrix (EJML)
+                -shape: Shape
+                A voir la suite
+            }
+        }
+        package activation <<Folder>> {
+            abstract class activationFunctionAbstract {
+                -lastActivation: Matrix
+
+                +compute(): Matrix (Abstract)
+                +eval(Matrix Z): Matrix (Abstract)
+                +get_DA_DZ_derivative(): Matrix
+                +getLastActivation(): Matrix
+            }
+
+            class Relu extends activationFunctionAbstract {
+                +compute(Matrix Z): Matrix (Abstract)
+                +eval(Matrix Z): Matrix (Abstract)
+                +get_DA_DZ_derivative(): Matrix
+            }
+
+            class Sigmoid extends activationFunctionAbstract {
+                +compute(Matrix Z): Matrix (Abstract)
+                +eval(Matrix Z): Matrix (Abstract)
+                +get_DA_DZ_derivative(): Matrix
+            }
+
+            class Linear extends activationFunctionAbstract {
+                +compute(Matrix Z): Matrix (Abstract)
+                +eval(Matrix Z): Matrix (Abstract)
+                +get_DA_DZ_derivative(): Matrix
+            }
+
+            class Softmax extends activationFunctionAbstract {
+                +compute(Matrix Z): Matrix (Abstract)
+                +eval(Matrix Z): Matrix (Abstract)
+                +get_DA_DZ_derivative(): Matrix
+            }
+        }
+
+        package layers <<Folder>> {
+            class LayerAbstract{
+                -activation: activationFunctionAbstract
+                -lastFeed: Matrix
+                +LayerAbstract(activationFunctionAbstract activation): LayerAbstract
+                +compute(Matrix Z): Matrix (Abstract)
+                +eval(Matrix Z): Matrix (Abstract)
+                +get_DZ_DX_derivative(): Matrix (Abstract)
+                +getLastFeed(): Matrix
+                +saveParameters(): A voir
+            }
+
+            class Dense extends LayerAbstract {
+                -neuronsNumber: int
+                -bias: Matrix
+                -weights: Matrix
+                +Dense(int neuronsNumber, activationFunctionAbstract activation)
+                +compute(Matrix Z): Matrix (Abstract)
+                +eval(Matrix Z): Matrix (Abstract)
+                +get_DZ_DX_derivative(): Matrix (Abstract)
+                +getWeights(): Matrix
+                +getBias(): Matrix
+                +getParameters(): Matrix
+                +setParameters(): Matrix
+            }
+
+            class Dropout extends LayerAbstract {
+                -probabilities: float
+                +compute(Matrix Z): Matrix
+                +eval(Matrix Z): Matrix
+                +get_DZ_DX_derivative(): Matrix
+                +Dropout(int p)
+            }
+
+            class Input extends LayerAbstract {
+                +shape: Shape()
+                +compute(Matrix Z): Matrix
+                +eval(Matrix Z): Matrix
+                +get_DZ_DX_derivative(): Matrix
+            }
+        }
+
+        package lossfunctions <<Folder>> {
+            abstract class lossFunctionAbstract {
+                -lastLoss: float
+                +compute(Matrix X, Matrix Y): float (Abstract)
+                +eval(Matrix X, Matrix Y): float (Abstract)
+                +getDJ_DA_derivative(): float
+            }
+
+            class CategoricalCrossentropy extends lossFunctionAbstract{
+                +CategoricalCrossentropy()
+                +compute(Matrix X, Matrix Y): float
+                +eval(Matrix X, Matrix Y): float
+                +getDJ_DA_derivative(): float
+            }
+
+            class MeanSquaredError extends lossFunctionAbstract{
+                +MeanSquaredError()
+                +compute(Matrix X, Matrix Y): float
+                +eval(Matrix X, Matrix Y): float
+                +getDJ_DA_derivative(): float
+            }
+
+            class AbsoluteError extends lossFunctionAbstract{
+                +AbsoluteError()
+                +compute(Matrix X, Matrix Y): float
+                +eval(Matrix X, Matrix Y): float
+                +getDJ_DA_derivative(): float
+            }
+        }
+
+        package model <<Folder>> {
+            interface AutoTrainableModel {
+                +fit() A voir les paramètres
+                +eval() A voir les paramètres
+            }
+
+            abstract class ModelAbstract {
+                 +predict(Matrix X): Matrix (Abstract)
+                 +eval(Matrix X): Matrix (Abstract)
+                 +setParams(): void (Abstract)
+                 +getParams(): Matrix (Abstract)
+                 +saveModel(): A voir (Abstract)
+            }
+
+            class SequentialModel extends ModelAbstract implements AutoTrainableModel{
+                -optimizer: OptimizerAbstract
+                -layers: Collection<LayerAbstract>
+                 +predict(Matrix X): Matrix (Abstract)
+                 +eval(Matrix X): Matrix (Abstract)
+                 +fit()
+                 +eval()
+            }
+        }
+
+        package optimizer <<Folder>> {
+            abstract class OptimizerAbstract {
+                -model: ModelAbstract
+                -epoch: int
+                -shuffle: boolean
+                -metrics: HashMap<String, MetricsAbstract>
+                -getMetrics(String metricName): MetricsAbstract
+                +Optimizer(ModelAbstract model)
+                +train(Matrix XTrain, Matrix YTrain, int epoch, int shuffle) (Abstract)
+                +eval(Matrix XTest, Matrix YTest) (Abstract)
+            }
+
+            class GradientDescent extends OptimizerAbstract {
+                -batchSize: int
+                -learningRate: float
+                + GradientDescent(ModelAbstract model, learningRate)
+                +setLearningRate(int learningRate): void
+                -computeGradient(): Matrix
+                +train(Matrix XTrain, Matrix YTrain, int epoch, int shuffle) (Abstract)
+                +eval(Matrix XTest, Matrix YTest) (Abstract)
+            }
+        }
+
+        package metrics <<Folder>> {
+        }
+    }
+}
+
+@enduml
