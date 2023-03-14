@@ -96,28 +96,28 @@ package fr.cyu.smartread {
         }
 
         package lossfunctions <<Folder>> {
-            abstract class lossFunctionAbstract {
+            abstract class LossFunctionAbstract {
                 -lastLoss: float
                 +compute(Matrix X, Matrix Y): float (Abstract)
                 +eval(Matrix X, Matrix Y): float (Abstract)
                 +getDJ_DA_derivative(): float
             }
 
-            class CategoricalCrossentropy extends lossFunctionAbstract{
+            class CategoricalCrossentropy extends LossFunctionAbstract{
                 +CategoricalCrossentropy()
                 +compute(Matrix X, Matrix Y): float
                 +eval(Matrix X, Matrix Y): float
                 +getDJ_DA_derivative(): float
             }
 
-            class MeanSquaredError extends lossFunctionAbstract{
+            class MeanSquaredError extends LossFunctionAbstract{
                 +MeanSquaredError()
                 +compute(Matrix X, Matrix Y): float
                 +eval(Matrix X, Matrix Y): float
                 +getDJ_DA_derivative(): float
             }
 
-            class AbsoluteError extends lossFunctionAbstract{
+            class AbsoluteError extends LossFunctionAbstract{
                 +AbsoluteError()
                 +compute(Matrix X, Matrix Y): float
                 +eval(Matrix X, Matrix Y): float
@@ -132,21 +132,34 @@ package fr.cyu.smartread {
             }
 
             abstract class ModelAbstract {
-                 +predict(Matrix X): Matrix (Abstract)
-                 +eval(Matrix X): Matrix (Abstract)
-                 +setParams(): void (Abstract)
-                 +getParams(): Matrix (Abstract)
-                 +saveModel(): A voir (Abstract)
+                -gradientComputer: InterfaceGradientComputer
+                +predict(Matrix X): Matrix (Abstract)
+                +eval(Matrix X): Matrix (Abstract)
+                +setParams(): void (Abstract)
+                +getParams(): Matrix (Abstract)
+                +saveModel(): A voir (Abstract)
             }
 
             class SequentialModel extends ModelAbstract implements AutoTrainableModel{
                 -optimizer: OptimizerAbstract
                 -layers: Collection<LayerAbstract>
-                 +predict(Matrix X): Matrix (Abstract)
-                 +eval(Matrix X): Matrix (Abstract)
-                 +fit()
-                 +eval()
+                +predict(Matrix X): Matrix (Abstract)
+                +eval(Matrix X): Matrix (Abstract)
+                +getLayers(): Collection<LayerAbstract>
+                +fit()
+                +eval()
             }
+        }
+
+        package gradientscomputer <<Folder>> {
+            class InterfaceGradientComputer {
+                +computeGradient(ModelAbstract model, Matrix X, Matrix Y, LossFunctionAbstract loss): Matrix
+            }
+
+            class GradientComputerModelSequential implements InterfaceGradientComputer {
+                +computeGradient(ModelAbstract model, Matrix X, Matrix Y, LossFunctionAbstract loss): Matrix
+            }
+
         }
 
         package optimizer <<Folder>> {
@@ -166,7 +179,7 @@ package fr.cyu.smartread {
                 -learningRate: float
                 + GradientDescent(ModelAbstract model, learningRate)
                 +setLearningRate(int learningRate): void
-                -computeGradient(): Matrix
+                -computeGradient(Matrix X, Matrix Y): Matrix
                 +train(Matrix XTrain, Matrix YTrain, int epoch, int shuffle) (Abstract)
                 +eval(Matrix XTest, Matrix YTest) (Abstract)
             }
