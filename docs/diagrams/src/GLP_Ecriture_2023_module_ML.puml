@@ -19,36 +19,36 @@ package fr.cyu.smartread {
             }
         }
         package activation <<Folder>> {
-            abstract class activationFunctionAbstract {
+            abstract class ActivationAbstract {
                 -lastActivation: Matrix
 
                 +compute(): Matrix (Abstract)
-                +eval(Matrix Z): Matrix (Abstract)
+                +computeTrain(Matrix Z): Matrix (Abstract)
                 +get_DA_DZ_derivative(): Matrix
                 +getLastActivation(): Matrix
             }
 
             class Relu extends activationFunctionAbstract {
                 +compute(Matrix Z): Matrix (Abstract)
-                +eval(Matrix Z): Matrix (Abstract)
+                +computeTrain(Matrix Z): Matrix (Abstract)
                 +get_DA_DZ_derivative(): Matrix
             }
 
             class Sigmoid extends activationFunctionAbstract {
                 +compute(Matrix Z): Matrix (Abstract)
-                +eval(Matrix Z): Matrix (Abstract)
+                +computeTrain(Matrix Z): Matrix (Abstract)
                 +get_DA_DZ_derivative(): Matrix
             }
 
             class Linear extends activationFunctionAbstract {
                 +compute(Matrix Z): Matrix (Abstract)
-                +eval(Matrix Z): Matrix (Abstract)
+                +computeTrain(Matrix Z): Matrix (Abstract)
                 +get_DA_DZ_derivative(): Matrix
             }
 
             class Softmax extends activationFunctionAbstract {
                 +compute(Matrix Z): Matrix (Abstract)
-                +eval(Matrix Z): Matrix (Abstract)
+                +computeTrain(Matrix Z): Matrix (Abstract)
                 +get_DA_DZ_derivative(): Matrix
             }
         }
@@ -59,7 +59,7 @@ package fr.cyu.smartread {
                 -lastFeed: Matrix
                 +LayerAbstract(activationFunctionAbstract activation): LayerAbstract
                 +compute(Matrix Z): Matrix (Abstract)
-                +eval(Matrix Z): Matrix (Abstract)
+                +computeTrain(Matrix Z): Matrix (Abstract)
                 +get_DZ_DX_derivative(): Matrix (Abstract)
                 +getLastFeed(): Matrix
                 +saveParameters(): A voir
@@ -71,7 +71,7 @@ package fr.cyu.smartread {
                 -weights: Matrix
                 +Dense(int neuronsNumber, activationFunctionAbstract activation)
                 +compute(Matrix Z): Matrix (Abstract)
-                +eval(Matrix Z): Matrix (Abstract)
+                +computeTrain(Matrix Z): Matrix (Abstract)
                 +get_DZ_DX_derivative(): Matrix (Abstract)
                 +getWeights(): Matrix
                 +getBias(): Matrix
@@ -82,7 +82,7 @@ package fr.cyu.smartread {
             class Dropout extends LayerAbstract {
                 -probabilities: float
                 +compute(Matrix Z): Matrix
-                +eval(Matrix Z): Matrix
+                +computeTrain(Matrix Z): Matrix
                 +get_DZ_DX_derivative(): Matrix
                 +Dropout(int p)
             }
@@ -90,7 +90,7 @@ package fr.cyu.smartread {
             class Input extends LayerAbstract {
                 +shape: Shape()
                 +compute(Matrix Z): Matrix
-                +eval(Matrix Z): Matrix
+                +computeTrain(Matrix Z): Matrix
                 +get_DZ_DX_derivative(): Matrix
             }
         }
@@ -99,28 +99,28 @@ package fr.cyu.smartread {
             abstract class LossFunctionAbstract {
                 -lastLoss: float
                 +compute(Matrix X, Matrix Y): float (Abstract)
-                +eval(Matrix X, Matrix Y): float (Abstract)
+                +computeTrain(Matrix X, Matrix Y): float (Abstract)
                 +getDJ_DA_derivative(): float
             }
 
             class CategoricalCrossentropy extends LossFunctionAbstract{
                 +CategoricalCrossentropy()
                 +compute(Matrix X, Matrix Y): float
-                +eval(Matrix X, Matrix Y): float
+                +computeTrain(Matrix X, Matrix Y): float
                 +getDJ_DA_derivative(): float
             }
 
             class MeanSquaredError extends LossFunctionAbstract{
                 +MeanSquaredError()
                 +compute(Matrix X, Matrix Y): float
-                +eval(Matrix X, Matrix Y): float
+                +computeTrain(Matrix X, Matrix Y): float
                 +getDJ_DA_derivative(): float
             }
 
             class AbsoluteError extends LossFunctionAbstract{
                 +AbsoluteError()
                 +compute(Matrix X, Matrix Y): float
-                +eval(Matrix X, Matrix Y): float
+                +computeTrain(Matrix X, Matrix Y): float
                 +getDJ_DA_derivative(): float
             }
         }
@@ -128,13 +128,13 @@ package fr.cyu.smartread {
         package model <<Folder>> {
             interface AutoTrainableModel {
                 +fit() A voir les paramètres
-                +eval() A voir les paramètres
+                +computeTrain() A voir les paramètres
             }
 
             abstract class ModelAbstract {
                 -gradientComputer: InterfaceGradientComputer
                 +predict(Matrix X): Matrix (Abstract)
-                +eval(Matrix X): Matrix (Abstract)
+                +computeTrain(Matrix X): Matrix (Abstract)
                 +setParams(): void (Abstract)
                 +getParams(): Matrix (Abstract)
                 +saveModel(): A voir (Abstract)
@@ -144,10 +144,10 @@ package fr.cyu.smartread {
                 -optimizer: OptimizerAbstract
                 -layers: Collection<LayerAbstract>
                 +predict(Matrix X): Matrix (Abstract)
-                +eval(Matrix X): Matrix (Abstract)
+                +computeTrain(Matrix X): Matrix (Abstract)
                 +getLayers(): Collection<LayerAbstract>
                 +fit()
-                +eval()
+                +computeTrain()
             }
         }
 
