@@ -28,14 +28,6 @@ public class Softmax extends ActivationAbstract {
     }
 
     @Override
-    public DMatrixRMaj trainingCompute(DMatrixRMaj Z) {
-        DMatrixRMaj activation = compute(Z);
-        setLastActivation(activation);
-
-        return activation;
-    }
-
-    @Override
     public DMatrixRMaj get_DA_DZ_derivative() {
         DMatrixRMaj lastActivation = getLastActivation();
 
