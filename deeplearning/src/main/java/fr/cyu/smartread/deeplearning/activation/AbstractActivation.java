@@ -2,7 +2,7 @@ package fr.cyu.smartread.deeplearning.activation;
 
 import org.ejml.data.DMatrixRMaj;
 
-public abstract class ActivationAbstract {
+public abstract class AbstractActivation {
     private DMatrixRMaj lastActivation;
    public abstract DMatrixRMaj compute(DMatrixRMaj Z);
     public DMatrixRMaj trainingCompute(DMatrixRMaj Z) {
