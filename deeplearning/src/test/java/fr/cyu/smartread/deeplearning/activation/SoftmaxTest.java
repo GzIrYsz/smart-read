@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class SoftmaxTest {
-    private ActivationAbstract activation;
+    private AbstractActivation activation;
     final double epsilon = 0.0000001d;
 
     @BeforeEach
@@ -17,7 +17,6 @@ public class SoftmaxTest {
        activation = new Softmax();
     }
 
-    // Test of Compute
     @Test
     void shouldReturnOneWhenWeUseScalar() {
         DMatrixRMaj matrix = new DMatrixRMaj(new double[][] {
@@ -70,8 +69,6 @@ public class SoftmaxTest {
 
         assertRowSumEqualOne(result);
     }
-
-    // Test of ComputeTrain
 
     @Test
     void shouldLastComputeEqualToAttributeLastActivation(){
