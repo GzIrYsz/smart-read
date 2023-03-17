@@ -26,9 +26,8 @@ public class Softmax extends AbstractActivation {
     }
 
     @Override
-    public DMatrixRMaj get_DA_DZ_derivative() {
+    public DMatrixRMaj compute_DA_DZ_derivative() {
         DMatrixRMaj lastActivation = getLastActivation();
-
         DMatrixRMaj intermediateComputation = CommonOps_DDRM.subtract(1, lastActivation, null);
 
         return CommonOps_DDRM.elementMult(lastActivation, intermediateComputation, null);

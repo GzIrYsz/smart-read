@@ -81,7 +81,7 @@ public class SoftmaxTest {
     }
 
     @Test
-    void shouldBeEqualToRightValueDerivativeForOnesMatrix3x3() {
+    void shouldBeEqualToRightValueDerivativeForOnesMatrix3x3() throws NoTrainingComputationsPerformedException {
         DMatrixRMaj onesMatrix3x3 = new DMatrixRMaj(3, 3);
         CommonOps_DDRM.fill(onesMatrix3x3, 1);
 
@@ -116,7 +116,7 @@ public class SoftmaxTest {
         };
     }
 
-    private DMatrixRMaj getDerivative(DMatrixRMaj matrix) {
+    private DMatrixRMaj getDerivative(DMatrixRMaj matrix) throws NoTrainingComputationsPerformedException {
         activation.trainingCompute(matrix);
         return activation.get_DA_DZ_derivative();
     }

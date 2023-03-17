@@ -11,7 +11,14 @@ public abstract class AbstractActivation {
 
         return result;
     }
-    public abstract DMatrixRMaj get_DA_DZ_derivative();
+    public DMatrixRMaj get_DA_DZ_derivative() throws NoTrainingComputationsPerformedException {
+        if (lastActivation == null)
+            throw new NoTrainingComputationsPerformedException();
+        
+        return compute_DA_DZ_derivative();
+    }
+    
+    public abstract DMatrixRMaj compute_DA_DZ_derivative();
     public DMatrixRMaj getLastActivation() {
         return lastActivation;
     }
