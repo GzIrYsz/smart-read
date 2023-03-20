@@ -5,7 +5,7 @@ import java.nio.file.Files;
 import java.util.ArrayList;
 
 public class Dictionary {
-    private ArrayList<String> wordList;
+    private final ArrayList<String> wordList;
 
     public Dictionary() {
         wordList = new ArrayList<>(0);
