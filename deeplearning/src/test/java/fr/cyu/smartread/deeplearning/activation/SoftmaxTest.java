@@ -96,6 +96,26 @@ public class SoftmaxTest {
         EjmlUnitTests.assertEquals(rightResultDerivative, resultDerivative);
     }
 
+    @Test
+    void shouldReturnRightResultForDerivative() throws NoTrainingComputationsPerformedException {
+        DMatrixRMaj matrix = new DMatrixRMaj(new double[][]{
+                {1, 1, 1},
+                {5, 5, 10},
+                {13, 15.4, 2.3}
+        });
+
+        DMatrixRMaj rightResult = new DMatrixRMaj(new double[][]{
+                {2.22222222e-01, 2.22222222e-01, 2.22222222e-01},
+                {6.60415386e-03, 6.60415386e-03, 1.31199065e-02},
+                {7.62548690e-02, 7.62564322e-02, 1.87511625e-06},
+        });
+
+
+        DMatrixRMaj resultDerivative = getDerivative(matrix);
+
+        EjmlUnitTests.assertEquals(rightResult, resultDerivative);
+    }
+
     private void assertRowSumEqualOne(DMatrixRMaj matrix) {
         final int rowCounts = matrix.getNumRows();
 
