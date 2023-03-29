@@ -9,13 +9,14 @@ public abstract class AbstractLoss {
     private DMatrixRMaj lastLabel;
 
     public double compute(DMatrixRMaj yPrediction, DMatrixRMaj yLabel) throws IncompatibleShapeException {
-        if (!UtilityOperationsMatrix.areShapeEqual(yPrediction, yLabel))
+        if (!UtilityOperationsMatrix.areShapeEqual(yPrediction, yLabel)) {
             throw new IncompatibleShapeException(yPrediction, yLabel);
+        }
 
         return computeRaw(yPrediction, yLabel);
     }
     public abstract double computeRaw(DMatrixRMaj yPrediction, DMatrixRMaj yLabel);
-    public double trainingCompute(DMatrixRMaj yPrediction, DMatrixRMaj yLabel) throws IncompatibleShapeException{
+    public double trainingCompute(DMatrixRMaj yPrediction, DMatrixRMaj yLabel) throws IncompatibleShapeException {
         double result = compute(yPrediction, yLabel);
         setLastPrediction(yPrediction);
         setLastLabel(yLabel);
@@ -24,7 +25,7 @@ public abstract class AbstractLoss {
     }
 
     public DMatrixRMaj get_DJ_DA_derivative() throws NoTrainingComputationsPerformedException {
-        if (lastPrediction == null || lastLabel == null)
+        if (lastPrediction == null || lastLabel == null) {
             throw new NoTrainingComputationsPerformedException();
         }
 

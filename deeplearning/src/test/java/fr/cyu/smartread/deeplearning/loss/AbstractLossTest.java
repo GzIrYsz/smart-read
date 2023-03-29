@@ -1,5 +1,3 @@
-//package fr.cyu.smartread.deeplearning.loss;
-//
 //import fr.cyu.smartread.deeplearning.activation.NoTrainingComputationsPerformedException;
 //import org.ejml.data.DMatrixRMaj;
 //import org.junit.jupiter.api.Assertions;
@@ -40,6 +38,7 @@
 //        assertEquals(result, loss.getLastLoss());
 //    }
 //}
+package fr.cyu.smartread.deeplearning.loss;
 
 import fr.cyu.smartread.deeplearning.activation.NoTrainingComputationsPerformedException;
 import org.ejml.data.DMatrixRMaj;
