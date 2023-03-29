@@ -10,10 +10,7 @@ public class CategoricalCrossentropy extends AbstractLoss {
     final private double epsilon = 1e-7;
     final private double max = 1 - epsilon;
     @Override
-    public double compute(DMatrixRMaj yPredBatch, DMatrixRMaj yLabelBatch) throws IncompatibleShapeException, IllegalArgumentException {
-        if (!UtilityOperationsMatrix.areShapeEqual(yPredBatch, yLabelBatch))
-            throw new IncompatibleShapeException(yPredBatch, yLabelBatch);
-
+    public double computeRaw(DMatrixRMaj yPredBatch, DMatrixRMaj yLabelBatch) throws IllegalArgumentException {
         DMatrixRMaj yPredClippedBatch = UtilityOperationsMatrix.clip(yPredBatch, epsilon, max);
 
         final int rowCounts = yPredClippedBatch.getNumRows();
@@ -30,9 +27,11 @@ public class CategoricalCrossentropy extends AbstractLoss {
     }
 
     @Override
-    public Double compute_DZ_DX_derivative() {
-        final Double lastLoss = getLastLoss();
-        return lastLoss * (1 - lastLoss);
+    public DMatrixRMaj compute_DJ_DA_derivative() {
+        final DMatrixRMaj lastPrediction = getLastPrediction();
+        final DMatrixRMaj lastLabel = getLastLabel();
+
+        return CommonOps_DDRM.subtract(lastPrediction, lastLabel, null);
     }
 
     private double computeRowLoss(DMatrixRMaj yPredRow, DMatrixRMaj yLabelRow) {

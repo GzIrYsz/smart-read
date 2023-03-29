@@ -18,9 +18,30 @@ public class AbstractLossTest {
     }
 
     @Test
+    void shouldGetAnAssertionIfIncompatibleShapeException() {
+        DMatrixRMaj label = new DMatrixRMaj(new double[][] {
+                {0, 1, 0},
+                {1, 0, 0},
+                {1, 0, 0}
+        });
+
+        DMatrixRMaj pred = new DMatrixRMaj(new double[][] {
+                {0.88, 0.02, 0.10},
+                {0.30, 0.67, 0.03}
+        });
+
+        IncompatibleShapeException thrown = Assertions.assertThrows(IncompatibleShapeException.class, () -> {
+            loss.compute(pred, label);
+        });
+
+        String errorMsgExpected = String.format("The dimensions of matrices A with (%d, %d) shape and B with (%d, %d) shape are not compatible for the calculation you are performing", pred.getNumRows(), pred.getNumCols(), label.getNumRows(), label.getNumCols());
+
+        assertEquals(errorMsgExpected, thrown.getMessage());
+    }
+    @Test
     void shouldGetAnAssertionIfNoTrainingComputationPerformed() {
         NoTrainingComputationsPerformedException thrown = Assertions.assertThrows(NoTrainingComputationsPerformedException.class, () -> {
-            loss.get_DZ_DX_derivative();
+            loss.get_DJ_DA_derivative();
         });
 
         assertEquals("You have not performed any training calculation, please use method trainingComputation before using this function", thrown.getMessage());
@@ -36,7 +57,8 @@ public class AbstractLossTest {
                 {0.50, 0.25, 0.25}
         });
 
-        Double result = loss.trainingCompute(yPrediction, yLabel);
-        assertEquals(result, loss.getLastLoss());
+        loss.trainingCompute(yPrediction, yLabel);
+        assertEquals(yLabel, loss.getLastLabel());
+        assertEquals(yPrediction, loss.getLastPrediction());
     }
 }

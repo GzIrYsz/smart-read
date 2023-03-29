@@ -1,6 +1,9 @@
 package fr.cyu.smartread.deeplearning.loss;
 
+import fr.cyu.smartread.deeplearning.activation.NoTrainingComputationsPerformedException;
+import org.ejml.EjmlUnitTests;
 import org.ejml.data.DMatrixRMaj;
+import org.ejml.dense.row.CommonOps_DDRM;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -115,7 +118,7 @@ public class CategoricalCrossentropyTest {
     }
 
     @Test
-    void shouldUpdateLastLoss() throws IncompatibleShapeException {
+    void shouldReturnRightResultForDerivative() throws NoTrainingComputationsPerformedException, IncompatibleShapeException {
         DMatrixRMaj label = new DMatrixRMaj(new double[][] {
                 {0, 1, 0},
                 {1, 0, 0}
@@ -126,7 +129,13 @@ public class CategoricalCrossentropyTest {
                 {0.30, 0.67, 0.03}
         });
 
-        double result = loss.trainingCompute(pred, label);
-        assertEquals(result, loss.getLastLoss(), epsilon);
+        DMatrixRMaj result = getDerivative(pred, label);
+        DMatrixRMaj rightResult = CommonOps_DDRM.subtract(pred, label, null);
+        EjmlUnitTests.assertEquals(rightResult, result);
+    }
+
+    private DMatrixRMaj getDerivative(DMatrixRMaj pred, DMatrixRMaj label) throws NoTrainingComputationsPerformedException, IncompatibleShapeException {
+        loss.trainingCompute(pred, label);
+        return loss.get_DJ_DA_derivative();
     }
 }

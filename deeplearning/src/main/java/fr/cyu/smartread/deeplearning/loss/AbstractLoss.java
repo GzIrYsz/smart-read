@@ -1,31 +1,46 @@
 package fr.cyu.smartread.deeplearning.loss;
 
+import fr.cyu.smartread.deeplearning.UtilityOperationsMatrix;
 import fr.cyu.smartread.deeplearning.activation.NoTrainingComputationsPerformedException;
 import org.ejml.data.DMatrixRMaj;
 
 public abstract class AbstractLoss {
-    private Double lastLoss;
+    private DMatrixRMaj lastPrediction;
+    private DMatrixRMaj lastLabel;
 
-    public abstract double compute(DMatrixRMaj yPrediction, DMatrixRMaj yLabel) throws IncompatibleShapeException;
+    public double compute(DMatrixRMaj yPrediction, DMatrixRMaj yLabel) throws IncompatibleShapeException {
+        if (!UtilityOperationsMatrix.areShapeEqual(yPrediction, yLabel))
+            throw new IncompatibleShapeException(yPrediction, yLabel);
+
+        return computeRaw(yPrediction, yLabel);
+    }
+    public abstract double computeRaw(DMatrixRMaj yPrediction, DMatrixRMaj yLabel);
     public double trainingCompute(DMatrixRMaj yPrediction, DMatrixRMaj yLabel) throws IncompatibleShapeException{
         double result = compute(yPrediction, yLabel);
-        setLastLoss(result);
+        setLastPrediction(yPrediction);
+        setLastLabel(yLabel);
 
         return result;
     }
 
-    public Double get_DZ_DX_derivative() throws NoTrainingComputationsPerformedException {
-        if (lastLoss == null)
+    public DMatrixRMaj get_DJ_DA_derivative() throws NoTrainingComputationsPerformedException {
+        if (lastPrediction == null || lastLabel == null)
             throw new NoTrainingComputationsPerformedException();
 
-        return compute_DZ_DX_derivative();
+        return compute_DJ_DA_derivative();
     }
 
-    public abstract Double compute_DZ_DX_derivative();
-    public Double getLastLoss() {
-        return lastLoss;
+    public abstract DMatrixRMaj compute_DJ_DA_derivative();
+    public DMatrixRMaj getLastPrediction() {
+        return lastPrediction;
     }
-    public void setLastLoss(double lastLoss) {
-        this.lastLoss = lastLoss;
+    public void setLastPrediction(DMatrixRMaj lastPrediction) {
+        this.lastPrediction = lastPrediction;
+    }
+    public DMatrixRMaj getLastLabel() {
+        return lastLabel;
+    }
+    public void setLastLabel(DMatrixRMaj lastLabel) {
+        this.lastLabel = lastLabel;
     }
 }
