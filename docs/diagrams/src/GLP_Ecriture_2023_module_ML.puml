@@ -5,8 +5,8 @@ skinparam linetype ortho
 set namespaceSeparator .
 
 package fr.cyu.smartread {
-    package "module deeplearning" <<Frame>> {
-        package utility <<Folder>> {
+    package deeplearning <<Frame>> {
+        package utility {
             class Shape() {
                 +Dim: Collection<int>
                 A voir la suite
@@ -18,8 +18,8 @@ package fr.cyu.smartread {
                 A voir la suite
             }
         }
-        package activation <<Folder>> {
-            abstract class ActivationAbstract {
+        package activation {
+            abstract class AbstractActivation {
                 -lastActivation: Matrix
 
                 +compute(): Matrix (Abstract)
@@ -28,34 +28,34 @@ package fr.cyu.smartread {
                 +getLastActivation(): Matrix
             }
 
-            class Relu extends activationFunctionAbstract {
+            class Relu extends AbstractActivation {
                 +compute(Matrix Z): Matrix (Abstract)
                 +computeTrain(Matrix Z): Matrix (Abstract)
                 +get_DA_DZ_derivative(): Matrix
             }
 
-            class Sigmoid extends activationFunctionAbstract {
+            class Sigmoid extends AbstractActivation {
                 +compute(Matrix Z): Matrix (Abstract)
                 +computeTrain(Matrix Z): Matrix (Abstract)
                 +get_DA_DZ_derivative(): Matrix
             }
 
-            class Linear extends activationFunctionAbstract {
+            class Linear extends AbstractActivation {
                 +compute(Matrix Z): Matrix (Abstract)
                 +computeTrain(Matrix Z): Matrix (Abstract)
                 +get_DA_DZ_derivative(): Matrix
             }
 
-            class Softmax extends activationFunctionAbstract {
+            class Softmax extends AbstractActivation {
                 +compute(Matrix Z): Matrix (Abstract)
                 +computeTrain(Matrix Z): Matrix (Abstract)
                 +get_DA_DZ_derivative(): Matrix
             }
         }
 
-        package layers <<Folder>> {
-            class LayerAbstract{
-                -activation: activationFunctionAbstract
+        package layers {
+            abstract class AbstractLayer {
+                -activation: AbstractActivation
                 -lastFeed: Matrix
                 +LayerAbstract(activationFunctionAbstract activation): LayerAbstract
                 +compute(Matrix Z): Matrix (Abstract)
@@ -65,7 +65,7 @@ package fr.cyu.smartread {
                 +saveParameters(): A voir
             }
 
-            class Dense extends LayerAbstract {
+            class Dense extends AbstractLayer {
                 -neuronsNumber: int
                 -bias: Matrix
                 -weights: Matrix
@@ -79,7 +79,7 @@ package fr.cyu.smartread {
                 +setParameters(): Matrix
             }
 
-            class Dropout extends LayerAbstract {
+            class Dropout extends AbstractLayer {
                 -probabilities: float
                 +compute(Matrix Z): Matrix
                 +computeTrain(Matrix Z): Matrix
@@ -87,7 +87,7 @@ package fr.cyu.smartread {
                 +Dropout(int p)
             }
 
-            class Input extends LayerAbstract {
+            class Input extends AbstractLayer {
                 +shape: Shape()
                 +compute(Matrix Z): Matrix
                 +computeTrain(Matrix Z): Matrix
@@ -95,7 +95,18 @@ package fr.cyu.smartread {
             }
         }
 
-        package lossfunctions <<Folder>> {
+        package agregation {
+            abstract class AbstractAgregation {
+
+            }
+            class WSum extends AbstractAgregation {
+                +compute(): double
+                +computeTrain(): double
+                +computeDerivative(): double
+            }
+        }
+
+        package loss {
             abstract class LossFunctionAbstract {
                 -lastLoss: float
                 +compute(Matrix X, Matrix Y): float (Abstract)
@@ -125,7 +136,7 @@ package fr.cyu.smartread {
             }
         }
 
-        package model <<Folder>> {
+        package model {
             interface AutoTrainableModel {
                 +fit() A voir les paramètres
                 +computeTrain() A voir les paramètres
@@ -151,7 +162,7 @@ package fr.cyu.smartread {
             }
         }
 
-        package gradientscomputer <<Folder>> {
+        package gradientscomputer {
             class InterfaceGradientComputer {
                 +computeGradient(ModelAbstract model, Matrix X, Matrix Y, LossFunctionAbstract loss): Matrix
             }
@@ -162,7 +173,7 @@ package fr.cyu.smartread {
 
         }
 
-        package optimizer <<Folder>> {
+        package optimizer {
             abstract class OptimizerAbstract {
                 -model: ModelAbstract
                 -epoch: int
@@ -177,7 +188,7 @@ package fr.cyu.smartread {
             class GradientDescent extends OptimizerAbstract {
                 -batchSize: int
                 -learningRate: float
-                + GradientDescent(ModelAbstract model, learningRate)
+                +GradientDescent(ModelAbstract model, learningRate)
                 +setLearningRate(int learningRate): void
                 -computeGradient(Matrix X, Matrix Y): Matrix
                 +train(Matrix XTrain, Matrix YTrain, int epoch, int shuffle) (Abstract)
@@ -185,7 +196,7 @@ package fr.cyu.smartread {
             }
         }
 
-        package metrics <<Folder>> {
+        package metrics {
         }
     }
 }
