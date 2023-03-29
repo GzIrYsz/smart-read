@@ -26,6 +26,7 @@ public abstract class AbstractLoss {
     public DMatrixRMaj get_DJ_DA_derivative() throws NoTrainingComputationsPerformedException {
         if (lastPrediction == null || lastLabel == null)
             throw new NoTrainingComputationsPerformedException();
+        }
 
         return compute_DJ_DA_derivative();
     }
