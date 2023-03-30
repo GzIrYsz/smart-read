@@ -197,6 +197,40 @@ public class UtilityOperationsMatrixTest {
         testMask(probabilities, mask);
     }
 
+    @Test
+    void shouldThrowAnExceptionIfNotARow() {
+        DMatrixRMaj row = new DMatrixRMaj(new double[][]{
+                {1, 1, 1},
+                {1, 1, 1},
+        });
+
+        NotARowException thrown = Assertions.assertThrows(NotARowException.class, () -> {
+            UtilityOperationsMatrix.duplicateRow(row, 3);
+        });
+
+        assertEquals("the matrix entered in parameter is not a row, current number of row " + row.getNumRows(), thrown.getMessage());
+    }
+
+    @Test
+    void shouldReturnAMatrixWith3SameRow() {
+        int numberOfRowsExpected = 3;
+
+        DMatrixRMaj row = new DMatrixRMaj(new double[][]{
+                {1, 1, 1},
+        });
+
+        DMatrixRMaj rightResult = new DMatrixRMaj(new double[][]{
+                {1, 1, 1},
+                {1, 1, 1},
+                {1, 1, 1}
+        });
+
+        DMatrixRMaj result = UtilityOperationsMatrix.duplicateRow(row, numberOfRowsExpected);
+
+        EjmlUnitTests.assertEquals(rightResult, result);
+
+    }
+
     private void testMask(float probabilities, DMatrixRMaj mask) {
         int numberOf0 = howMany0InMask(mask);
         int baseValueRange = Math.round(probabilities * mask.getNumElements());

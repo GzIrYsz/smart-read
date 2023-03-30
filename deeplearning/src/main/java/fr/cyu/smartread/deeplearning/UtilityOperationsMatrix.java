@@ -82,4 +82,23 @@ public class UtilityOperationsMatrix {
 
         return mask;
     }
+
+    public static DMatrixRMaj duplicateRow(DMatrixRMaj row, int numberOfRowExpected) throws NotARowException{
+        if(!hasJustOneRow(row))
+            throw new NotARowException(row);
+
+        final int rowColumns = row.getNumCols();
+        final int numberOfElemInResult = rowColumns * numberOfRowExpected;
+
+        double[] entireMatrixMaskData = new double[numberOfElemInResult];
+
+        for (int i = 0; i < numberOfElemInResult; i = i + rowColumns) {
+            for (int j = 0; j < rowColumns; j++) {
+                double value = row.get(j);
+                entireMatrixMaskData[i + j] = value;
+            }
+        }
+
+        return new DMatrixRMaj(numberOfRowExpected, rowColumns, true, entireMatrixMaskData);
+    }
 }
