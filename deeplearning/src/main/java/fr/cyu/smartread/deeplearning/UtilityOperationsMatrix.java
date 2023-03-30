@@ -44,4 +44,42 @@ public class UtilityOperationsMatrix {
 
         return new DMatrixRMaj(matrix.getNumRows(), matrix.getNumCols(), true, newValues);
     }
+
+    public static DMatrixRMaj ones(int row, int columns) {
+        if (row == 0 || columns == 0)
+            throw new IllegalArgumentException(String.format("rows or columns must not be 0, current value row: %d, column: %d", row, columns));
+
+        final int nbElems = row * columns;
+        double[] matrixData = new double[nbElems];
+
+        for (int i = 0; i < nbElems; i++) {
+            matrixData[i] = 1;
+        }
+
+        return new DMatrixRMaj(row, columns, true, matrixData);
+    }
+
+    public static DMatrixRMaj mask(float probabilities, @NotNull DMatrixRMaj originalMatrix) {
+        int row = originalMatrix.getNumRows();
+        int columns = originalMatrix.getNumCols();
+
+        return createMask(probabilities, row, columns);
+    }
+
+    public static DMatrixRMaj mask(float probabilities, int rows, int columns) {
+
+        return createMask(probabilities, rows, columns);
+    }
+
+    private static DMatrixRMaj createMask(float probabilities, int row, int columns) {
+        DMatrixRMaj mask = ones(row, columns);
+        double[] maskData = mask.getData();
+
+        for (int i = 0; i < maskData.length; i++) {
+            double maskValue = Math.random() >= 1 - probabilities ? 0 : 1;
+            mask.set(i, maskValue);
+        }
+
+        return mask;
+    }
 }

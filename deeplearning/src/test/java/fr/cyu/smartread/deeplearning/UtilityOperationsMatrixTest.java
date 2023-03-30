@@ -1,9 +1,11 @@
 package fr.cyu.smartread.deeplearning;
 
+import org.apache.commons.lang.math.IntRange;
 import org.ejml.EjmlUnitTests;
 import org.ejml.data.DMatrixRMaj;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -144,5 +146,77 @@ public class UtilityOperationsMatrixTest {
         double result = UtilityOperationsMatrix.meanOneRow(matrixRow);
 
         assertEquals(rightResult, result, epsilon);
+    }
+
+    @Test
+    void shouldThrowIllegalArgumentExceptionIfRowOrColumnsAreNull() {
+        int rows = 1;
+        int columns = 0;
+        IllegalArgumentException thrown = Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            UtilityOperationsMatrix.ones(rows, columns);
+        });
+
+        String msgErrorExpected = String.format("rows or columns must not be 0, current value row: %d, column: %d", rows, columns);
+        assertEquals(msgErrorExpected, thrown.getMessage());
+    }
+
+    @Test
+    void shouldReturnAOnesMatrix3x3() {
+        int rows = 3;
+        int columns = 3;
+
+        DMatrixRMaj onesMatrix = UtilityOperationsMatrix.ones(rows, columns);
+        double[] matrixData = onesMatrix.getData();
+
+        for (double matrixNumber : matrixData) {
+            assertEquals(1, matrixNumber);
+        }
+    }
+
+    @Test
+    void shouldReturnAMaskSurcharge1() {
+        float probabilities = 0.3F;
+        int rows = 1000;
+        int columns = 1000;
+
+        DMatrixRMaj mask = UtilityOperationsMatrix.mask(probabilities, rows, columns);
+
+        testMask(probabilities, mask);
+    }
+
+    @Test
+    void shouldReturnAMaskSurcharge2() {
+        float probabilities = 0.3F;
+        int rows = 1000;
+        int columns = 1000;
+
+        DMatrixRMaj matrix = new DMatrixRMaj(rows, columns);
+
+        DMatrixRMaj mask = UtilityOperationsMatrix.mask(probabilities, matrix);
+
+        testMask(probabilities, mask);
+    }
+
+    private void testMask(float probabilities, DMatrixRMaj mask) {
+        int numberOf0 = howMany0InMask(mask);
+        int baseValueRange = Math.round(probabilities * mask.getNumElements());
+        int errorRange = baseValueRange / 50;
+
+        IntRange rangeOf0 = new IntRange(baseValueRange - errorRange, baseValueRange + errorRange);
+
+        if (!rangeOf0.containsInteger(numberOf0))
+            fail("the number of 0 in the mask does not match with the given probability");
+    }
+
+    private int howMany0InMask(DMatrixRMaj mask) {
+        int counterOf0 = 0;
+        double[] maskData = mask.getData();
+
+        for (double maskNumber : maskData) {
+            if (maskNumber == 0)
+                counterOf0++;
+        }
+
+       return counterOf0;
     }
 }
