@@ -67,7 +67,6 @@ public class UtilityOperationsMatrix {
     }
 
     public static DMatrixRMaj mask(float probabilities, int rows, int columns) {
-
         return createMask(probabilities, rows, columns);
     }
 
