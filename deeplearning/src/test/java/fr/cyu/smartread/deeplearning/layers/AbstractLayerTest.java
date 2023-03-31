@@ -33,7 +33,7 @@ class AbstractLayerTest {
                 {5, 5, 5}
         });
 
-        DMatrixRMaj result = layer.trainingCompute(matrix);
-        EjmlUnitTests.assertEquals(result, matrix);
+        layer.trainingCompute(matrix);
+        EjmlUnitTests.assertEquals(matrix, layer.getLastFeed());
     }
 }
