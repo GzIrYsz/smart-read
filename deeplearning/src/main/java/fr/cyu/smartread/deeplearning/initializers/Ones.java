@@ -10,6 +10,6 @@ public class Ones extends AbstractInitializer {
     @Override
     public AbstractInitializer init(DMatrixRMaj matrix) {
         matrix.fill(1);
-        return null;
+        return this;
     }
 }
