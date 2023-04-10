@@ -9,6 +9,7 @@ public class Zeros extends AbstractInitializer {
 
     @Override
     public AbstractInitializer init(DMatrixRMaj matrix) {
+        matrix.fill(0);
         return this;
     }
 }
