@@ -53,6 +53,24 @@ package fr.cyu.smartread {
             }
         }
 
+        package initializers {
+            abstract class AbstractInitializers {
+                +compute(int shape): DMatrixRMaj
+            }
+            class Zeros extends AbstractInitializers {
+                +compute(int shape): DMatrixRMaj
+            }
+            class Ones extends AbstractInitializers {
+                +compute(int shape): DMatrixRMaj
+            }
+            class RandomNormal extends AbstractInitializers {
+                +compute(int shape): DMatrixRMaj
+            }
+            class GlorotUniform extends AbstractInitializers {
+                +compute(int shape): DMatrixRMaj
+            }
+        }
+
         package layers {
             abstract class AbstractLayer {
                 -activation: AbstractActivation
