@@ -8,16 +8,16 @@ import org.ejml.simple.ops.SimpleOperations_DDRM;
 import java.util.Random;
 
 public class RandomNormal extends AbstractInitializer {
-    private double stdev;
+    private double stDev;
     private final SimpleOperations_DDRM simpleOps = new SimpleOperations_DDRM();
 
     public RandomNormal(int shape) {
         this(shape, 0.05);
     }
 
-    public RandomNormal(int shape, double stdev) {
+    public RandomNormal(int shape, double stDev) {
         super(shape);
-        this.stdev = stdev;
+        this.stDev = stDev;
     }
 
     @Override
@@ -27,7 +27,7 @@ public class RandomNormal extends AbstractInitializer {
 
         for (int i = 0; i < colCount; i++) {
             DMatrixRMaj currentCol = CommonOps_DDRM.extractColumn(matrix, i, null);
-            RandomMatrices_DDRM.fillGaussian(currentCol, 0.0, this.stdev, new Random());
+            RandomMatrices_DDRM.fillGaussian(currentCol, 0.0, this.stDev, new Random());
             simpleOps.setColumn(matrix, i, startRow, currentCol.getData());
         }
         return this;
