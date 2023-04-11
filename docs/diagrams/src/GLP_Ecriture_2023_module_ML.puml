@@ -54,20 +54,42 @@ package fr.cyu.smartread {
         }
 
         package initializers {
-            abstract class AbstractInitializers {
-                +compute(int shape): DMatrixRMaj
+            abstract class AbstractInitializer {
+                -shape: int
+
+                +AbstractInitializer(int shape)
+                +init(DMatrixRMaj matrix): AbstractInitializer
             }
-            class Zeros extends AbstractInitializers {
-                +compute(int shape): DMatrixRMaj
+            class Zeros extends AbstractInitializer {
+                +Zeros(int shape)
+                +init(DMatrixRMaj matrix): AbstractInitializer
             }
-            class Ones extends AbstractInitializers {
-                +compute(int shape): DMatrixRMaj
+            class Ones extends AbstractInitializer {
+                +Ones(int shape)
+                +init(DMatrixRMaj matrix): AbstractInitializer
             }
-            class RandomNormal extends AbstractInitializers {
-                +compute(int shape): DMatrixRMaj
+            class RandomNormal extends AbstractInitializer {
+                -stDev: double
+
+                +RandomNormal(int shape)
+                +RandomNormal(int shape, double stDev)
+                +init(DMatrixRMaj matrix): AbstractInitializer
             }
-            class GlorotUniform extends AbstractInitializers {
-                +compute(int shape): DMatrixRMaj
+            class RandomUniform extends AbstractInitializer {
+                -minVal: double
+                -maxVal: double
+
+                +RandomUniform(int shape)
+                +RandomUniform(int shape, double minVal, double maxVal)
+                +init(DMatrixRMaj matrix): AbstractInitializer
+            }
+            class GlorotNormal extends RandomNormal {
+                +GlorotNormal(int shape, int fanIn, int fanOut)
+                +init(DMatrixRMaj matrix): AbstractInitializer
+            }
+            class GlorotUniform extends RandomUniform {
+                +GlorotUniform(int shape, int fanIn, int fanOut)
+                +init(DMatrixRMaj matrix): AbstractInitializer
             }
         }
 
