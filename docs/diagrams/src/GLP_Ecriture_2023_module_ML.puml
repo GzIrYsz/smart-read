@@ -119,8 +119,6 @@ package fr.cyu.smartread {
             }
             class WSum extends AbstractAgregation {
                 +compute(): double
-                +computeTrain(): double
-                +computeDerivative(): double
             }
         }
 
