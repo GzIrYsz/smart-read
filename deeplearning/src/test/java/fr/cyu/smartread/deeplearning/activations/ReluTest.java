@@ -1,11 +1,9 @@
-package fr.cyu.smartread.deeplearning.activation;
+package fr.cyu.smartread.deeplearning.activations;
 
 import org.ejml.EjmlUnitTests;
 import org.ejml.data.DMatrixRMaj;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class ReluTest {
     private AbstractActivation activation;

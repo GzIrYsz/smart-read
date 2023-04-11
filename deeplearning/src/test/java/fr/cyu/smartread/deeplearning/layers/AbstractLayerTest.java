@@ -1,6 +1,6 @@
 package fr.cyu.smartread.deeplearning.layers;
 
-import fr.cyu.smartread.deeplearning.activation.NoTrainingComputationsPerformedException;
+import fr.cyu.smartread.deeplearning.activations.NoTrainingComputationsPerformedException;
 import org.ejml.EjmlUnitTests;
 import org.ejml.data.DMatrixRMaj;
 import org.junit.jupiter.api.Assertions;

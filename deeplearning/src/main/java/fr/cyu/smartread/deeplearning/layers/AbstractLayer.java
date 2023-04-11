@@ -1,6 +1,6 @@
 package fr.cyu.smartread.deeplearning.layers;
 
-import fr.cyu.smartread.deeplearning.activation.NoTrainingComputationsPerformedException;
+import fr.cyu.smartread.deeplearning.activations.NoTrainingComputationsPerformedException;
 import org.ejml.data.DMatrixRMaj;
 
 import java.util.ArrayList;

@@ -1,7 +1,7 @@
-package fr.cyu.smartread.deeplearning.loss;
+package fr.cyu.smartread.deeplearning.losses;
 
 import fr.cyu.smartread.deeplearning.UtilityOperationsMatrix;
-import fr.cyu.smartread.deeplearning.activation.NoTrainingComputationsPerformedException;
+import fr.cyu.smartread.deeplearning.activations.NoTrainingComputationsPerformedException;
 import org.ejml.data.DMatrixRMaj;
 
 public abstract class AbstractLoss {

@@ -1,4 +1,4 @@
-package fr.cyu.smartread.deeplearning.activation;
+package fr.cyu.smartread.deeplearning.activations;
 
 public class NoTrainingComputationsPerformedException extends Exception {
     public NoTrainingComputationsPerformedException() {

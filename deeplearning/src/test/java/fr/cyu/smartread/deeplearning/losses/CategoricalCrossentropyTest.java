@@ -1,6 +1,6 @@
-package fr.cyu.smartread.deeplearning.loss;
+package fr.cyu.smartread.deeplearning.losses;
 
-import fr.cyu.smartread.deeplearning.activation.NoTrainingComputationsPerformedException;
+import fr.cyu.smartread.deeplearning.activations.NoTrainingComputationsPerformedException;
 import org.ejml.EjmlUnitTests;
 import org.ejml.data.DMatrixRMaj;
 import org.ejml.dense.row.CommonOps_DDRM;

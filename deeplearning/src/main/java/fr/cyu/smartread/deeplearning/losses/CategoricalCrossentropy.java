@@ -1,4 +1,4 @@
-package fr.cyu.smartread.deeplearning.loss;
+package fr.cyu.smartread.deeplearning.losses;
 
 import fr.cyu.smartread.deeplearning.UtilityOperations;
 import fr.cyu.smartread.deeplearning.UtilityOperationsMatrix;
