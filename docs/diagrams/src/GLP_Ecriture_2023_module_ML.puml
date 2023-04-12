@@ -108,8 +108,8 @@ package fr.cyu.smartread {
             class Dense extends AbstractLayer {
                 -neuronsNumber: int
                 -bias: Matrix
-                -weights: Matrix
-                +Dense(int neuronsNumber, activationFunctionAbstract activation)
+                -kernel: Matrix
+                +Dense(int neuronsNumber, AbstractActivation activation)
                 +compute(Matrix Z): Matrix (Abstract)
                 +computeTrain(Matrix Z): Matrix (Abstract)
                 +get_DZ_DX_derivative(): Matrix (Abstract)
@@ -136,17 +136,27 @@ package fr.cyu.smartread {
         }
 
         package agregation {
-            abstract class AbstractAgregation {
-
+            abstract class AbstractAggregation {
+                +compute(): double {abstract}
             }
-            class WSum extends AbstractAgregation {
+            class WSum {
+                -kernel: DMatrixRMaj
+                -bias: DMatrixRMaj
+                -inputs: DMatrixRMaj
+
+                +WSum(DMatrixRMaj inputs, DMatrixRMaj kernel)
+                +WSum(DMatrixRMaj inputs, DMatrixRMaj kernel, DMatrixRMaj bias)
+                +compute(): double
+            }
+            class Distance extends AbstractAggregation {
                 +compute(): double
             }
         }
 
-        package loss {
+        package losses {
             abstract class LossFunctionAbstract {
                 -lastLoss: float
+
                 +compute(Matrix X, Matrix Y): float (Abstract)
                 +computeTrain(Matrix X, Matrix Y): float (Abstract)
                 +getDJ_DA_derivative(): float
