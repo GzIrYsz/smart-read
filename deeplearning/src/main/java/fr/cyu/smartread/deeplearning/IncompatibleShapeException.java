@@ -1,4 +1,4 @@
-package fr.cyu.smartread.deeplearning.losses;
+package fr.cyu.smartread.deeplearning;
 
 import org.ejml.data.DMatrixRMaj;
 

@@ -1,5 +1,6 @@
 package fr.cyu.smartread.deeplearning.losses;
 
+import fr.cyu.smartread.deeplearning.IncompatibleShapeException;
 import fr.cyu.smartread.deeplearning.activations.NoTrainingComputationsPerformedException;
 import org.ejml.EjmlUnitTests;
 import org.ejml.data.DMatrixRMaj;
