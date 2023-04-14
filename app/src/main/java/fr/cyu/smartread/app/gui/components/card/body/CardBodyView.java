@@ -1,5 +1,6 @@
 package fr.cyu.smartread.app.gui.components.card.body;
 
+import fr.cyu.smartread.app.gui.components.card.CardModel;
 import fr.cyu.smartread.app.gui.components.card.body.components.ContinuousLine;
 
 import javax.imageio.ImageIO;
@@ -42,8 +43,7 @@ public class CardBodyView extends JPanel {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        for (int i = 0; i < continuousLines.size(); i++) {
-            ContinuousLine currentLine = continuousLines.get(i);
+        for (ContinuousLine currentLine : continuousLines) {
             for (int j = 0; j < currentLine.getNbDots() - 1; j++) {
                 Point p1 = currentLine.getDot(j);
                 Point p2 = currentLine.getDot(j + 1);
@@ -82,7 +82,7 @@ public class CardBodyView extends JPanel {
         Container container = jf.getContentPane();
 
         CardBodyView cardBodyView = new CardBodyView();
-        CardBodyController ctrl = new CardBodyController(cardBodyView);
+        CardBodyController ctrl = new CardBodyController(new CardModel(),cardBodyView);
         cardBodyView.addMouseListener(ctrl);
         cardBodyView.addMouseMotionListener(ctrl);
         cardBodyView.setPreferredSize(new Dimension(DRAWINGZONE_SIZE, DRAWINGZONE_SIZE));

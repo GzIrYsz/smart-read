@@ -1,12 +1,20 @@
 package fr.cyu.smartread.app.gui.components.card.header;
 
+import fr.cyu.smartread.app.gui.components.card.events.EventStatisticUpdate;
 import fr.cyu.smartread.app.gui.components.card.header.components.MainStatisticsLabel;
 import fr.cyu.smartread.app.gui.components.card.header.components.SecondaryStatisticsLabel;
+import fr.cyu.smartread.app.gui.observer.EventType;
+import fr.cyu.smartread.app.gui.observer.Observer;
+import fr.cyu.smartread.app.wrappers.deeplearning.PredictedLetter;
 
 import javax.swing.*;
 import java.awt.*;
+import java.text.DecimalFormat;
+import java.util.ArrayList;
 
-public class CardHeaderView extends JPanel {
+public class CardHeaderView extends JPanel implements Observer {
+    private final static String STAT_STR_TEMPLATE = "%c = %s%%";
+    private final static DecimalFormat DECIMAL_FORMATTER = new DecimalFormat("00.#");
     private MainStatisticsLabel stat1;
     private SecondaryStatisticsLabel stat2;
     private SecondaryStatisticsLabel stat3;
@@ -56,5 +64,28 @@ public class CardHeaderView extends JPanel {
         jf.pack();
         jf.setVisible(true);
         jf.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+    }
+
+    @Override
+    public void update(EventType eventType, Object data) {
+        if (eventType.getEventName().equals(EventStatisticUpdate.EVENT_NAME)) {
+            updateStats((ArrayList<PredictedLetter>) data);
+        }
+    }
+
+    private void updateStats(ArrayList<PredictedLetter> data) {
+        setStat(data.get(0), getStat1());
+        setStat(data.get(1), getStat2());
+        setStat(data.get(2), getStat3());
+    }
+
+    private void setStat(PredictedLetter predictedLetter, JLabel statisticsLabel) {
+        String newStatistics = formatStrForStat(predictedLetter);
+        statisticsLabel.setText(newStatistics);
+    }
+
+    private String formatStrForStat(PredictedLetter predictedLetter) {
+        String formattedDecimal = DECIMAL_FORMATTER.format(predictedLetter.getPercentOfConfidence());
+        return String.format(STAT_STR_TEMPLATE, predictedLetter.getLetter(), formattedDecimal);
     }
 }

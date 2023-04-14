@@ -20,12 +20,14 @@ public class CardView extends JPanel {
 
     protected void init() {
         setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
+        CardModel cardModel = new CardModel();
 
         cardHeaderView = new CardHeaderView();
         cardBodyView = new CardBodyView();
         cardFooterView = new CardFooterView();
 
-        CardBodyController cardBodyController = new CardBodyController(cardBodyView);
+        cardModel.addObserver(cardHeaderView);
+        CardBodyController cardBodyController = new CardBodyController(cardModel, cardBodyView);
         cardBodyView.addMouseListener(cardBodyController);
         cardBodyView.addMouseMotionListener(cardBodyController);
 
