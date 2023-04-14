@@ -1,11 +1,13 @@
 package fr.cyu.smartread.spellchecking.dictionary;
 
-import java.io.*;
-import java.nio.file.Files;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class Dictionary {
-    private ArrayList<String> wordList;
+    private final ArrayList<String> wordList;
 
     public Dictionary() {
         wordList = new ArrayList<>(0);
