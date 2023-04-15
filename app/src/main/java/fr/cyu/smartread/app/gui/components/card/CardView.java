@@ -11,6 +11,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class CardView extends JPanel {
+    private int cardId;
     private CardHeaderView cardHeaderView;
     private CardBodyView cardBodyView;
     private CardFooterView cardFooterView;
@@ -29,6 +30,7 @@ public class CardView extends JPanel {
         setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
         setPreferredSize(preferredSize);
         CardModel cardModel = new CardModel();
+        cardId = cardModel.getCardId();
 
         cardHeaderView = new CardHeaderView();
         cardBodyView = new CardBodyView();
@@ -45,6 +47,11 @@ public class CardView extends JPanel {
         add(cardBodyView);
         add(cardFooterView);
     }
+
+    public int getCardId() {
+        return cardId;
+    }
+
     public CardHeaderView getCardHeaderView() {
         return cardHeaderView;
     }

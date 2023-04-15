@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import static fr.cyu.smartread.app.gui.components.card.body.CardBodyView.blankImg;
 
 public class CardModel extends Observable {
-    static int numberOfInstantiations = 0;
+    private static int numberOfInstantiations = 0;
     private final int cardId;
     private ArrayList<PredictedLetter> predictionForLetters;
     private BufferedImage drawingZoneImg;
@@ -26,6 +26,14 @@ public class CardModel extends Observable {
        //TODO appeler le modèle ici
     }
 
+    public void setDrawingZoneImg(BufferedImage drawingZoneImg) {
+        this.drawingZoneImg = drawingZoneImg;
+        //TODO appeller ici le model pour donner de nouvelles prédictions
+        computePredictionLetters();
+        setPredictionForLetters(CardTestUtility.getFakePrediction());
+        updateViewStatistics();
+    }
+
     public int getCardId() {
         return cardId;
     }
@@ -34,17 +42,14 @@ public class CardModel extends Observable {
        return numberOfInstantiations++; // Return Value and after increment it
     }
 
+    public static int getNumberOfInstantiations() {
+        return numberOfInstantiations;
+    }
+
     public BufferedImage getDrawingZoneImg() {
         return drawingZoneImg;
     }
 
-    public void setDrawingZoneImg(BufferedImage drawingZoneImg) {
-        this.drawingZoneImg = drawingZoneImg;
-        //TODO appeller ici le model pour donner de nouvelles prédictions
-        computePredictionLetters();
-        setPredictionForLetters(CardTestUtility.getFakePrediction());
-        updateViewStatistics();
-    }
 
     public void setPredictionForLetters(ArrayList<PredictedLetter> predictionForLetters) {
         this.predictionForLetters = predictionForLetters;
