@@ -4,8 +4,16 @@ import fr.cyu.smartread.app.gui.components.card.CardModel;
 import fr.cyu.smartread.app.gui.components.card.body.components.ContinuousLine;
 
 import javax.imageio.ImageIO;
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.WindowConstants;
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
@@ -14,12 +22,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class CardBodyView extends JPanel {
-    private static final int DRAWINGZONE_SIZE = 128;
+    public static final int DRAWING_ZONE_SIZE = 128;
     private ArrayList<ContinuousLine> continuousLines;
     private int currentLineIndex = 0;
     private BufferedImage bufferedImage;
     private Graphics2D graphics2D;
     private final BasicStroke stroke = new BasicStroke(6.0f);
+    public static final BufferedImage blankImg = getBlankBufferedImg();
 
     public CardBodyView() {
         super();
@@ -28,13 +37,13 @@ public class CardBodyView extends JPanel {
 
     protected void init() {
         continuousLines = new ArrayList<>();
-        bufferedImage = new BufferedImage(DRAWINGZONE_SIZE, DRAWINGZONE_SIZE, BufferedImage.TYPE_INT_ARGB);
+        bufferedImage = getBlankBufferedImg();
 
         graphics2D = bufferedImage.createGraphics();
         graphics2D.setColor(Color.BLACK);
         graphics2D.setBackground(Color.WHITE);
         graphics2D.setStroke(stroke);
-        graphics2D.clearRect(0, 0, DRAWINGZONE_SIZE, DRAWINGZONE_SIZE);
+        graphics2D.clearRect(0, 0, DRAWING_ZONE_SIZE, DRAWING_ZONE_SIZE);
 
         setOpaque(true);
         setBackground(Color.WHITE);
@@ -60,6 +69,15 @@ public class CardBodyView extends JPanel {
         continuousLines.add(new ContinuousLine());
         currentLineIndex = continuousLines.size() - 1;
         return this;
+    }
+
+    public void clearDrawingZone() {
+        init();
+        this.repaint();
+    }
+
+    private static BufferedImage getBlankBufferedImg() {
+        return new BufferedImage(DRAWING_ZONE_SIZE, DRAWING_ZONE_SIZE, BufferedImage.TYPE_INT_ARGB);
     }
 
     public Graphics2D getGraphics2D() {
@@ -88,7 +106,7 @@ public class CardBodyView extends JPanel {
         CardBodyController ctrl = new CardBodyController(new CardModel(),cardBodyView);
         cardBodyView.addMouseListener(ctrl);
         cardBodyView.addMouseMotionListener(ctrl);
-        cardBodyView.setPreferredSize(new Dimension(DRAWINGZONE_SIZE, DRAWINGZONE_SIZE));
+        cardBodyView.setPreferredSize(new Dimension(DRAWING_ZONE_SIZE, DRAWING_ZONE_SIZE));
 
         container.add(cardBodyView);
 

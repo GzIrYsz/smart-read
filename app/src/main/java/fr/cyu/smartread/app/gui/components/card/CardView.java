@@ -3,6 +3,7 @@ package fr.cyu.smartread.app.gui.components.card;
 import fr.cyu.smartread.app.gui.components.card.body.CardBodyController;
 import fr.cyu.smartread.app.gui.components.card.body.CardBodyView;
 import fr.cyu.smartread.app.gui.components.card.footer.CardFooterView;
+import fr.cyu.smartread.app.gui.components.card.footer.controllers.CardFooterButtonCloseController;
 import fr.cyu.smartread.app.gui.components.card.header.CardHeaderView;
 
 import javax.swing.*;
@@ -30,6 +31,8 @@ public class CardView extends JPanel {
         CardBodyController cardBodyController = new CardBodyController(cardModel, cardBodyView);
         cardBodyView.addMouseListener(cardBodyController);
         cardBodyView.addMouseMotionListener(cardBodyController);
+
+        cardFooterView.getClearCardButton().addMouseListener(new CardFooterButtonCloseController(cardModel, cardFooterView, cardBodyView));
 
         add(cardHeaderView);
         add(cardBodyView);
