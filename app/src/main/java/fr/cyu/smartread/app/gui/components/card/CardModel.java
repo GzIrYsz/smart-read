@@ -13,7 +13,7 @@ public class CardModel extends Observable {
     private ArrayList<PredictedLetter> predictionForLetters;
     private BufferedImage drawingZoneImg;
     private final boolean isBeingDeleted = false;
-    static BufferedImage blankImage;
+    public static BufferedImage blankImage;
 
     public CardModel() {
         super();

@@ -15,11 +15,11 @@ import java.util.ArrayList;
 
 public class CardBodyView extends JPanel {
     private static final int DRAWINGZONE_SIZE = 128;
-
     private ArrayList<ContinuousLine> continuousLines;
     private int currentLineIndex = 0;
     private BufferedImage bufferedImage;
     private Graphics2D graphics2D;
+    private final BasicStroke stroke = new BasicStroke(6.0f);
 
     public CardBodyView() {
         super();
@@ -33,6 +33,7 @@ public class CardBodyView extends JPanel {
         graphics2D = bufferedImage.createGraphics();
         graphics2D.setColor(Color.BLACK);
         graphics2D.setBackground(Color.WHITE);
+        graphics2D.setStroke(stroke);
         graphics2D.clearRect(0, 0, DRAWINGZONE_SIZE, DRAWINGZONE_SIZE);
 
         setOpaque(true);
@@ -42,12 +43,14 @@ public class CardBodyView extends JPanel {
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
+        Graphics2D g2 = (Graphics2D) g;
+        g2.setStroke(stroke);
 
         for (ContinuousLine currentLine : continuousLines) {
             for (int j = 0; j < currentLine.getNbDots() - 1; j++) {
                 Point p1 = currentLine.getDot(j);
                 Point p2 = currentLine.getDot(j + 1);
-                g.drawLine(p1.x, p1.y, p2.x, p2.y);
+                g2.drawLine(p1.x, p1.y, p2.x, p2.y);
                 graphics2D.drawLine(p1.x, p1.y, p2.x, p2.y);
             }
         }
