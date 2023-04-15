@@ -1,5 +1,6 @@
 package fr.cyu.smartread.app.gui.components.card;
 
+import fr.cyu.smartread.app.gui.GUITestUtility;
 import fr.cyu.smartread.app.gui.components.card.body.CardBodyController;
 import fr.cyu.smartread.app.gui.components.card.body.CardBodyView;
 import fr.cyu.smartread.app.gui.components.card.footer.CardFooterView;
@@ -13,14 +14,20 @@ public class CardView extends JPanel {
     private CardHeaderView cardHeaderView;
     private CardBodyView cardBodyView;
     private CardFooterView cardFooterView;
+    private final static Dimension preferredSize = new Dimension(270, 370);
 
     public CardView() {
         super();
         init();
+
+        getCardHeaderView().getStat1().setText("J = 35%");
+        getCardHeaderView().getStat2().setText("I = 15%");
+        getCardHeaderView().getStat3().setText("L = 3%");
     }
 
     protected void init() {
         setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
+        setPreferredSize(preferredSize);
         CardModel cardModel = new CardModel();
 
         cardHeaderView = new CardHeaderView();
@@ -38,7 +45,6 @@ public class CardView extends JPanel {
         add(cardBodyView);
         add(cardFooterView);
     }
-
     public CardHeaderView getCardHeaderView() {
         return cardHeaderView;
     }
@@ -52,21 +58,6 @@ public class CardView extends JPanel {
     }
 
     public static void main(String[] args) {
-        JFrame jf = new JFrame("test" + CardView.class.getSimpleName());
-
-        Container container = jf.getContentPane();
-
-        CardView cardView = new CardView();
-
-        cardView.getCardHeaderView().getStat1().setText("J = 35%");
-        cardView.getCardHeaderView().getStat2().setText("I = 15%");
-        cardView.getCardHeaderView().getStat3().setText("L = 3%");
-        cardView.getCardBodyView().setPreferredSize(new Dimension(128, 128));
-
-        container.add(cardView);
-
-        jf.pack();
-        jf.setVisible(true);
-        jf.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        GUITestUtility.launchTest(new CardView());
     }
 }

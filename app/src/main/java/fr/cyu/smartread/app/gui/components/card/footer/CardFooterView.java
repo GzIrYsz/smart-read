@@ -1,5 +1,6 @@
 package fr.cyu.smartread.app.gui.components.card.footer;
 
+import fr.cyu.smartread.app.gui.GUITestUtility;
 import fr.cyu.smartread.app.gui.components.card.footer.components.CardFooterButton;
 
 import javax.swing.*;
@@ -11,18 +12,19 @@ public class CardFooterView extends JPanel {
     private CardFooterButton removeCardButton;
 
     public CardFooterView() {
-        super();
+        super(new FlowLayout(FlowLayout.CENTER, 40, 0));
         init();
     }
 
     protected void init() {
-        clearCardButton = new CardFooterButton("app/src/main/resources/icon-effacer.png");
-        statsButton = new CardFooterButton("app/src/main/resources/icon-effacer.png");
-        removeCardButton = new CardFooterButton("app/src/main/resources/icon-effacer.png");
+        clearCardButton = new CardFooterButton("app/src/main/resources/icons/icon-effacer.png");
+        statsButton = new CardFooterButton("app/src/main/resources/icons/icon-effacer.png");
+        removeCardButton = new CardFooterButton("app/src/main/resources/icons/icon-effacer.png");
 
         add(clearCardButton);
         add(statsButton);
         add(removeCardButton);
+
     }
 
     public CardFooterButton getClearCardButton() {
@@ -38,16 +40,6 @@ public class CardFooterView extends JPanel {
     }
 
     public static void main(String[] args) {
-        JFrame jf = new JFrame("test" + CardFooterView.class.getSimpleName());
-
-        Container container = jf.getContentPane();
-
-        CardFooterView cardFooterView = new CardFooterView();
-
-        container.add(cardFooterView);
-
-        jf.pack();
-        jf.setVisible(true);
-        jf.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        GUITestUtility.launchTest(new CardFooterView());
     }
 }

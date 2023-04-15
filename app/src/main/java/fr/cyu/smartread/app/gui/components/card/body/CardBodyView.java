@@ -22,7 +22,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class CardBodyView extends JPanel {
-    public static final int DRAWING_ZONE_SIZE = 128;
+    public static final int DRAWING_ZONE_SIZE_WIDTH = 270;
+    public static final int DRAWING_ZONE_SIZE_HEIGHT = 250;
     private ArrayList<ContinuousLine> continuousLines;
     private int currentLineIndex = 0;
     private BufferedImage bufferedImage;
@@ -32,6 +33,7 @@ public class CardBodyView extends JPanel {
 
     public CardBodyView() {
         super();
+        setPreferredSize(new Dimension(DRAWING_ZONE_SIZE_WIDTH, DRAWING_ZONE_SIZE_HEIGHT));
         init();
     }
 
@@ -43,7 +45,7 @@ public class CardBodyView extends JPanel {
         graphics2D.setColor(Color.BLACK);
         graphics2D.setBackground(Color.WHITE);
         graphics2D.setStroke(stroke);
-        graphics2D.clearRect(0, 0, DRAWING_ZONE_SIZE, DRAWING_ZONE_SIZE);
+        graphics2D.clearRect(0, 0, DRAWING_ZONE_SIZE_WIDTH, DRAWING_ZONE_SIZE_HEIGHT);
 
         setOpaque(true);
         setBackground(Color.WHITE);
@@ -77,7 +79,7 @@ public class CardBodyView extends JPanel {
     }
 
     private static BufferedImage getBlankBufferedImg() {
-        return new BufferedImage(DRAWING_ZONE_SIZE, DRAWING_ZONE_SIZE, BufferedImage.TYPE_INT_ARGB);
+        return new BufferedImage(DRAWING_ZONE_SIZE_WIDTH, DRAWING_ZONE_SIZE_HEIGHT, BufferedImage.TYPE_INT_ARGB);
     }
 
     public Graphics2D getGraphics2D() {
@@ -106,7 +108,6 @@ public class CardBodyView extends JPanel {
         CardBodyController ctrl = new CardBodyController(new CardModel(),cardBodyView);
         cardBodyView.addMouseListener(ctrl);
         cardBodyView.addMouseMotionListener(ctrl);
-        cardBodyView.setPreferredSize(new Dimension(DRAWING_ZONE_SIZE, DRAWING_ZONE_SIZE));
 
         container.add(cardBodyView);
 
