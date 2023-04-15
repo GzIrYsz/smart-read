@@ -7,18 +7,19 @@ import fr.cyu.smartread.app.wrappers.deeplearning.PredictedLetter;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
+import static fr.cyu.smartread.app.gui.components.card.body.CardBodyView.blankImg;
+
 public class CardModel extends Observable {
     static int numberOfInstantiations = 0;
     private final int cardId;
     private ArrayList<PredictedLetter> predictionForLetters;
     private BufferedImage drawingZoneImg;
     private final boolean isBeingDeleted = false;
-    public static BufferedImage blankImage;
 
     public CardModel() {
         super();
         cardId = getCardModelId();
-        setDrawingZoneImg(blankImage);
+        setDrawingZoneImg(blankImg);
     }
 
     private void computePredictionLetters() {

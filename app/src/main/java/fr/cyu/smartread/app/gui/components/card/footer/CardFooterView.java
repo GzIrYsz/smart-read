@@ -1,7 +1,6 @@
 package fr.cyu.smartread.app.gui.components.card.footer;
 
 import fr.cyu.smartread.app.gui.components.card.footer.components.CardFooterButton;
-import fr.cyu.smartread.app.gui.components.card.header.CardHeaderView;
 
 import javax.swing.*;
 import java.awt.*;
