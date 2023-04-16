@@ -5,6 +5,7 @@ import fr.cyu.smartread.app.gui.components.card.body.CardBodyController;
 import fr.cyu.smartread.app.gui.components.card.body.CardBodyView;
 import fr.cyu.smartread.app.gui.components.card.footer.CardFooterView;
 import fr.cyu.smartread.app.gui.components.card.footer.controllers.CardFooterButtonCloseController;
+import fr.cyu.smartread.app.gui.components.card.footer.controllers.CardFooterButtonRemoveCardController;
 import fr.cyu.smartread.app.gui.components.card.header.CardHeaderView;
 
 import javax.swing.*;
@@ -15,6 +16,7 @@ public class CardView extends JPanel {
     private CardHeaderView cardHeaderView;
     private CardBodyView cardBodyView;
     private CardFooterView cardFooterView;
+    private CardModel cardModel;
     private final static Dimension preferredSize = new Dimension(270, 370);
 
     public CardView() {
@@ -29,7 +31,7 @@ public class CardView extends JPanel {
     protected void init() {
         setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
         setPreferredSize(preferredSize);
-        CardModel cardModel = new CardModel();
+        cardModel = new CardModel();
         cardId = cardModel.getCardId();
 
         cardHeaderView = new CardHeaderView();
@@ -42,6 +44,7 @@ public class CardView extends JPanel {
         cardBodyView.addMouseMotionListener(cardBodyController);
 
         cardFooterView.getClearCardButton().addMouseListener(new CardFooterButtonCloseController(cardModel, cardFooterView, cardBodyView));
+        cardFooterView.getRemoveCardButton().addMouseListener(new CardFooterButtonRemoveCardController(cardModel, cardFooterView));
 
         add(cardHeaderView);
         add(cardBodyView);
@@ -64,7 +67,12 @@ public class CardView extends JPanel {
         return cardFooterView;
     }
 
+    public CardModel getCardModel() {
+        return cardModel;
+    }
+
     public static void main(String[] args) {
         GUITestUtility.launchTest(new CardView());
     }
+
 }

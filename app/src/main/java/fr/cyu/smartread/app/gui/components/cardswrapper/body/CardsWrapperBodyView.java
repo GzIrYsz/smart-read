@@ -2,6 +2,8 @@ package fr.cyu.smartread.app.gui.components.cardswrapper.body;
 
 import fr.cyu.smartread.app.gui.GUITestUtility;
 import fr.cyu.smartread.app.gui.components.card.CardView;
+import fr.cyu.smartread.app.gui.components.cardswrapper.CardsWrapperModel;
+import fr.cyu.smartread.app.gui.components.cardswrapper.body.controllers.ListenToCardsDeletionController;
 import fr.cyu.smartread.app.gui.components.cardswrapper.events.EventDeletingCardUpdate;
 import fr.cyu.smartread.app.gui.observer.EventType;
 import fr.cyu.smartread.app.gui.observer.Observer;
@@ -14,8 +16,13 @@ public class CardsWrapperBodyView extends JScrollPane implements Observer {
     private static final int NUMBER_OF_CARD_AT_START = 2;
     private final JPanel mainPanel = new JPanel(new FlowLayout());
     private final LinkedHashMap<Integer, CardView> cardsLinkedHashMap = new LinkedHashMap<>();
-    public CardsWrapperBodyView() {
+    private final CardsWrapperModel cardsWrapperModel;
+    private final ListenToCardsDeletionController listenToCardsDeletionController;
+    public CardsWrapperBodyView(CardsWrapperModel cardsWrapperModel) {
         super();
+        this.cardsWrapperModel = cardsWrapperModel;
+        this.listenToCardsDeletionController = new ListenToCardsDeletionController(cardsWrapperModel);
+
         setViewportView(mainPanel);
         setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
         setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
@@ -24,7 +31,7 @@ public class CardsWrapperBodyView extends JScrollPane implements Observer {
     }
 
     public int addCard() {
-        CardView cardView = new CardView();
+        CardView cardView = initNewCard();
         int cardId =  cardView.getCardId();
 
         cardsLinkedHashMap.put(cardId, cardView);
@@ -45,8 +52,16 @@ public class CardsWrapperBodyView extends JScrollPane implements Observer {
 
     private void initCards() {
         for (int i = 0; i < NUMBER_OF_CARD_AT_START; i++) {
-            addCard();
+            int cardId = addCard();
+            cardsWrapperModel.addCard(cardId);
         }
+    }
+
+    private CardView initNewCard() {
+       CardView cardView = new CardView();
+       cardView.getCardModel().addObserver(listenToCardsDeletionController);
+
+       return cardView;
     }
 
     private void removeCard(Integer cardId) {
@@ -68,7 +83,7 @@ public class CardsWrapperBodyView extends JScrollPane implements Observer {
     }
 
     public static void main(String[] args) {
-        CardsWrapperBodyView cardsWrapperBodyView = new CardsWrapperBodyView();
+        CardsWrapperBodyView cardsWrapperBodyView = new CardsWrapperBodyView(new CardsWrapperModel());
         GUITestUtility.launchTest(cardsWrapperBodyView);
     }
 

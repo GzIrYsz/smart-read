@@ -1,6 +1,7 @@
 package fr.cyu.smartread.app.gui.components.card;
 
 import fr.cyu.smartread.app.gui.components.card.events.EventStatisticUpdate;
+import fr.cyu.smartread.app.gui.components.cardswrapper.events.EventDeletingCardUpdate;
 import fr.cyu.smartread.app.gui.observer.Observable;
 import fr.cyu.smartread.app.wrappers.deeplearning.PredictedLetter;
 
@@ -33,7 +34,11 @@ public class CardModel extends Observable {
         updateViewStatistics();
     }
 
-    public int getCardId() {
+    public void removeCardFromWrapper() {
+        notifyObservers(new EventDeletingCardUpdate(), getCardId());
+    }
+
+    public Integer getCardId() {
         return cardId;
     }
 
@@ -44,7 +49,6 @@ public class CardModel extends Observable {
     public BufferedImage getDrawingZoneImg() {
         return drawingZoneImg;
     }
-
 
     public void setPredictionForLetters(ArrayList<PredictedLetter> predictionForLetters) {
         this.predictionForLetters = predictionForLetters;

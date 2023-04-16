@@ -10,8 +10,9 @@ import javax.swing.*;
 import java.awt.*;
 
 public class CardsWrapperView extends JPanel {
+    private final CardsWrapperModel cardsWrapperModel = new CardsWrapperModel();
     private final CardsWrapperHeaderView cardsWrapperHeaderView = new CardsWrapperHeaderView();
-    private final CardsWrapperBodyView cardsWrapperBodyView = new CardsWrapperBodyView();
+    private final CardsWrapperBodyView cardsWrapperBodyView = new CardsWrapperBodyView(cardsWrapperModel);
 
     public CardsWrapperView() {
         super();
@@ -23,8 +24,6 @@ public class CardsWrapperView extends JPanel {
 
         add(alignComponentLeftInPanel(cardsWrapperHeaderView));
         add(cardsWrapperBodyView);
-
-        CardsWrapperModel cardsWrapperModel = new CardsWrapperModel();
 
         cardsWrapperModel.addObserver(cardsWrapperBodyView);
 
