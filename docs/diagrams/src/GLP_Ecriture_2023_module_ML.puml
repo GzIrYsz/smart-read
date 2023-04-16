@@ -1,0 +1,252 @@
+@startuml "GLP_Ecriture_2023_UML"
+
+skinparam linetype ortho
+
+set namespaceSeparator .
+
+package fr.cyu.smartread {
+    package deeplearning <<Frame>> {
+        package utility {
+            class Shape() {
+                +Dim: Collection<int>
+                A voir la suite
+            }
+
+            class Matrix() {
+                -matrix: SimpleMatrix (EJML)
+                -shape: Shape
+                A voir la suite
+            }
+        }
+        package activation {
+            abstract class AbstractActivation {
+                -lastActivation: Matrix
+
+                +compute(): Matrix (Abstract)
+                +computeTrain(Matrix Z): Matrix (Abstract)
+                +get_DA_DZ_derivative(): Matrix
+                +getLastActivation(): Matrix
+            }
+
+            class Relu extends AbstractActivation {
+                +compute(Matrix Z): Matrix (Abstract)
+                +computeTrain(Matrix Z): Matrix (Abstract)
+                +get_DA_DZ_derivative(): Matrix
+            }
+
+            class Sigmoid extends AbstractActivation {
+                +compute(Matrix Z): Matrix (Abstract)
+                +computeTrain(Matrix Z): Matrix (Abstract)
+                +get_DA_DZ_derivative(): Matrix
+            }
+
+            class Linear extends AbstractActivation {
+                +compute(Matrix Z): Matrix (Abstract)
+                +computeTrain(Matrix Z): Matrix (Abstract)
+                +get_DA_DZ_derivative(): Matrix
+            }
+
+            class Softmax extends AbstractActivation {
+                +compute(Matrix Z): Matrix (Abstract)
+                +computeTrain(Matrix Z): Matrix (Abstract)
+                +get_DA_DZ_derivative(): Matrix
+            }
+        }
+
+        package initializers {
+            abstract class AbstractInitializer {
+                -shape: int
+
+                +AbstractInitializer(int shape)
+                +init(DMatrixRMaj matrix): AbstractInitializer
+            }
+            class Zeros extends AbstractInitializer {
+                +Zeros(int shape)
+                +init(DMatrixRMaj matrix): AbstractInitializer
+            }
+            class Ones extends AbstractInitializer {
+                +Ones(int shape)
+                +init(DMatrixRMaj matrix): AbstractInitializer
+            }
+            class RandomNormal extends AbstractInitializer {
+                -stDev: double
+
+                +RandomNormal(int shape)
+                +RandomNormal(int shape, double stDev)
+                +init(DMatrixRMaj matrix): AbstractInitializer
+            }
+            class RandomUniform extends AbstractInitializer {
+                -minVal: double
+                -maxVal: double
+
+                +RandomUniform(int shape)
+                +RandomUniform(int shape, double minVal, double maxVal)
+                +init(DMatrixRMaj matrix): AbstractInitializer
+            }
+            class GlorotNormal extends RandomNormal {
+                +GlorotNormal(int shape, int fanIn, int fanOut)
+                +init(DMatrixRMaj matrix): AbstractInitializer
+            }
+            class GlorotUniform extends RandomUniform {
+                +GlorotUniform(int shape, int fanIn, int fanOut)
+                +init(DMatrixRMaj matrix): AbstractInitializer
+            }
+        }
+
+        package layers {
+            abstract class AbstractLayer {
+                -activation: AbstractActivation
+                -lastFeed: Matrix
+                +LayerAbstract(activationFunctionAbstract activation): LayerAbstract
+                +compute(Matrix Z): Matrix (Abstract)
+                +computeTrain(Matrix Z): Matrix (Abstract)
+                +get_DZ_DX_derivative(): Matrix (Abstract)
+                +getLastFeed(): Matrix
+                +saveParameters(): A voir
+            }
+
+            class Dense extends AbstractLayer {
+                -neuronsNumber: int
+                -bias: Matrix
+                -kernel: Matrix
+                +Dense(int neuronsNumber, AbstractActivation activation)
+                +compute(Matrix Z): Matrix (Abstract)
+                +computeTrain(Matrix Z): Matrix (Abstract)
+                +get_DZ_DX_derivative(): Matrix (Abstract)
+                +getWeights(): Matrix
+                +getBias(): Matrix
+                +getParameters(): Matrix
+                +setParameters(): Matrix
+            }
+
+            class Dropout extends AbstractLayer {
+                -probabilities: float
+                +compute(Matrix Z): Matrix
+                +computeTrain(Matrix Z): Matrix
+                +get_DZ_DX_derivative(): Matrix
+                +Dropout(int p)
+            }
+
+            class Input extends AbstractLayer {
+                +shape: Shape()
+                +compute(Matrix Z): Matrix
+                +computeTrain(Matrix Z): Matrix
+                +get_DZ_DX_derivative(): Matrix
+            }
+        }
+
+        package agregation {
+            abstract class AbstractAggregation {
+                +compute(): double {abstract}
+            }
+            class WSum {
+                -kernel: DMatrixRMaj
+                -bias: DMatrixRMaj
+                -inputs: DMatrixRMaj
+
+                +WSum(DMatrixRMaj inputs, DMatrixRMaj kernel)
+                +WSum(DMatrixRMaj inputs, DMatrixRMaj kernel, DMatrixRMaj bias)
+                +compute(): double
+            }
+            class Distance extends AbstractAggregation {
+                +compute(): double
+            }
+        }
+
+        package losses {
+            abstract class LossFunctionAbstract {
+                -lastLoss: float
+
+                +compute(Matrix X, Matrix Y): float (Abstract)
+                +computeTrain(Matrix X, Matrix Y): float (Abstract)
+                +getDJ_DA_derivative(): float
+            }
+
+            class CategoricalCrossentropy extends LossFunctionAbstract{
+                +CategoricalCrossentropy()
+                +compute(Matrix X, Matrix Y): float
+                +computeTrain(Matrix X, Matrix Y): float
+                +getDJ_DA_derivative(): float
+            }
+
+            class MeanSquaredError extends LossFunctionAbstract{
+                +MeanSquaredError()
+                +compute(Matrix X, Matrix Y): float
+                +computeTrain(Matrix X, Matrix Y): float
+                +getDJ_DA_derivative(): float
+            }
+
+            class AbsoluteError extends LossFunctionAbstract{
+                +AbsoluteError()
+                +compute(Matrix X, Matrix Y): float
+                +computeTrain(Matrix X, Matrix Y): float
+                +getDJ_DA_derivative(): float
+            }
+        }
+
+        package model {
+            interface AutoTrainableModel {
+                +fit() A voir les paramètres
+                +computeTrain() A voir les paramètres
+            }
+
+            abstract class ModelAbstract {
+                -gradientComputer: InterfaceGradientComputer
+                +predict(Matrix X): Matrix (Abstract)
+                +computeTrain(Matrix X): Matrix (Abstract)
+                +setParams(): void (Abstract)
+                +getParams(): Matrix (Abstract)
+                +saveModel(): A voir (Abstract)
+            }
+
+            class SequentialModel extends ModelAbstract implements AutoTrainableModel{
+                -optimizer: OptimizerAbstract
+                -layers: Collection<LayerAbstract>
+                +predict(Matrix X): Matrix (Abstract)
+                +computeTrain(Matrix X): Matrix (Abstract)
+                +getLayers(): Collection<LayerAbstract>
+                +fit()
+                +computeTrain()
+            }
+        }
+
+        package gradientscomputer {
+            class InterfaceGradientComputer {
+                +computeGradient(ModelAbstract model, Matrix X, Matrix Y, LossFunctionAbstract loss): Matrix
+            }
+
+            class GradientComputerModelSequential implements InterfaceGradientComputer {
+                +computeGradient(ModelAbstract model, Matrix X, Matrix Y, LossFunctionAbstract loss): Matrix
+            }
+
+        }
+
+        package optimizer {
+            abstract class OptimizerAbstract {
+                -model: ModelAbstract
+                -epoch: int
+                -shuffle: boolean
+                -metrics: HashMap<String, MetricsAbstract>
+                -getMetrics(String metricName): MetricsAbstract
+                +Optimizer(ModelAbstract model)
+                +train(Matrix XTrain, Matrix YTrain, int epoch, int shuffle) (Abstract)
+                +eval(Matrix XTest, Matrix YTest) (Abstract)
+            }
+
+            class GradientDescent extends OptimizerAbstract {
+                -batchSize: int
+                -learningRate: float
+                +GradientDescent(ModelAbstract model, learningRate)
+                +setLearningRate(int learningRate): void
+                -computeGradient(Matrix X, Matrix Y): Matrix
+                +train(Matrix XTrain, Matrix YTrain, int epoch, int shuffle) (Abstract)
+                +eval(Matrix XTest, Matrix YTest) (Abstract)
+            }
+        }
+
+        package metrics {
+        }
+    }
+}
+
+@enduml
