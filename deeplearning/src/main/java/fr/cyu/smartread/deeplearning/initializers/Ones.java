@@ -2,13 +2,9 @@ package fr.cyu.smartread.deeplearning.initializers;
 
 import org.ejml.data.DMatrixRMaj;
 
-public class Ones extends AbstractInitializer {
-    public Ones(int shape) {
-        super(shape);
-    }
-
+public class Ones implements InitializerInterface {
     @Override
-    public AbstractInitializer init(DMatrixRMaj matrix) {
+    public InitializerInterface init(DMatrixRMaj matrix) {
         matrix.fill(1);
         return this;
     }
