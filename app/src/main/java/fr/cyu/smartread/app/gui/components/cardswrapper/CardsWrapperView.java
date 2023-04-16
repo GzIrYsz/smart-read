@@ -3,6 +3,8 @@ package fr.cyu.smartread.app.gui.components.cardswrapper;
 import fr.cyu.smartread.app.gui.GUITestUtility;
 import fr.cyu.smartread.app.gui.components.cardswrapper.body.CardsWrapperBodyView;
 import fr.cyu.smartread.app.gui.components.cardswrapper.header.CardsWrapperHeaderView;
+import fr.cyu.smartread.app.gui.components.cardswrapper.header.controllers.CardsWrapperHeaderButtonMinusController;
+import fr.cyu.smartread.app.gui.components.cardswrapper.header.controllers.CardsWrapperHeaderButtonPlusController;
 
 import javax.swing.*;
 import java.awt.*;
@@ -18,8 +20,19 @@ public class CardsWrapperView extends JPanel {
 
     private void init() {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-        add(alignComponentLeftInPanel(new CardsWrapperHeaderView()));
-        add(new CardsWrapperBodyView());
+
+        add(alignComponentLeftInPanel(cardsWrapperHeaderView));
+        add(cardsWrapperBodyView);
+
+        CardsWrapperModel cardsWrapperModel = new CardsWrapperModel();
+
+        cardsWrapperModel.addObserver(cardsWrapperBodyView);
+
+        CardsWrapperHeaderButtonPlusController cardsWrapperHeaderButtonPlusController = new CardsWrapperHeaderButtonPlusController(cardsWrapperModel, cardsWrapperBodyView);
+        cardsWrapperHeaderView.getButtonPlus().addActionListener(cardsWrapperHeaderButtonPlusController);
+
+        CardsWrapperHeaderButtonMinusController cardsWrapperHeaderButtonMinusController = new CardsWrapperHeaderButtonMinusController(cardsWrapperModel, cardsWrapperBodyView);
+        cardsWrapperHeaderView.getButtonMinus().addActionListener(cardsWrapperHeaderButtonMinusController);
     }
 
     private JPanel alignComponentLeftInPanel(Component component) {

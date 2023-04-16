@@ -14,7 +14,6 @@ public class CardModel extends Observable {
     private final int cardId;
     private ArrayList<PredictedLetter> predictionForLetters;
     private BufferedImage drawingZoneImg;
-    private final boolean isBeingDeleted = false;
 
     public CardModel() {
         super();
@@ -42,10 +41,6 @@ public class CardModel extends Observable {
        return numberOfInstantiations++; // Return Value and after increment it
     }
 
-    public static int getNumberOfInstantiations() {
-        return numberOfInstantiations;
-    }
-
     public BufferedImage getDrawingZoneImg() {
         return drawingZoneImg;
     }
@@ -62,4 +57,5 @@ public class CardModel extends Observable {
     private void updateViewStatistics() {
         notifyObservers(new EventStatisticUpdate(), getPredictionForLetters());
     }
+
 }
