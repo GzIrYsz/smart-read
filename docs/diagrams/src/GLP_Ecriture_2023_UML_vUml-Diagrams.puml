@@ -1,0 +1,270 @@
+@startuml "GLP_Ecriture_2023_UML"
+
+skinparam linetype ortho
+
+set namespaceSeparator .
+
+title Projet Ecriture - UML
+
+package fr.cyu.smartread {
+    package deeplearning <<Frame>> {
+        package activationfunctions <<Folder>> {
+        }
+
+        package layers <<Folder>> {
+        }
+
+        package lossfunctions <<Folder>> {
+        }
+    }
+
+    package app <<Frame>> {
+        package gui <<Folder>> {
+            package eventmanager {
+                abstract class Subject {
+                    -listeners: Collection<Subject>
+
+                    +subscribe(EventListenerInterface eventListener): void
+                    +unsubscribe(EventListenerInterface eventListener): void
+                    +notify(Object o): void
+                }
+                interface Observer {
+                    +update(): void
+                }
+            }
+
+            package components {
+                package card {
+                    package view {
+                        class CardView extends Observer {
+                            -cardHeader: CardHeaderView
+                            -cardBody: CardBodyView
+                            -cardFooter: CardFooterView
+
+                            +update(): void
+                        }
+
+                        package cardheader {
+                            class CardHeaderView
+                            class MainStatLabel
+                            class SecondaryStatsFrame
+                            class SecondaryStatLabel
+                        }
+
+                        package cardbody {
+                            class CardBodyView implements JFrame{
+                                -drawingZone: DrawingZone
+                            }
+
+                            class DrawingZone extends Graphics {
+                                - drawingZoneImg: BufferedImage
+                                + getDrawingZoneImg(): BufferedImage
+                            }
+                        }
+
+                        package cardfooter {
+                            class CardFooterView extends JFrame{
+                                - closeButton: CardFooterButton
+                                - clearButton: CardFooterButton
+                                - statButton: CardFooterButton
+
+                                +getCloseButton()
+                                +getClearButton()
+                                +getStatButton()
+                            }
+
+                            class CardFooterButton {
+                                - button: JButton
+                                - icon: Icon
+
+                                + getButton()
+                            }
+
+                            class CardFooterClearButton extends CardFooterButton {
+                                - static clearIcon: Icon
+                            }
+
+                            class CardFooterStatsButton extends CardFooterButton {
+                                - static StatsIcon: Icon
+                            }
+
+                            class CardFooterCloseButton extends CardFooterButton {
+                                - static CloseIcon: Icon
+                            }
+                        }
+                    }
+
+                    class CardModel extends Subject {
+                        -id: in                        - cardFooterView: CardFooterViewt
+                        -predictions: ArrayList<PredictedLetter>
+                        -drawingZoneImg: BufferedImage
+                        -isBeingDeleted: boolean
+                        -static blankImage: BufferedImage
+
+                        +setDrawingZoneImg(BufferedImage img): void
+                        +computePredictionLetter(): void
+                        +setPrediction(ArrayList<PredictedLetter> newPredictions)
+                    }
+
+                    package controller {
+                        class CardDrawingZoneController implements ActionListener {
+                            - cardBodyView: CardBodyView
+                            + actionPerformed: void
+                            + updateDrawingZoneImg(): void
+                        }
+
+                        class CardButtonClearController implements ActionListener {
+                            - cardFooterView: CardFooterView
+                            + actionPerformed(): void
+                            + clearDrawingZoneImg(): void
+                        }
+
+                        class CardButtonStatController implements ActionListener {
+                            - cardFooterView: CardFooterView
+                            + actionPerformed(): void
+                            + openStatWindows(): void
+                        }
+
+                        class CardButtonCloseController implements ActionListener {
+                            - cardFooterView: CardFooterView
+                            + actionPerformed(): void
+                            + deleteCard(): void
+                            + setIsBeingDeleted(boolean isBeingDeleted): void
+                        }
+                    }
+                }
+
+                package cardwrapper {
+                    class CardsWrapperView extends JScrollPane {
+                    }
+                }
+            }
+
+            package pallet {
+                class ColorPallet
+                class BorderPallet
+                class FontPallet
+            }
+        }
+
+        package preprocessing <<Folder>> {
+        }
+
+        package wrappers <<Folder>> {
+            package corrector <<Folder>> {
+                class Corrector {
+                    -Dictionary: dict
+                    -DictionaryByNumberOfCharacterLoader dictLoader
+                    -StringMetricsInterface stringMetrics
+                    -SpellChecker: spellChecker
+
+                    +Corrector()
+                    +getCorrections(String source, Collection<WordScore> listWords): Collection<CorrectionWords>
+                }
+            }
+        }
+
+        package users <<Folder>> {
+        }
+    }
+
+    package spellchecking <<Frame>> {
+        class SpellChecker {
+            -StringMetricsInterface: similarityDistanceComputer
+            -DictionaryLoaderInterface: dictionaryLoader
+
+            +getSimilarityScore(String source): ArrayList<WordScore>
+        }
+
+        class WordScore {
+            - String: target
+            - float: score
+        }
+
+        package stringmetrics <<Folder>> {
+            interface InterfaceStringMetrics {
+                +computeDistance(String source, String target): float
+            }
+
+            package levenshtein <<Folder>> {
+                class LevenshteinDistance implements InterfaceStringMetrics {
+                    -short: insertionCost
+                    -short: deletionCost
+                    -short: substitutionCost
+
+                    +LevenshteinDistance()
+                    +LevenshteinDistance(int insertionCost, int deletionCost, int substitutionCost)
+                    +computeDistance(String source, String target): float
+                }
+
+                class CellLevArray {
+                    - short x
+                    - short y
+                    - short value
+
+                    +CellLevArray(short x, short y, short value)
+                    -areYorXorValueNegative(): boolean
+                    +getX(): short
+                    +getY(): short
+                    +getValue(): short
+                }
+            }
+
+            class JaroWinklerDistance implements InterfaceStringMetrics {
+                +JaroWinklerDistance()
+                +computeDistance(String source, String target): float
+            }
+        }
+        package Dictionary <<Folder>> {
+                    interface DictionaryLoaderInterface {
+                        +getAssociatedWordDict(String word): Dictionary
+                        +addDictionary(Dictionary dict): DictionaryLoaderInterface
+                    }
+
+                    class DictionaryByNumberOfCharacterLoader implements DictionaryLoaderInterface {
+                        -HashMap<Short, DictionaryByNumberOfCharacter>: wordByNbCharacterHm
+                        -String: minNbCharacters
+                        -String: maxNbCharacters
+
+                        +DictionaryByNumberOfCharacterLoader()
+                        +getAssociatedWordDict(String word): Dictionary
+                        +addDictionary(Dictionary dict): DictionaryLoaderInterface
+                        -updateNbCharacters(DictionaryByNumberOfCharacter dict): DictionaryByNumberOfCharacterLoader
+                        -hasDictForThisWord(String word): boolean
+                    }
+
+                    class Dictionary {
+                        -ArrayList<String>: wordList
+
+                        +Dictionary()
+                        +addWord(String word): Dictionary
+                        +populateFromFile(String path): Dictionary
+                        +serialize(String path): Dictionary
+                        +load(String path): Dictionary
+                        +getWordList(): ArrayList<String>
+                    }
+
+                    class DictionaryByNumberOfCharacter extends Dictionary {
+                        -short: wordLength
+
+                        +getWordLength(): short
+                        -setWordLength(short wordLength): void
+                    }
+
+                    class WordNotSupportedException extends IllegalArgumentException {
+                        -String: word
+                    }
+
+                    class NoDictionarySuitableForThisWord extends IllegalArgumentException {
+                        -String: word
+                    }
+
+                    class FiletypeNotSupportedException extends IllegalArgumentException {
+                        -File: file
+                        -String: filetype
+                    }
+                }
+    }
+}
+
+@enduml
