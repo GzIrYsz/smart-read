@@ -1,11 +1,9 @@
 package fr.cyu.smartread.deeplearning.layers;
 
-import com.google.crypto.tink.proto.Common;
 import fr.cyu.smartread.deeplearning.activations.AbstractActivation;
 import fr.cyu.smartread.deeplearning.activations.Relu;
 import fr.cyu.smartread.deeplearning.initializers.InitializerInterface;
 import fr.cyu.smartread.deeplearning.initializers.GlorotUniform;
-import fr.cyu.smartread.deeplearning.initializers.Ones;
 import fr.cyu.smartread.deeplearning.initializers.Zeros;
 import org.ejml.data.DMatrixRMaj;
 import org.ejml.dense.row.CommonOps_DDRM;
@@ -21,7 +19,6 @@ public class Dense extends AbstractLayer {
     private InitializerInterface biasInitializer;
     private DMatrixRMaj bias;
     private DMatrixRMaj weights;
-    private DMatrixRMaj parameters;
     private SimpleOperations_DDRM simpleOps = new SimpleOperations_DDRM();
 
     public Dense(int shape) {
@@ -71,7 +68,13 @@ public class Dense extends AbstractLayer {
 
     @Override
     public ArrayList<DMatrixRMaj> compute_DZ_DParams_derivative() {
-        return null;
+        ArrayList<DMatrixRMaj> derivatives = new ArrayList<>(2);
+        DMatrixRMaj biasDerivative = new DMatrixRMaj(new double[this.shape][1]);
+        biasDerivative.fill(1.0);
+        
+        derivatives.add(this.getLastFeed());
+        derivatives.add(biasDerivative);
+        return derivatives;
     }
 
     public DMatrixRMaj getBias() {
@@ -80,13 +83,5 @@ public class Dense extends AbstractLayer {
 
     public DMatrixRMaj getWeights() {
         return weights;
-    }
-
-    public DMatrixRMaj getParameters() {
-        return parameters;
-    }
-
-    public void setParameters(DMatrixRMaj parameters) {
-        this.parameters = parameters;
     }
 }
