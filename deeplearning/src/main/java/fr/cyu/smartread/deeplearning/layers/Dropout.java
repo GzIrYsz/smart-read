@@ -33,6 +33,14 @@ public class Dropout extends AbstractLayer {
         return arrayDerivative;
     }
 
+    @Override
+    public ArrayList<DMatrixRMaj> getParam() {
+        ArrayList<DMatrixRMaj> params = new ArrayList<>();
+        params.add(currentMask);
+
+        return params;
+    }
+
     private DMatrixRMaj createMask(DMatrixRMaj oneRowMask, int numberOfRowsExpected) {
         return UtilityOperationsMatrix.duplicateRow(oneRowMask, numberOfRowsExpected);
     }
