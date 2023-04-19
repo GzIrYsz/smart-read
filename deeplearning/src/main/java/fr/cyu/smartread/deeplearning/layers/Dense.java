@@ -5,6 +5,7 @@ import fr.cyu.smartread.deeplearning.activations.AbstractActivation;
 import fr.cyu.smartread.deeplearning.activations.Relu;
 import fr.cyu.smartread.deeplearning.initializers.InitializerInterface;
 import fr.cyu.smartread.deeplearning.initializers.GlorotUniform;
+import fr.cyu.smartread.deeplearning.initializers.Ones;
 import fr.cyu.smartread.deeplearning.initializers.Zeros;
 import org.ejml.data.DMatrixRMaj;
 import org.ejml.dense.row.CommonOps_DDRM;
@@ -47,6 +48,7 @@ public class Dense extends AbstractLayer {
         this.weights = new DMatrixRMaj(new double[matrix.getNumCols()][this.shape]);
         this.biasInitializer.init(this.bias);
         this.weightsInitializer.init(this.weights);
+        isInit = true;
     }
 
     @Override
@@ -56,14 +58,14 @@ public class Dense extends AbstractLayer {
         }
 
         int startRow = 0;
-        DMatrixRMaj out = new DMatrixRMaj(new double[Z.getNumRows()][this.weights.getNumCols()]);
+        DMatrixRMaj out = CommonOps_DDRM.mult(Z, this.weights, null);
         CommonOps_DDRM.transpose(out);
-        CommonOps_DDRM.mult(Z, this.weights, out);
         for (int i = 0; i < out.getNumCols(); i++) {
             DMatrixRMaj currentCol = CommonOps_DDRM.extractColumn(out, i, null);
             currentCol = CommonOps_DDRM.add(currentCol, this.bias, null);
             this.simpleOps.setColumn(out, i, startRow, currentCol.getData());
         }
+        CommonOps_DDRM.transpose(out);
         return this.activation.compute(out);
     }
 
