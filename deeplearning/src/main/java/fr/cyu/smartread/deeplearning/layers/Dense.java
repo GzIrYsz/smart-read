@@ -79,11 +79,24 @@ public class Dense extends AbstractLayer {
         return derivatives;
     }
 
+    @Override
+    public ArrayList<DMatrixRMaj> getParam() {
+        ArrayList<DMatrixRMaj> params = new ArrayList<>();
+        params.add(getWeights());
+        params.add(getBias());
+
+        return params;
+    }
+
     public DMatrixRMaj getBias() {
+        if (!isInit)
+            throw new IllegalStateException("Please use model.predict to initialize the parameters");
         return bias;
     }
 
     public DMatrixRMaj getWeights() {
+        if (!isInit)
+            throw new IllegalStateException("Please use model.predict to initialize the parameters");
         return weights;
     }
 }

@@ -25,16 +25,11 @@ public abstract class AbstractLayer {
     public DMatrixRMaj getLastFeed() {
         return lastFeed;
     }
-    public void setLastFeed(DMatrixRMaj lastFeed) {
+    protected void setLastFeed(DMatrixRMaj lastFeed) {
         this.lastFeed = lastFeed;
     }
 
-    private ArrayList<DMatrixRMaj> wrapMatrixInArrayList(DMatrixRMaj matrix) {
-       ArrayList<DMatrixRMaj> arrayMatrix = new ArrayList<>();
-       arrayMatrix.add(matrix);
-
-       return arrayMatrix;
-    }
+    abstract public ArrayList<DMatrixRMaj> getParam();
 }
 
 
