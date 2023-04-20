@@ -34,7 +34,7 @@ public class Dropout extends AbstractLayer {
     }
 
     @Override
-    public ArrayList<DMatrixRMaj> getParam() {
+    public ArrayList<DMatrixRMaj> getParams() {
         ArrayList<DMatrixRMaj> params = new ArrayList<>();
         params.add(currentMask);
 

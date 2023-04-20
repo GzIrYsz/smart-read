@@ -80,7 +80,7 @@ public class Dense extends AbstractLayer {
     }
 
     @Override
-    public ArrayList<DMatrixRMaj> getParam() {
+    public ArrayList<DMatrixRMaj> getParams() {
         ArrayList<DMatrixRMaj> params = new ArrayList<>();
         params.add(getWeights());
         params.add(getBias());

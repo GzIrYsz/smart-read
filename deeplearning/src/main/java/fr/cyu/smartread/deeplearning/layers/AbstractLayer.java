@@ -29,7 +29,7 @@ public abstract class AbstractLayer {
         this.lastFeed = lastFeed;
     }
 
-    abstract public ArrayList<DMatrixRMaj> getParam();
+    abstract public ArrayList<DMatrixRMaj> getParams();
 }
 
 
