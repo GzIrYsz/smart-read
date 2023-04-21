@@ -6,7 +6,6 @@ import org.ejml.data.DMatrixRMaj;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-
 import static org.junit.jupiter.api.Assertions.*;
 
 public class UtilityOperationsMatrixTest {
@@ -170,6 +169,31 @@ public class UtilityOperationsMatrixTest {
 
         for (double matrixNumber : matrixData) {
             assertEquals(1, matrixNumber);
+        }
+    }
+
+    @Test
+    void shouldThrowIllegalArgumentExceptionIfRowOrColumnsAreNullZero() {
+        int rows = 1;
+        int columns = 0;
+        IllegalArgumentException thrown = Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            UtilityOperationsMatrix.zeros(rows, columns);
+        });
+
+        String msgErrorExpected = String.format("rows or columns must not be 0, current value row: %d, column: %d", rows, columns);
+        assertEquals(msgErrorExpected, thrown.getMessage());
+    }
+
+    @Test
+    void shouldReturnAZeroMatrix3x3() {
+        int rows = 3;
+        int columns = 3;
+
+        DMatrixRMaj zeroMatrix = UtilityOperationsMatrix.zeros(rows, columns);
+        double[] matrixData = zeroMatrix.getData();
+
+        for (double matrixNumber : matrixData) {
+            assertEquals(0, matrixNumber);
         }
     }
 

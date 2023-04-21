@@ -49,14 +49,20 @@ public class UtilityOperationsMatrix {
         if (row == 0 || columns == 0)
             throw new IllegalArgumentException(String.format("rows or columns must not be 0, current value row: %d, column: %d", row, columns));
 
-        final int nbElems = row * columns;
-        double[] matrixData = new double[nbElems];
+        DMatrixRMaj ones = new DMatrixRMaj(row, columns);
+        ones.fill(1.0);
 
-        for (int i = 0; i < nbElems; i++) {
-            matrixData[i] = 1;
-        }
+        return ones;
+    }
 
-        return new DMatrixRMaj(row, columns, true, matrixData);
+    public static DMatrixRMaj zeros(int row, int columns) {
+        if (row == 0 || columns == 0)
+            throw new IllegalArgumentException(String.format("rows or columns must not be 0, current value row: %d, column: %d", row, columns));
+
+        DMatrixRMaj zero = new DMatrixRMaj(row, columns);
+        zero.fill(0.0);
+
+        return zero;
     }
 
     public static DMatrixRMaj mask(float probabilities, @NotNull DMatrixRMaj originalMatrix) {
