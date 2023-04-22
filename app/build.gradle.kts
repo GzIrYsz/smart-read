@@ -12,6 +12,7 @@ dependencies {
     implementation("org.apache.commons:commons-text")
     implementation(project(":deeplearning"))
     implementation(project(":spellchecking"))
+    implementation("com.opencsv:opencsv:5.7.1")
 }
 
 application {
