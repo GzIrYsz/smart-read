@@ -1,6 +1,8 @@
 package fr.cyu.smartread.deeplearning.layers;
 
+import fr.cyu.smartread.deeplearning.UtilityOperationsMatrix;
 import fr.cyu.smartread.deeplearning.activations.AbstractActivation;
+import fr.cyu.smartread.deeplearning.activations.NoTrainingComputationsPerformedException;
 import fr.cyu.smartread.deeplearning.activations.Relu;
 import fr.cyu.smartread.deeplearning.initializers.GlorotUniform;
 import fr.cyu.smartread.deeplearning.initializers.InitializerInterface;
@@ -20,6 +22,7 @@ public class Dense extends AbstractLayer {
     private DMatrixRMaj bias;
     private DMatrixRMaj weights;
     private final SimpleOperations_DDRM simpleOps = new SimpleOperations_DDRM();
+
 
     public Dense(int nbNeurons) {
         this(nbNeurons, new Relu());
@@ -49,13 +52,13 @@ public class Dense extends AbstractLayer {
     }
 
     @Override
-    public DMatrixRMaj compute(DMatrixRMaj Z) {
+    public DMatrixRMaj rawCompute(DMatrixRMaj X) {
         if (!isInit) {
-            initLayer(Z);
+            initLayer(X);
         }
 
         int startRow = 0;
-        DMatrixRMaj out = CommonOps_DDRM.mult(Z, this.weights, null);
+        DMatrixRMaj out = CommonOps_DDRM.mult(X, this.weights, null);
         CommonOps_DDRM.transpose(out);
 
         for (int i = 0; i < out.getNumCols(); i++) {
@@ -69,12 +72,31 @@ public class Dense extends AbstractLayer {
     }
 
     @Override
+    public DMatrixRMaj computeActivation(DMatrixRMaj Z) {
+        return activation.compute(Z);
+    }
+
+    @Override
+    public DMatrixRMaj trainingComputeActivation(DMatrixRMaj Z) {
+        return activation.trainingCompute(Z);
+    }
+
+    @Override
+    public DMatrixRMaj get_DZ_DA_derivative() {
+        return getWeights();
+    }
+
+    @Override
+    public DMatrixRMaj get_DA_DZ_derivative() throws NoTrainingComputationsPerformedException {
+        return activation.get_DA_DZ_derivative();
+    }
+
+    @Override
     public ArrayList<DMatrixRMaj> compute_DZ_DParams_derivative() {
         ArrayList<DMatrixRMaj> derivatives = new ArrayList<>(2);
-        DMatrixRMaj biasDerivative = new DMatrixRMaj(new double[nbNeurons][1]);
-        biasDerivative.fill(1.0);
-        
-        derivatives.add(this.getLastFeed());
+        DMatrixRMaj biasDerivative = UtilityOperationsMatrix.ones(nbNeurons, 1);
+
+        derivatives.add(getLastFeed());
         derivatives.add(biasDerivative);
         return derivatives;
     }
@@ -88,13 +110,13 @@ public class Dense extends AbstractLayer {
         return params;
     }
 
-    public DMatrixRMaj getBias() {
+    public DMatrixRMaj getBias() throws IllegalStateException{
         if (!isInit)
             throw new IllegalStateException("Please use model.predict to initialize the parameters");
         return bias;
     }
 
-    public DMatrixRMaj getWeights() {
+    public DMatrixRMaj getWeights() throws IllegalStateException{
         if (!isInit)
             throw new IllegalStateException("Please use model.predict to initialize the parameters");
         return weights;
