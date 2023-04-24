@@ -112,13 +112,13 @@ public class Dense extends AbstractLayer {
 
     public DMatrixRMaj getBias() throws IllegalStateException{
         if (!isInit)
-            throw new IllegalStateException("Please use model.predict to initialize the parameters");
+            throw new IllegalStateException("Make calculations before performing this operation");
         return bias;
     }
 
     public DMatrixRMaj getWeights() throws IllegalStateException{
         if (!isInit)
-            throw new IllegalStateException("Please use model.predict to initialize the parameters");
+            throw new IllegalStateException("Make calculations before performing this operation");
         return weights;
     }
 }

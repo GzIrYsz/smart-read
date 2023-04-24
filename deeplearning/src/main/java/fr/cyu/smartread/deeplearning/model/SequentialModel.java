@@ -24,7 +24,7 @@ public class SequentialModel extends ModelAbstract{
         DMatrixRMaj lastAction = X;
 
         for (AbstractLayer layer: layers) {
-            lastAction = layer.compute(lastAction);
+            lastAction = layer.rawCompute(lastAction);
         }
 
         return lastAction;

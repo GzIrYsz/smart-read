@@ -138,7 +138,7 @@ class DenseTest {
 
         IllegalStateException thrown = Assertions.assertThrows(IllegalStateException.class, layer::getBias);
 
-        assertEquals("Please use model.predict to initialize the parameters", thrown.getMessage());
+        assertEquals("Make calculations before performing this operation", thrown.getMessage());
     }
 
     @Test
@@ -147,6 +147,6 @@ class DenseTest {
 
         IllegalStateException thrown = Assertions.assertThrows(IllegalStateException.class, layer::getWeights);
 
-        assertEquals("Please use model.predict to initialize the parameters", thrown.getMessage());
+        assertEquals("Make calculations before performing this operation", thrown.getMessage());
     }
 }
