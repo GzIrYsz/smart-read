@@ -1,8 +1,12 @@
 package fr.cyu.smartread.spellchecking.dictionary;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.util.HashMap;
 
 public class DictionaryByNumberOfCharacterLoader implements DictionaryLoaderInterface {
+    private static final Logger logger = LogManager.getLogger();
     private final HashMap<Short, DictionaryByNumberOfCharacter> dictByNbOfCharsHm;
     private short minNbCharacters = 0;
     private short maxNbCharacters = 0;
@@ -14,11 +18,14 @@ public class DictionaryByNumberOfCharacterLoader implements DictionaryLoaderInte
     @Override
     public Dictionary getAssociatedWordDict(String word) throws WordNotSupportedException, NoDictionarySuitableForThisWordException {
         if (word.length() < minNbCharacters || word.length() > maxNbCharacters) {
+            logger.error("This word length is not supported");
             throw new WordNotSupportedException(word, "This word length is not supported !");
         }
 
-        if (!hasDictForThisWord(word))
-            throw new NoDictionarySuitableForThisWordException("This loader don't have any dictionary for words of " + word.length() + " characters");
+        if (!hasDictForThisWord(word)) {
+            logger.error("This loader does not have any dictionary for " + word.length() + " letters words");
+            throw new NoDictionarySuitableForThisWordException("This loader does not have any dictionary for words of " + word.length() + " characters");
+        }
         return dictByNbOfCharsHm.get((short) word.length());
     }
 
