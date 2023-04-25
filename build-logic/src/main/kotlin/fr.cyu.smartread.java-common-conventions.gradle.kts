@@ -20,6 +20,8 @@ dependencies {
     implementation("org.apache.spark:spark-sql_2.13:3.3.2")
     implementation("org.apache.logging.log4j:log4j-api:2.20.0")
     implementation("org.apache.logging.log4j:log4j-core:2.20.0")
+    implementation("com.fasterxml.jackson.core:jackson-databind:2.15.0")
+    implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.15.0")
     constraints {
         // Define dependency versions as constraints
         implementation("org.apache.commons:commons-text:1.9")
