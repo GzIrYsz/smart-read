@@ -1,5 +1,8 @@
 package fr.cyu.smartread.deeplearning.model;
 
+import fr.cyu.smartread.deeplearning.IncompatibleShapeException;
+import fr.cyu.smartread.deeplearning.activations.NoTrainingComputationsPerformedException;
+import fr.cyu.smartread.deeplearning.fitter.SequentialModelFitter;
 import fr.cyu.smartread.deeplearning.gradient.GradientComputerAbstract;
 import fr.cyu.smartread.deeplearning.layers.AbstractLayer;
 import fr.cyu.smartread.deeplearning.losses.AbstractLoss;
@@ -81,7 +84,11 @@ public class SequentialModel extends AbstractModel implements AutoTrainableModel
     }
 
     @Override
-    public void fit(OptimizerInterface optimizer, AbstractLoss loss, ArrayList<AbstractMetric> metrics, int epoch, int batch_size) {
-
+    public void fit(ArrayList<DMatrixRMaj> xBatch, ArrayList<DMatrixRMaj> yBatch, OptimizerInterface optimizer, AbstractLoss loss, ArrayList<AbstractMetric> metrics, int epoch, int batch_size) {
+        try {
+            SequentialModelFitter.fit(this, xBatch, yBatch, optimizer, metrics, epoch, batch_size);
+        } catch (IncompatibleShapeException | NoTrainingComputationsPerformedException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
