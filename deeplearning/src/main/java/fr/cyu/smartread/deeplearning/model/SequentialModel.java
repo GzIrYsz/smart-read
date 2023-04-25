@@ -2,12 +2,15 @@ package fr.cyu.smartread.deeplearning.model;
 
 import fr.cyu.smartread.deeplearning.gradient.GradientComputerAbstract;
 import fr.cyu.smartread.deeplearning.layers.AbstractLayer;
+import fr.cyu.smartread.deeplearning.losses.AbstractLoss;
+import fr.cyu.smartread.deeplearning.metrics.AbstractMetric;
+import fr.cyu.smartread.deeplearning.optimizer.OptimizerInterface;
 import org.ejml.data.DMatrixRMaj;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class SequentialModel extends AbstractModel {
+public class SequentialModel extends AbstractModel implements AutoTrainableModel {
     ArrayList<AbstractLayer> layers;
 
     public SequentialModel(GradientComputerAbstract gradientComputerAbstract, ArrayList<AbstractLayer> layers) {
@@ -46,10 +49,26 @@ public class SequentialModel extends AbstractModel {
         ArrayList<ArrayList<DMatrixRMaj>> layerParams = new ArrayList<>();
 
         for (AbstractLayer layer: layers) {
-            layerParams.add(layer.getParams());
+            layerParams.add(layer.getTrainableParams());
         }
 
         return layerParams;
+    }
+
+    @Override
+    public void setLayersTrainableParams(ArrayList<ArrayList<DMatrixRMaj>> modelParams) {
+        ArrayList<AbstractLayer> modelLayers = getLayers();
+
+        if (modelLayers.size() != modelParams.size())
+            throw new IllegalArgumentException("the number of parameters is not equal to the number of parameters in the model");
+
+        for (int i = 0; i < modelLayers.size(); i++) {
+            AbstractLayer layer = modelLayers.get(i);
+            ArrayList<DMatrixRMaj> newLayerParams = modelParams.get(i);
+
+            layer.setTrainableParams(newLayerParams);
+        }
+        //TODO A tester
     }
 
     @Override
@@ -59,5 +78,10 @@ public class SequentialModel extends AbstractModel {
 
     public ArrayList<AbstractLayer> getLayers() {
         return layers;
+    }
+
+    @Override
+    public void fit(OptimizerInterface optimizer, AbstractLoss loss, ArrayList<AbstractMetric> metrics, int epoch, int batch_size) {
+
     }
 }

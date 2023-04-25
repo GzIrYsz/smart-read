@@ -20,6 +20,8 @@ abstract public class AbstractModel {
     }
 
     abstract public ArrayList<ArrayList<DMatrixRMaj>> getLayersParams();
+    public abstract void setLayersTrainableParams(ArrayList<ArrayList<DMatrixRMaj>> modelParams);
+
     abstract void saveModel(String path);
 
     abstract public ArrayList<AbstractLayer> getLayers();
