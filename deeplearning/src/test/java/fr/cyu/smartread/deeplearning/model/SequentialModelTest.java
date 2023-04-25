@@ -76,11 +76,11 @@ class SequentialModelTest {
         int i = 0;
         for (ArrayList<DMatrixRMaj> layerParam: model.getLayersParams()) {
             if (i == 0) {
-                ArrayList<DMatrixRMaj> rightResult = dense1.getParams();
+                ArrayList<DMatrixRMaj> rightResult = dense1.getTrainableParams();
                 EjmlUnitTests.assertEquals(rightResult.get(0), layerParam.get(0));
                 EjmlUnitTests.assertEquals(rightResult.get(1), layerParam.get(1));
             } else {
-                ArrayList<DMatrixRMaj> rightResult = dense2.getParams();
+                ArrayList<DMatrixRMaj> rightResult = dense2.getTrainableParams();
                 EjmlUnitTests.assertEquals(rightResult.get(0), layerParam.get(0));
                 EjmlUnitTests.assertEquals(rightResult.get(1), layerParam.get(1));
             }

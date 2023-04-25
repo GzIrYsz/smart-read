@@ -52,6 +52,11 @@ public class Dropout extends AbstractLayer {
     }
 
     @Override
+    public int getTrainableParamsNumber() {
+        return 0;
+    }
+
+    @Override
     public ArrayList<DMatrixRMaj> compute_DZ_DParams_derivative() {
         ArrayList<DMatrixRMaj> arrayDerivative = new ArrayList<>();
         arrayDerivative.add(UtilityOperationsMatrix.zeros(1, 1));
@@ -60,11 +65,14 @@ public class Dropout extends AbstractLayer {
     }
 
     @Override
-    public ArrayList<DMatrixRMaj> getParams() {
-        ArrayList<DMatrixRMaj> params = new ArrayList<>();
-        params.add(currentMask);
+    public ArrayList<DMatrixRMaj> getTrainableParams() {
+        return new ArrayList<>();
+    }
 
-        return params;
+    @Override
+    public void setterTrainableParams(ArrayList<DMatrixRMaj> params) {
+        if (params.size() != 0)
+            System.out.println("WARNING: Dropout Layer doesn't take params");
     }
 
     private DMatrixRMaj createMask(DMatrixRMaj oneRowMask, int numberOfRowsExpected) {

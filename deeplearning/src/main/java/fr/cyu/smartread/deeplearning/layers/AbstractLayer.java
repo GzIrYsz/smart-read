@@ -41,7 +41,18 @@ public abstract class AbstractLayer {
     protected void setLastFeed(DMatrixRMaj lastFeed) {
         this.lastFeed = lastFeed;
     }
-    abstract public ArrayList<DMatrixRMaj> getParams();
+    public abstract int getTrainableParamsNumber();
+    abstract public ArrayList<DMatrixRMaj> getTrainableParams();
+    public void setTrainableParams(ArrayList<DMatrixRMaj> params) {
+        if (NotTheRightNumberOfParameters(params.size()))
+            throw new IllegalArgumentException("the number of parameters in the array is not equivalent to the number of parameters in the layer");
+        setterTrainableParams(params);
+    }
+    public abstract void setterTrainableParams(ArrayList<DMatrixRMaj> params);
+
+    private boolean NotTheRightNumberOfParameters(int nbParams) {
+        return nbParams != getTrainableParamsNumber();
+    }
 }
 
 

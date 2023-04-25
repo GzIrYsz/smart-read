@@ -15,6 +15,7 @@ import java.util.ArrayList;
 
 public class Dense extends AbstractLayer {
     private boolean isInit = false;
+    private static final int PARAMS_NUMBER = 2;
     private final int nbNeurons;
     private final AbstractActivation activation;
     private final InitializerInterface weightsInitializer;
@@ -22,7 +23,6 @@ public class Dense extends AbstractLayer {
     private DMatrixRMaj bias;
     private DMatrixRMaj weights;
     private final SimpleOperations_DDRM simpleOps = new SimpleOperations_DDRM();
-
 
     public Dense(int nbNeurons) {
         this(nbNeurons, new Relu());
@@ -87,6 +87,11 @@ public class Dense extends AbstractLayer {
     }
 
     @Override
+    public int getTrainableParamsNumber() {
+        return PARAMS_NUMBER;
+    }
+
+    @Override
     public DMatrixRMaj get_DA_DZ_derivative() throws NoTrainingComputationsPerformedException {
         return activation.get_DA_DZ_derivative();
     }
@@ -102,12 +107,18 @@ public class Dense extends AbstractLayer {
     }
 
     @Override
-    public ArrayList<DMatrixRMaj> getParams() {
+    public ArrayList<DMatrixRMaj> getTrainableParams() {
         ArrayList<DMatrixRMaj> params = new ArrayList<>();
         params.add(getWeights());
         params.add(getBias());
 
         return params;
+    }
+
+    @Override
+    public void setterTrainableParams(ArrayList<DMatrixRMaj> params) {
+        setWeights(params.get(0));
+        setBias(params.get(1));
     }
 
     public DMatrixRMaj getBias() throws IllegalStateException{
@@ -120,5 +131,17 @@ public class Dense extends AbstractLayer {
         if (!isInit)
             throw new IllegalStateException("Make calculations before performing this operation");
         return weights;
+    }
+
+    public void setWeights(DMatrixRMaj weights) {
+        if (!UtilityOperationsMatrix.areShapeEqual(getWeights(), weights))
+            throw new IllegalArgumentException("Shape of weights are not equal");
+        this.weights = weights;
+    }
+
+    public void setBias(DMatrixRMaj bias) {
+        if (!UtilityOperationsMatrix.areShapeEqual(getBias(), bias))
+            throw new IllegalArgumentException("Shape of bias are not equal");
+        this.bias = bias;
     }
 }

@@ -149,4 +149,81 @@ class DenseTest {
 
         assertEquals("Make calculations before performing this operation", thrown.getMessage());
     }
+
+    @Test
+    void testSetWeights() {
+        Dense layer = new Dense(5);
+        DMatrixRMaj data =  getData();
+
+        layer.compute(data);
+        DMatrixRMaj newWeights = UtilityOperationsMatrix.ones(3, 5);
+        layer.setWeights(newWeights);
+
+        EjmlUnitTests.assertEquals(newWeights, layer.getWeights());
+    }
+    @Test
+    void testAssertSetWeights() {
+        Dense layer = new Dense(5);
+        DMatrixRMaj data =  getData();
+        layer.compute(data);
+
+        DMatrixRMaj newWeights = UtilityOperationsMatrix.ones(3, 6);
+
+        IllegalArgumentException thrown = Assertions.assertThrows(IllegalArgumentException.class, () -> layer.setWeights(newWeights));
+
+        assertEquals("Shape of weights are not equal", thrown.getMessage());
+    }
+
+    @Test
+    void testSetBias() {
+        Dense layer = new Dense(5);
+        DMatrixRMaj data =  getData();
+        layer.compute(data);
+
+        DMatrixRMaj newBias = UtilityOperationsMatrix.ones(5, 1);
+        layer.setBias(newBias);
+
+        EjmlUnitTests.assertEquals(newBias, layer.getBias());
+    }
+
+    @Test
+    void testAssertSetBias() {
+        Dense layer = new Dense(5);
+        DMatrixRMaj data =  getData();
+        layer.compute(data);
+
+        DMatrixRMaj newBias = UtilityOperationsMatrix.ones(6, 1);
+
+
+        IllegalArgumentException thrown = Assertions.assertThrows(IllegalArgumentException.class, () -> layer.setBias(newBias));
+
+        assertEquals("Shape of bias are not equal", thrown.getMessage());
+    }
+
+    @Test
+    void testParamsSetter() {
+        Dense layer = new Dense(5);
+        DMatrixRMaj data =  getData();
+        layer.compute(data);
+
+        DMatrixRMaj newWeights = UtilityOperationsMatrix.ones(3, 5);
+        DMatrixRMaj newBias = UtilityOperationsMatrix.ones(5, 1);
+
+        ArrayList<DMatrixRMaj> newLayerParams = new ArrayList<>();
+        newLayerParams.add(newWeights);
+        newLayerParams.add(newBias);
+
+        layer.setterTrainableParams(newLayerParams);
+
+        EjmlUnitTests.assertEquals(newWeights, layer.getWeights());
+        EjmlUnitTests.assertEquals(newBias, layer.getBias());
+    }
+
+    private static DMatrixRMaj getData() {
+        return new DMatrixRMaj(new double[][]{
+                {5, 3, 6},
+                {6, 9, 18},
+                {34, 24, 100}
+        });
+    }
 }
