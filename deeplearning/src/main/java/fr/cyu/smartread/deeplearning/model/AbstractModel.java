@@ -6,10 +6,10 @@ import org.ejml.data.DMatrixRMaj;
 
 import java.util.ArrayList;
 
-abstract public class ModelAbstract {
+abstract public class AbstractModel {
     private final GradientComputerAbstract gradientComputerAbstract;
 
-    public ModelAbstract(GradientComputerAbstract gradientComputerAbstract) {
+    public AbstractModel(GradientComputerAbstract gradientComputerAbstract) {
         this.gradientComputerAbstract = gradientComputerAbstract;
     }
 

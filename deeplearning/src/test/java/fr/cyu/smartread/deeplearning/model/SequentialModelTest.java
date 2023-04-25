@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 
 class SequentialModelTest {
-    private ModelAbstract model;
+    private AbstractModel model;
     private AbstractLayer dense1;
     private AbstractLayer dense2;
 

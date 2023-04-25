@@ -7,7 +7,7 @@ import org.ejml.data.DMatrixRMaj;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class SequentialModel extends ModelAbstract{
+public class SequentialModel extends AbstractModel {
     ArrayList<AbstractLayer> layers;
 
     public SequentialModel(GradientComputerAbstract gradientComputerAbstract, ArrayList<AbstractLayer> layers) {
