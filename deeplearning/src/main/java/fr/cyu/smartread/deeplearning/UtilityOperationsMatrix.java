@@ -1,6 +1,7 @@
 package fr.cyu.smartread.deeplearning;
 
 import org.ejml.data.DMatrixRMaj;
+import org.ejml.dense.row.CommonOps_DDRM;
 import scala.Array;
 
 import javax.validation.constraints.NotNull;
@@ -63,6 +64,12 @@ public class UtilityOperationsMatrix {
         zero.fill(0.0);
 
         return zero;
+    }
+
+    public static DMatrixRMaj scale(double k, DMatrixRMaj matrix) {
+        DMatrixRMaj result = new DMatrixRMaj(matrix);
+        CommonOps_DDRM.scale(k, matrix, result);
+        return result;
     }
 
     public static DMatrixRMaj mask(float probabilities, @NotNull DMatrixRMaj originalMatrix) {

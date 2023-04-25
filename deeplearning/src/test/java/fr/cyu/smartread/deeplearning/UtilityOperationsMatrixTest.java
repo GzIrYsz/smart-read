@@ -118,9 +118,7 @@ public class UtilityOperationsMatrixTest {
                 {1, 1, 1},
         });
 
-        NotARowException thrown = Assertions.assertThrows(NotARowException.class, () -> {
-            UtilityOperationsMatrix.meanOneRow(matrix);
-        });
+        NotARowException thrown = Assertions.assertThrows(NotARowException.class, () -> UtilityOperationsMatrix.meanOneRow(matrix));
 
         assertEquals("the matrix entered in parameter is not a row, current number of row " + matrix.getNumRows(), thrown.getMessage());
     }
@@ -151,9 +149,7 @@ public class UtilityOperationsMatrixTest {
     void shouldThrowIllegalArgumentExceptionIfRowOrColumnsAreNull() {
         int rows = 1;
         int columns = 0;
-        IllegalArgumentException thrown = Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            UtilityOperationsMatrix.ones(rows, columns);
-        });
+        IllegalArgumentException thrown = Assertions.assertThrows(IllegalArgumentException.class, () -> UtilityOperationsMatrix.ones(rows, columns));
 
         String msgErrorExpected = String.format("rows or columns must not be 0, current value row: %d, column: %d", rows, columns);
         assertEquals(msgErrorExpected, thrown.getMessage());
@@ -176,9 +172,7 @@ public class UtilityOperationsMatrixTest {
     void shouldThrowIllegalArgumentExceptionIfRowOrColumnsAreNullZero() {
         int rows = 1;
         int columns = 0;
-        IllegalArgumentException thrown = Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            UtilityOperationsMatrix.zeros(rows, columns);
-        });
+        IllegalArgumentException thrown = Assertions.assertThrows(IllegalArgumentException.class, () -> UtilityOperationsMatrix.zeros(rows, columns));
 
         String msgErrorExpected = String.format("rows or columns must not be 0, current value row: %d, column: %d", rows, columns);
         assertEquals(msgErrorExpected, thrown.getMessage());
@@ -195,6 +189,28 @@ public class UtilityOperationsMatrixTest {
         for (double matrixNumber : matrixData) {
             assertEquals(0, matrixNumber);
         }
+    }
+
+    @Test
+    void shouldReturnAZeroMatrix() {
+        DMatrixRMaj rightResult = UtilityOperationsMatrix.zeros(4, 4);
+        DMatrixRMaj data = UtilityOperationsMatrix.ones(4, 4);
+
+        DMatrixRMaj result = UtilityOperationsMatrix.scale(0f, data);
+        EjmlUnitTests.assertEquals(rightResult, result);
+    }
+
+    @Test
+    void shouldReturnA5Matrix() {
+        DMatrixRMaj rightResult = new DMatrixRMaj(new double[][]{
+                {5, 5, 5},
+                {5, 5, 5},
+                {5, 5, 5},
+        });
+        DMatrixRMaj data = UtilityOperationsMatrix.ones(3, 3);
+
+        DMatrixRMaj result = UtilityOperationsMatrix.scale(5f, data);
+        EjmlUnitTests.assertEquals(rightResult, result);
     }
 
     @Test
@@ -228,9 +244,7 @@ public class UtilityOperationsMatrixTest {
                 {1, 1, 1},
         });
 
-        NotARowException thrown = Assertions.assertThrows(NotARowException.class, () -> {
-            UtilityOperationsMatrix.duplicateRow(row, 3);
-        });
+        NotARowException thrown = Assertions.assertThrows(NotARowException.class, () -> UtilityOperationsMatrix.duplicateRow(row, 3));
 
         assertEquals("the matrix entered in parameter is not a row, current number of row " + row.getNumRows(), thrown.getMessage());
     }
