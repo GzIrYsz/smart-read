@@ -1,5 +1,6 @@
 package fr.cyu.smartread.deeplearning.optimizer;
 
+import fr.cyu.smartread.deeplearning.IncompatibleShapeException;
 import fr.cyu.smartread.deeplearning.UtilityOperationsMatrix;
 import fr.cyu.smartread.deeplearning.activations.NoTrainingComputationsPerformedException;
 import fr.cyu.smartread.deeplearning.losses.AbstractLoss;
@@ -21,7 +22,10 @@ public class GradientDescentOptimizer implements OptimizerInterface {
     }
 
     @Override
-    public ArrayList<ArrayList<DMatrixRMaj>> step() throws NoTrainingComputationsPerformedException {
+    public ArrayList<ArrayList<DMatrixRMaj>> step(DMatrixRMaj XBatch, DMatrixRMaj YBatch) throws NoTrainingComputationsPerformedException, IncompatibleShapeException {
+        DMatrixRMaj YPredictionsBatch = model.computeTrain(XBatch);
+        loss.trainingCompute(YPredictionsBatch, YBatch);
+
         ArrayList<ArrayList<DMatrixRMaj>> modelGradients = model.getGradientComputerAbstract().computeGradients(loss);
         ArrayList<ArrayList<DMatrixRMaj>> modelParams = model.getLayersParams();
         ArrayList<ArrayList<DMatrixRMaj>> newModelParams = new ArrayList<>();
