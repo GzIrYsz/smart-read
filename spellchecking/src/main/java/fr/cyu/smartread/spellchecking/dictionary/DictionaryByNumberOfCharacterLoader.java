@@ -5,16 +5,32 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.HashMap;
 
+/**
+ * This class represents a loader for a DictionaryByNumberOfCharacter.
+ *
+ * @author Thomas REMY
+ */
 public class DictionaryByNumberOfCharacterLoader implements DictionaryLoaderInterface {
     private static final Logger logger = LogManager.getLogger();
     private final HashMap<Short, DictionaryByNumberOfCharacter> dictByNbOfCharsHm;
     private short minNbCharacters = 0;
     private short maxNbCharacters = 0;
 
+    /**
+     * The default constructor for the loader.
+     */
     public DictionaryByNumberOfCharacterLoader() {
         dictByNbOfCharsHm = new HashMap<>(0);
     }
 
+    /**
+     * Returns the dictionary associated with a specific word given.
+     *
+     * @param word The word to find the dictionary associated with.
+     * @return The dictionary associated with the given word.
+     * @throws WordNotSupportedException If the word length is not supported.
+     * @throws NoDictionarySuitableForThisWordException If no dictionary fond for this word.
+     */
     @Override
     public Dictionary getAssociatedWordDict(String word) throws WordNotSupportedException, NoDictionarySuitableForThisWordException {
         if (word.length() < minNbCharacters || word.length() > maxNbCharacters) {
@@ -29,6 +45,12 @@ public class DictionaryByNumberOfCharacterLoader implements DictionaryLoaderInte
         return dictByNbOfCharsHm.get((short) word.length());
     }
 
+    /**
+     * Add a dictionary to the loader.
+     *
+     * @param dict The dictionary to add.
+     * @return The DictionaryByNumberOfCharacterLoader object itself.
+     */
     @Override
     public DictionaryLoaderInterface addDictionary(Dictionary dict) {
         DictionaryByNumberOfCharacter dictByNbCharacters = (DictionaryByNumberOfCharacter) dict;

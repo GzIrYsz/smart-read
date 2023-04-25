@@ -1,22 +1,45 @@
 package fr.cyu.smartread.spellchecking.stringmetrics.levenshtein;
 
-
 import fr.cyu.smartread.spellchecking.stringmetrics.StringMetricsInterface;
+
+/**
+ * The computer for the Levenshtein distance between two words.
+ *
+ * @author Alexandre
+ */
 public class LevenshteinDistance implements StringMetricsInterface {
     private final short insertionCost;
     private final short deletionCost;
     private final short substitutionCost;
 
+    /**
+     * Constructs a new LevenshteinDistance object with the given parameters.
+     *
+     * @param insertionCost The insertion cost.
+     * @param deletionCost The deletion cost.
+     * @param substitutionCost The substitution cost.
+     */
     public LevenshteinDistance(int insertionCost, int deletionCost, int substitutionCost) {
         this.insertionCost = (short) insertionCost;
         this.deletionCost = (short) deletionCost;
         this.substitutionCost = (short) substitutionCost;
     }
 
+    /**
+     * The default constructor for LevenshteinDistance. Substitution cost, deletion cost and insertion cost are all set
+     * to 1.
+     */
     public LevenshteinDistance() {
         this(1, 1, 1);
     }
 
+    /**
+     * Computes the distance between the two given words.
+     *
+     * @param source The source word.
+     * @param target The target word.
+     * @return The distance between the two words.
+     */
     @Override
     public float computeDistance(String source, String target) {
         if (source.equals(target))
@@ -38,7 +61,7 @@ public class LevenshteinDistance implements StringMetricsInterface {
 
         return getComputationResult(levArray);
     }
-    
+
     private short[][] initLevTab(String formattedSource, String formattedTarget) {
         short[][] levArray = new short[formattedTarget.length()][formattedSource.length()];
 

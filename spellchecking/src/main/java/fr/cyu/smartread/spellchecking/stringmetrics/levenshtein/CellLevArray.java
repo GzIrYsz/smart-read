@@ -1,5 +1,10 @@
 package fr.cyu.smartread.spellchecking.stringmetrics.levenshtein;
 
+/**
+ * //TODO
+ *
+ * @author Alexandre
+ */
 public class CellLevArray {
    private final short x;
     private final short y;
