@@ -1,12 +1,13 @@
 package fr.cyu.smartread.deeplearning.fitter;
 
 import fr.cyu.smartread.deeplearning.IncompatibleShapeException;
+import fr.cyu.smartread.deeplearning.UtilityOperations;
+import fr.cyu.smartread.deeplearning.UtilityOperationsMatrix;
 import fr.cyu.smartread.deeplearning.activations.NoTrainingComputationsPerformedException;
 import fr.cyu.smartread.deeplearning.metrics.AbstractMetric;
 import fr.cyu.smartread.deeplearning.model.AbstractModel;
 import fr.cyu.smartread.deeplearning.optimizer.OptimizerInterface;
 import org.ejml.data.DMatrixRMaj;
-import org.ejml.dense.row.CommonOps_DDRM;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +20,7 @@ public class SequentialModelFitter {
         }
     }
 
-    private static void epochComputation(ArrayList<DMatrixRMaj> xDataset, ArrayList<DMatrixRMaj> yDataset, AbstractModel model, OptimizerInterface optimizer, int batch_size) throws NoTrainingComputationsPerformedException, IncompatibleShapeException {
+    public static void epochComputation(ArrayList<DMatrixRMaj> xDataset, ArrayList<DMatrixRMaj> yDataset, AbstractModel model, OptimizerInterface optimizer, int batch_size) throws NoTrainingComputationsPerformedException, IncompatibleShapeException {
         for (int i = 0; i < xDataset.size(); i += batch_size) {
             int start = i;
             int end = i + batch_size;
@@ -33,21 +34,8 @@ public class SequentialModelFitter {
     }
 
     private static DMatrixRMaj createBatchFromList(List<DMatrixRMaj> dataset, int start, int end) {
-        List<DMatrixRMaj> batch = sublist(dataset, start, end);
-        return createOneMatrixBatch(batch);
+        List<DMatrixRMaj> batch = UtilityOperations.sublist(dataset, start, end);
+        return UtilityOperationsMatrix.createMatrixFromListRowByRow(batch);
     }
 
-    private static DMatrixRMaj createOneMatrixBatch(List<DMatrixRMaj> batch) {
-        DMatrixRMaj batchMatrix = new DMatrixRMaj();
-
-        for (DMatrixRMaj matrix: batch) {
-            CommonOps_DDRM.concatRows(batchMatrix, matrix, batchMatrix);
-        }
-
-        return batchMatrix;
-    }
-
-    public static<T> List<T> sublist(List<T> list, int start, int end) {
-        return list.subList(Math.max(0, start), Math.min(list.size(), end + 1));
-    }
 }
