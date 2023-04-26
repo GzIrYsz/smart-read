@@ -5,6 +5,7 @@ import org.ejml.dense.row.CommonOps_DDRM;
 import scala.Array;
 
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 public class UtilityOperationsMatrix {
     public static boolean areShapeEqual(@NotNull DMatrixRMaj matrix1, @NotNull DMatrixRMaj matrix2) {
@@ -21,11 +22,11 @@ public class UtilityOperationsMatrix {
         return UtilityOperations.mean(row.getData());
     }
 
-    private static boolean hasJustOneRow(DMatrixRMaj matrix) {
+    private static boolean hasJustOneRow(@NotNull DMatrixRMaj matrix) {
         return matrix.getNumRows() == 1;
     }
 
-    public static DMatrixRMaj clip(DMatrixRMaj matrix, double min, double max) {
+    public static DMatrixRMaj clip(@NotNull DMatrixRMaj matrix, double min, double max) {
         double[] values = matrix.getData();
 
         if (values.length == 0)
@@ -66,7 +67,7 @@ public class UtilityOperationsMatrix {
         return zero;
     }
 
-    public static DMatrixRMaj scale(double k, DMatrixRMaj matrix) {
+    public static DMatrixRMaj scale(double k, @NotNull DMatrixRMaj matrix) {
         DMatrixRMaj result = new DMatrixRMaj(matrix);
         CommonOps_DDRM.scale(k, matrix, result);
         return result;
@@ -95,7 +96,7 @@ public class UtilityOperationsMatrix {
         return mask;
     }
 
-    public static DMatrixRMaj duplicateRow(DMatrixRMaj row, int numberOfRowExpected) throws NotARowException{
+    public static DMatrixRMaj duplicateRow(@NotNull DMatrixRMaj row, int numberOfRowExpected) throws NotARowException{
         if(!hasJustOneRow(row))
             throw new NotARowException(row);
 
@@ -112,5 +113,11 @@ public class UtilityOperationsMatrix {
         }
 
         return new DMatrixRMaj(numberOfRowExpected, rowColumns, true, entireMatrixMaskData);
+    }
+
+    public static DMatrixRMaj createMatrixFromListRowByRow(@NotNull List<DMatrixRMaj> batch) {
+        DMatrixRMaj[] batchMatrix = batch.toArray(new DMatrixRMaj[0]);
+
+        return CommonOps_DDRM.concatRowsMulti(batchMatrix);
     }
 }

@@ -6,6 +6,8 @@ import org.ejml.data.DMatrixRMaj;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class UtilityOperationsMatrixTest {
@@ -266,7 +268,30 @@ public class UtilityOperationsMatrixTest {
         DMatrixRMaj result = UtilityOperationsMatrix.duplicateRow(row, numberOfRowsExpected);
 
         EjmlUnitTests.assertEquals(rightResult, result);
+    }
 
+    @Test
+    void shouldGet5x5WithSamePatternMatrix() {
+        DMatrixRMaj row = new DMatrixRMaj(new double[][]{
+                {1, 2, 3},
+        });
+        DMatrixRMaj row2 = new DMatrixRMaj(new double[][]{
+                {5, 2, 8},
+        });
+
+        ArrayList<DMatrixRMaj> listMatrixData = new ArrayList<>();
+        listMatrixData.add(row);
+        listMatrixData.add(row);
+        listMatrixData.add(row2);
+
+        DMatrixRMaj matrix = UtilityOperationsMatrix.createMatrixFromListRowByRow(listMatrixData);
+        DMatrixRMaj rightMatrix = new DMatrixRMaj(new double[][]{
+                {1, 2, 3},
+                {1, 2, 3},
+                {5, 2, 8}
+        });
+
+        EjmlUnitTests.assertEquals(rightMatrix, matrix);
     }
 
     private void testMask(float probabilities, DMatrixRMaj mask) {
