@@ -10,6 +10,7 @@ import fr.cyu.smartread.deeplearning.metrics.AbstractMetric;
 import fr.cyu.smartread.deeplearning.optimizers.OptimizerInterface;
 import org.ejml.data.DMatrixRMaj;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -73,11 +74,6 @@ public class SequentialModel extends AbstractModel implements AutoTrainableModel
             layer.setTrainableParams(newLayerParams);
         }
         //TODO A tester
-    }
-
-    @Override
-    void saveModel(String path) {
-        // TODO hehe Thomas
     }
 
     public ArrayList<AbstractLayer> getLayers() {

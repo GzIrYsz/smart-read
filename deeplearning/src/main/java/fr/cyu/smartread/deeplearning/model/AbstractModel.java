@@ -4,7 +4,7 @@ import fr.cyu.smartread.deeplearning.gradient.GradientComputerAbstract;
 import fr.cyu.smartread.deeplearning.layers.AbstractLayer;
 import org.ejml.data.DMatrixRMaj;
 
-import java.io.Serializable;
+import java.io.*;
 import java.util.ArrayList;
 
 abstract public class AbstractModel implements Serializable {
@@ -23,8 +23,6 @@ abstract public class AbstractModel implements Serializable {
 
     abstract public ArrayList<ArrayList<DMatrixRMaj>> getLayersParams();
     public abstract void setLayersTrainableParams(ArrayList<ArrayList<DMatrixRMaj>> modelParams);
-
-    abstract void saveModel(String path);
 
     abstract public ArrayList<AbstractLayer> getLayers();
 }
