@@ -26,13 +26,19 @@ public class CategoricalCrossentropy extends AbstractLoss {
         return batchLossMean(batchLoss);
     }
 
-    @Override
-    public DMatrixRMaj compute_DJ_DA_derivative() {
-        final DMatrixRMaj lastPrediction = getLastPrediction();
-        final DMatrixRMaj lastLabel = getLastLabel();
+     @Override
+     public DMatrixRMaj compute_DJ_DA_derivative() {
+         final DMatrixRMaj lastPrediction = getLastPrediction();
+         final DMatrixRMaj lastLabel = getLastLabel();
 
-        return CommonOps_DDRM.subtract(lastPrediction, lastLabel, null);
-    }
+         DMatrixRMaj oneMinusLabel = CommonOps_DDRM.subtract(1., lastLabel, null);
+         DMatrixRMaj oneMinusPred = CommonOps_DDRM.subtract(1., lastPrediction, null);
+
+         DMatrixRMaj labelDividePred = CommonOps_DDRM.elementDiv(lastLabel, lastPrediction, null);
+         DMatrixRMaj oneMinusLabelDivideOneMinusPred = CommonOps_DDRM.elementDiv(oneMinusLabel, oneMinusPred, null);
+
+         return CommonOps_DDRM.subtract(labelDividePred, oneMinusLabelDivideOneMinusPred, null);
+     }
 
     private double computeRowLoss(DMatrixRMaj yPredRow, DMatrixRMaj yLabelRow) {
         DMatrixRMaj logYPred = CommonOps_DDRM.elementLog(yPredRow, null);

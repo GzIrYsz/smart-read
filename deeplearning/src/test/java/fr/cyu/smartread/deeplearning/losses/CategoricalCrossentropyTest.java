@@ -4,7 +4,6 @@ import fr.cyu.smartread.deeplearning.IncompatibleShapeException;
 import fr.cyu.smartread.deeplearning.activations.NoTrainingComputationsPerformedException;
 import org.ejml.EjmlUnitTests;
 import org.ejml.data.DMatrixRMaj;
-import org.ejml.dense.row.CommonOps_DDRM;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -131,7 +130,13 @@ public class CategoricalCrossentropyTest {
         });
 
         DMatrixRMaj result = getDerivative(pred, label);
-        DMatrixRMaj rightResult = CommonOps_DDRM.subtract(pred, label, null);
+        DMatrixRMaj rightResult = new DMatrixRMaj(new double[][]{
+                {-8.333333333333334, 50., -1.1111111111111112},
+                {3.3333333333333335, -3.0303030303030307, -1.0309278350515465},
+        });
+
+        System.out.println(result);
+
         EjmlUnitTests.assertEquals(rightResult, result);
     }
 
