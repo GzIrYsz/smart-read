@@ -3,7 +3,7 @@ package fr.cyu.smartread.deeplearning.model;
 import fr.cyu.smartread.deeplearning.IncompatibleShapeException;
 import fr.cyu.smartread.deeplearning.activations.NoTrainingComputationsPerformedException;
 import fr.cyu.smartread.deeplearning.fitter.SequentialModelFitter;
-import fr.cyu.smartread.deeplearning.gradient.GradientComputerAbstract;
+import fr.cyu.smartread.deeplearning.gradient.SequentialGradientComputer;
 import fr.cyu.smartread.deeplearning.layers.AbstractLayer;
 import fr.cyu.smartread.deeplearning.losses.AbstractLoss;
 import fr.cyu.smartread.deeplearning.metrics.AbstractMetric;
@@ -16,13 +16,13 @@ import java.util.Arrays;
 public class SequentialModel extends AbstractModel implements AutoTrainableModel {
     ArrayList<AbstractLayer> layers;
 
-    public SequentialModel(GradientComputerAbstract gradientComputerAbstract, ArrayList<AbstractLayer> layers) {
-        super(gradientComputerAbstract);
+    public SequentialModel(ArrayList<AbstractLayer> layers) {
+        setGradientComputerAbstract(new SequentialGradientComputer(this));
         this.layers = layers;
     }
 
-    public SequentialModel(GradientComputerAbstract gradientComputerAbstract, AbstractLayer... layers) {
-        this(gradientComputerAbstract, new ArrayList<>(Arrays.asList(layers)));
+    public SequentialModel(AbstractLayer... layers) {
+        this(new ArrayList<>(Arrays.asList(layers)));
     }
 
     @Override

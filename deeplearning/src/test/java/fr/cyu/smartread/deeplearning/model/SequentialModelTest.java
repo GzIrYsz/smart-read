@@ -30,7 +30,7 @@ class SequentialModelTest {
         layers.add(dense1);
         layers.add(dense2);
 
-        model = new SequentialModel(null, layers);
+        model = new SequentialModel(layers);
     }
 
     @Test
@@ -93,7 +93,7 @@ class SequentialModelTest {
         layers.add(dense2);
         layers.add(dropout);
 
-        model = new SequentialModel(null, layers);
+        model = new SequentialModel(layers);
         model.predict(getData());
 
         ArrayList<ArrayList<DMatrixRMaj>> newModelParams = initialiseModelParams();
@@ -111,7 +111,7 @@ class SequentialModelTest {
         layers.add(dense1);
         layers.add(dense2);
 
-        model = new SequentialModel(null, layers);
+        model = new SequentialModel(layers);
         model.predict(getData());
 
         ArrayList<ArrayList<DMatrixRMaj>> newModelParams = initialiseModelParams();

@@ -7,16 +7,16 @@ import org.ejml.data.DMatrixRMaj;
 import java.util.ArrayList;
 
 abstract public class AbstractModel {
-    private final GradientComputerAbstract gradientComputerAbstract;
-
-    public AbstractModel(GradientComputerAbstract gradientComputerAbstract) {
-        this.gradientComputerAbstract = gradientComputerAbstract;
-    }
+    private GradientComputerAbstract gradientComputerAbstract;
 
     abstract public DMatrixRMaj predict(DMatrixRMaj X);
     abstract public DMatrixRMaj computeTrain(DMatrixRMaj X);
-    public GradientComputerAbstract getGradientComputerAbstract() {
+    public GradientComputerAbstract getGradientComputer() {
         return gradientComputerAbstract;
+    }
+
+    public void setGradientComputerAbstract(GradientComputerAbstract gradientComputerAbstract) {
+        this.gradientComputerAbstract = gradientComputerAbstract;
     }
 
     abstract public ArrayList<ArrayList<DMatrixRMaj>> getLayersParams();
