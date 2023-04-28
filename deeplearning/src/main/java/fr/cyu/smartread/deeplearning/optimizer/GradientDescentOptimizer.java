@@ -22,11 +22,11 @@ public class GradientDescentOptimizer implements OptimizerInterface {
     }
 
     @Override
-    public ArrayList<ArrayList<DMatrixRMaj>> step(DMatrixRMaj XBatch, DMatrixRMaj YBatch) throws NoTrainingComputationsPerformedException, IncompatibleShapeException {
-        DMatrixRMaj YPredictionsBatch = model.computeTrain(XBatch);
-        loss.trainingCompute(YPredictionsBatch, YBatch);
+    public ArrayList<ArrayList<DMatrixRMaj>> step(DMatrixRMaj XBatch, DMatrixRMaj yBatch) throws NoTrainingComputationsPerformedException, IncompatibleShapeException {
+        DMatrixRMaj yPredictionsBatch = model.computeTrain(XBatch);
+        loss.trainingCompute(yPredictionsBatch, yBatch);
 
-        ArrayList<ArrayList<DMatrixRMaj>> modelGradients = model.getGradientComputerAbstract().computeGradients(loss);
+        ArrayList<ArrayList<DMatrixRMaj>> modelGradients = model.getGradientComputer().computeGradients(loss);
         ArrayList<ArrayList<DMatrixRMaj>> modelParams = model.getLayersParams();
         ArrayList<ArrayList<DMatrixRMaj>> newModelParams = new ArrayList<>();
 
@@ -43,6 +43,9 @@ public class GradientDescentOptimizer implements OptimizerInterface {
 
     private ArrayList<DMatrixRMaj> computeNewParams(ArrayList<DMatrixRMaj> params, ArrayList<DMatrixRMaj> gradients, double alpha) {
         ArrayList<DMatrixRMaj> newLayerParam = new ArrayList<>();
+        
+        if (hasNotTrainableParams(params))
+            return params;
 
         for (int i = 0; i < params.size(); i++) {
             DMatrixRMaj gradient = gradients.get(i);
@@ -55,5 +58,9 @@ public class GradientDescentOptimizer implements OptimizerInterface {
         }
 
         return newLayerParam;
+    }
+
+    private static boolean hasNotTrainableParams(ArrayList<DMatrixRMaj> params) {
+        return params.size() == 0;
     }
 }
