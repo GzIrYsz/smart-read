@@ -57,6 +57,10 @@ public class UtilityOperationsMatrix {
         return ones;
     }
 
+    public static DMatrixRMaj ones(DMatrixRMaj matrix) {
+        return ones(matrix.getNumRows(), matrix.getNumCols());
+    }
+
     public static DMatrixRMaj zeros(int row, int columns) {
         if (row == 0 || columns == 0)
             throw new IllegalArgumentException(String.format("rows or columns must not be 0, current value row: %d, column: %d", row, columns));

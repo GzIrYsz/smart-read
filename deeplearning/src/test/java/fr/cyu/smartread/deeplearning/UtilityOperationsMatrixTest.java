@@ -171,6 +171,17 @@ public class UtilityOperationsMatrixTest {
     }
 
     @Test
+    void shouldReturnAOnesMatrix3x3SecondConstructor() {
+        DMatrixRMaj matrix = new DMatrixRMaj(3, 3);
+        DMatrixRMaj onesMatrix = UtilityOperationsMatrix.ones(matrix);
+        double[] matrixData = onesMatrix.getData();
+
+        for (double matrixNumber : matrixData) {
+            assertEquals(1, matrixNumber);
+        }
+    }
+
+    @Test
     void shouldThrowIllegalArgumentExceptionIfRowOrColumnsAreNullZero() {
         int rows = 1;
         int columns = 0;
