@@ -35,6 +35,7 @@ public abstract class AbstractLayer {
     public abstract ArrayList<DMatrixRMaj> compute_DZ_DParams_derivative();
     public abstract DMatrixRMaj get_DA_DZ_derivative() throws NoTrainingComputationsPerformedException;
     public abstract DMatrixRMaj get_DZ_DA_derivative() throws NoTrainingComputationsPerformedException;
+    public abstract ArrayList<DMatrixRMaj> computeGradientWithDZ(DMatrixRMaj DZ) throws NoTrainingComputationsPerformedException;
     public DMatrixRMaj getLastFeed() {
         return lastFeed;
     }

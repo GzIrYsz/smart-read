@@ -1,6 +1,7 @@
 package fr.cyu.smartread.deeplearning.layers;
 
 import fr.cyu.smartread.deeplearning.UtilityOperationsMatrix;
+import fr.cyu.smartread.deeplearning.activations.NoTrainingComputationsPerformedException;
 import org.ejml.data.DMatrixRMaj;
 import org.ejml.dense.row.CommonOps_DDRM;
 
@@ -62,6 +63,11 @@ public class Dropout extends AbstractLayer {
         arrayDerivative.add(UtilityOperationsMatrix.zeros(1, 1));
 
         return arrayDerivative;
+    }
+
+    @Override
+    public ArrayList<DMatrixRMaj> computeGradientWithDZ(DMatrixRMaj DZ) throws NoTrainingComputationsPerformedException {
+        return new ArrayList<>();
     }
 
     @Override

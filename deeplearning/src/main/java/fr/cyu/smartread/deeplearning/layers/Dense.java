@@ -107,6 +107,21 @@ public class Dense extends AbstractLayer {
     }
 
     @Override
+    public ArrayList<DMatrixRMaj> computeGradientWithDZ(DMatrixRMaj DZ) throws NoTrainingComputationsPerformedException {
+        ArrayList<DMatrixRMaj> layerGrads = new ArrayList<>();
+
+        ArrayList<DMatrixRMaj> DZ_DParam_derivative =  get_DZ_DParams_derivative();
+
+        DMatrixRMaj DZ_DW_derivative = CommonOps_DDRM.multTransA(DZ_DParam_derivative.get(0), DZ, null);
+        DMatrixRMaj DZ_DB_derivative =  CommonOps_DDRM.multTransA(getDZForBiasComputation(DZ), DZ_DParam_derivative.get(1), null);
+
+        layerGrads.add(DZ_DW_derivative);
+        layerGrads.add(DZ_DB_derivative);
+
+        return layerGrads;
+    }
+
+    @Override
     public ArrayList<DMatrixRMaj> getTrainableParams() {
         ArrayList<DMatrixRMaj> params = new ArrayList<>();
         params.add(getWeights());
@@ -143,5 +158,11 @@ public class Dense extends AbstractLayer {
         if (!UtilityOperationsMatrix.areShapeEqual(getBias(), bias))
             throw new IllegalArgumentException("Shape of bias are not equal");
         this.bias = bias;
+    }
+
+    private DMatrixRMaj getDZForBiasComputation(DMatrixRMaj DZ) {
+        DMatrixRMaj newRow = UtilityOperationsMatrix.zeros(1, DZ.getNumCols());
+
+        return CommonOps_DDRM.concatRowsMulti(DZ, newRow);
     }
 }
