@@ -6,7 +6,7 @@ import fr.cyu.smartread.deeplearning.UtilityOperationsMatrix;
 import fr.cyu.smartread.deeplearning.activations.NoTrainingComputationsPerformedException;
 import fr.cyu.smartread.deeplearning.metrics.AbstractMetric;
 import fr.cyu.smartread.deeplearning.model.AbstractModel;
-import fr.cyu.smartread.deeplearning.optimizer.OptimizerInterface;
+import fr.cyu.smartread.deeplearning.optimizers.OptimizerInterface;
 import org.ejml.data.DMatrixRMaj;
 
 import java.util.ArrayList;

@@ -7,7 +7,7 @@ import fr.cyu.smartread.deeplearning.gradient.SequentialGradientComputer;
 import fr.cyu.smartread.deeplearning.layers.AbstractLayer;
 import fr.cyu.smartread.deeplearning.losses.AbstractLoss;
 import fr.cyu.smartread.deeplearning.metrics.AbstractMetric;
-import fr.cyu.smartread.deeplearning.optimizer.OptimizerInterface;
+import fr.cyu.smartread.deeplearning.optimizers.OptimizerInterface;
 import org.ejml.data.DMatrixRMaj;
 
 import java.util.ArrayList;
