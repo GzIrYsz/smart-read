@@ -17,8 +17,13 @@ public abstract class AbstractLoss {
         return computeRaw(yPrediction, yLabel);
     }
     public abstract double computeRaw(DMatrixRMaj yPrediction, DMatrixRMaj yLabel);
-    public double trainingCompute(DMatrixRMaj yPrediction, DMatrixRMaj yLabel) throws IncompatibleShapeException {
-        double result = compute(yPrediction, yLabel);
+    public double trainingCompute(DMatrixRMaj yPrediction, DMatrixRMaj yLabel) {
+        double result;
+        try {
+            result = compute(yPrediction, yLabel);
+        } catch (IncompatibleShapeException e) {
+            throw new RuntimeException(e);
+        }
         setLastPrediction(yPrediction);
         setLastLabel(yLabel);
 

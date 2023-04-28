@@ -6,10 +6,10 @@ public abstract class AbstractActivation {
     private DMatrixRMaj lastActivation;
    public abstract DMatrixRMaj compute(DMatrixRMaj Z);
     public DMatrixRMaj trainingCompute(DMatrixRMaj Z) {
-        DMatrixRMaj result = compute(Z);
-        setLastActivation(result);
+        DMatrixRMaj activation = compute(Z);
+        setLastActivation(activation);
 
-        return result;
+        return activation;
     }
     public DMatrixRMaj get_DA_DZ_derivative() throws NoTrainingComputationsPerformedException {
         if (lastActivation == null)
