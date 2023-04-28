@@ -11,6 +11,7 @@ import org.ejml.dense.row.CommonOps_DDRM;
 import java.util.ArrayList;
 
 public class GradientDescentOptimizer implements OptimizerInterface {
+    private static final long serialVersionUID = -7779403844463233821L;
     private final double alpha;
     private final AbstractLoss loss;
     private final AbstractModel model;

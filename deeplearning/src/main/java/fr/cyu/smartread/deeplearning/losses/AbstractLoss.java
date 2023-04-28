@@ -5,7 +5,10 @@ import fr.cyu.smartread.deeplearning.UtilityOperationsMatrix;
 import fr.cyu.smartread.deeplearning.activations.NoTrainingComputationsPerformedException;
 import org.ejml.data.DMatrixRMaj;
 
-public abstract class AbstractLoss {
+import java.io.Serializable;
+
+public abstract class AbstractLoss implements Serializable {
+    private static final long serialVersionUID = 1996703775968613670L;
     private DMatrixRMaj lastPrediction;
     private DMatrixRMaj lastLabel;
 

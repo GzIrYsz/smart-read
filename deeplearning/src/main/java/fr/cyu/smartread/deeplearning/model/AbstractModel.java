@@ -4,9 +4,11 @@ import fr.cyu.smartread.deeplearning.gradient.GradientComputerAbstract;
 import fr.cyu.smartread.deeplearning.layers.AbstractLayer;
 import org.ejml.data.DMatrixRMaj;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-abstract public class AbstractModel {
+abstract public class AbstractModel implements Serializable {
+    private static final long serialVersionUID = 8334919965997770290L;
     private GradientComputerAbstract gradientComputerAbstract;
 
     abstract public DMatrixRMaj predict(DMatrixRMaj X);

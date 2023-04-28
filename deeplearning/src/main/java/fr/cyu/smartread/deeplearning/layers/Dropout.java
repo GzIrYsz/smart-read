@@ -8,6 +8,7 @@ import org.ejml.dense.row.CommonOps_DDRM;
 import java.util.ArrayList;
 
 public class Dropout extends AbstractLayer {
+    private static final long serialVersionUID = 8241839062757443669L;
     private final float probabilities;
     private DMatrixRMaj currentMask;
 

@@ -2,7 +2,10 @@ package fr.cyu.smartread.deeplearning.activations;
 
 import org.ejml.data.DMatrixRMaj;
 
-public abstract class AbstractActivation {
+import java.io.Serializable;
+
+public abstract class AbstractActivation implements Serializable {
+    private static final long serialVersionUID = 1470054812703175942L;
     private DMatrixRMaj lastActivation;
    public abstract DMatrixRMaj compute(DMatrixRMaj Z);
     public DMatrixRMaj trainingCompute(DMatrixRMaj Z) {

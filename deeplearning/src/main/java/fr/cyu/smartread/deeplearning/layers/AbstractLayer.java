@@ -3,9 +3,11 @@ package fr.cyu.smartread.deeplearning.layers;
 import fr.cyu.smartread.deeplearning.activations.NoTrainingComputationsPerformedException;
 import org.ejml.data.DMatrixRMaj;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public abstract class AbstractLayer {
+public abstract class AbstractLayer implements Serializable {
+    private static final long serialVersionUID = -7224232868819020262L;
     private DMatrixRMaj lastFeed;
     public abstract DMatrixRMaj rawCompute(DMatrixRMaj X);
     public abstract DMatrixRMaj computeActivation(DMatrixRMaj Z);

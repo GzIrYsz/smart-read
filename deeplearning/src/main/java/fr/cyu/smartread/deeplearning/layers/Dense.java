@@ -14,6 +14,7 @@ import org.ejml.simple.ops.SimpleOperations_DDRM;
 import java.util.ArrayList;
 
 public class Dense extends AbstractLayer {
+    private static final long serialVersionUID = 7951415276400455972L;
     private boolean isInit = false;
     private static final int PARAMS_NUMBER = 2;
     private final int nbNeurons;

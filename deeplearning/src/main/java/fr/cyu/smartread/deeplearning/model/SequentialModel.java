@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class SequentialModel extends AbstractModel implements AutoTrainableModel {
+    private static final long serialVersionUID = 2020670374695974120L;
     ArrayList<AbstractLayer> layers;
 
     public SequentialModel(ArrayList<AbstractLayer> layers) {

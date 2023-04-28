@@ -7,6 +7,7 @@ import org.ejml.dense.row.CommonOps_DDRM;
 
 public class CategoricalCrossentropy extends AbstractLoss {
 
+    private static final long serialVersionUID = 7329358764693563549L;
     final private double epsilon = 1e-7;
     final private double max = 1 - epsilon;
     @Override

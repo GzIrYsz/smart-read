@@ -8,6 +8,7 @@ import org.ejml.simple.ops.SimpleOperations_DDRM;
 import java.util.Random;
 
 public class RandomNormal implements InitializerInterface {
+    private static final long serialVersionUID = -1816881356343348139L;
     private double stDev;
     private final SimpleOperations_DDRM simpleOps = new SimpleOperations_DDRM();
 

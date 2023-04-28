@@ -14,8 +14,9 @@ import org.ejml.dense.row.CommonOps_DDRM;
 import java.util.ArrayList;
 
 public class SequentialGradientComputer extends GradientComputerAbstract {
-
+    private static final long serialVersionUID = 4802304860755588786L;
     private static final Logger logger = LogManager.getLogger();
+
     public SequentialGradientComputer(AbstractModel abstractModel) {
         super(abstractModel);
     }
