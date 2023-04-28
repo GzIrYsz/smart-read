@@ -3,28 +3,43 @@
 skinparam linetype ortho
 'skinparam ClassAtributeIconSize 0
 
-set namespaceSeparator .
-
-title Projet Ecriture - Packages
+set namespaceSeparator :
 
 package fr.cyu.smartread {
-    package spellchecking {
-        package dictionary
-        package similaritymeasure
+    package spellchecking <<Frame>> {
+        package corrector {}
+        package dictionary {}
+        package stringmetrics {}
     }
 
-    package app {
-        package gui
-        package preprocessing
-        package wrappers
-        package users
+    package app <<Frame>> {
+        package gui {}
+        package util {}
+        package wrappers {}
     }
 
-    package deeplearning {
-        package layers
-        package activationfunctions
-        package lossfunctions
+    package deeplearning <<Frame>> {
+        package activations {}
+        package aggregations {}
+        package fitter {}
+        package gradient {}
+        package initializers {}
+        package layers {}
+        package losses {}
+        package model {}
+        package optimizer {}
+
+        initializers -[hidden]-> aggregations
+        aggregations -[hidden]l-> activations
+        activations -[hidden]d-> layers
+        layers -[hidden]l-> model
+        model -[hidden]-> losses
+        optimizer -[hidden]-> aggregations
+        activations -[hidden]l-> layers
     }
+
+    spellchecking -[hidden]l-> deeplearning
+    deeplearning -[hidden]u-> app
 }   
 
 @enduml
