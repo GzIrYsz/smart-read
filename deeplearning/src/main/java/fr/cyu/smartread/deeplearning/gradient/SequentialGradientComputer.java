@@ -12,6 +12,7 @@ import org.ejml.data.DMatrixRMaj;
 import org.ejml.dense.row.CommonOps_DDRM;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class SequentialGradientComputer extends GradientComputerAbstract {
     private static final long serialVersionUID = 4802304860755588786L;
@@ -39,20 +40,22 @@ public class SequentialGradientComputer extends GradientComputerAbstract {
 
                 logger.trace("loss derivative value: " + loss.get_DJ_DA_derivative());
                 logger.trace("activation derivative value: " + loss.get_DJ_DA_derivative());
-                logger.trace("layer param derivative value: " + currentLayer.get_DZ_DParams_derivative());
             } else {
+                logger.trace("rétropopagation du gradiant à travers la couche " + i);
                 AbstractLayer previousLayer = layers.get(i + 1);
-                DMatrixRMaj newDZ = CommonOps_DDRM.elementMult(previousLayer.get_DZ_DA_derivative(), currentLayer.get_DA_DZ_derivative(), null);
-                DZ = BroadCastingOps.elementMult(DZ, newDZ);
 
                 logger.trace("previous layer derivative value: " + previousLayer.get_DZ_DParams_derivative());
                 logger.trace("activation derivative value: " + currentLayer.get_DA_DZ_derivative());
-                logger.trace("layer param value: " + currentLayer.get_DZ_DParams_derivative());
+
+                DMatrixRMaj newDZ = CommonOps_DDRM.multTransB(DZ, previousLayer.get_DZ_DA_derivative(), null);
+
+                DZ = CommonOps_DDRM.elementMult(newDZ, currentLayer.get_DA_DZ_derivative(), null);
             }
 
             gradients.add(compute_DJ_DParams_derivative(DZ, currentLayer));
         }
 
+        Collections.reverse(gradients);
         return gradients;
     }
 
