@@ -35,7 +35,7 @@ public class SerializationUtil {
             fos.close();
         } catch (InvalidClassException e) {
             logger.error("An error occurred when trying to serialize the class " + object.getClass().getName());
-            throw new InvalidClassException(object.getClass().getName(), "An error occurred when trying to serialize this class!")
+            throw new InvalidClassException(object.getClass().getName(), "An error occurred when trying to serialize this class!");
         } catch (NotSerializableException e) {
             logger.error("The class " + object.getClass().getName() + " is not serializable!");
             throw new NotSerializableException(object.getClass().getName());
