@@ -5,6 +5,8 @@ import fr.cyu.smartread.deeplearning.UtilityOperationsMatrix;
 import fr.cyu.smartread.deeplearning.activations.NoTrainingComputationsPerformedException;
 import fr.cyu.smartread.deeplearning.losses.AbstractLoss;
 import fr.cyu.smartread.deeplearning.model.AbstractModel;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.ejml.data.DMatrixRMaj;
 import org.ejml.dense.row.CommonOps_DDRM;
 
@@ -12,6 +14,7 @@ import java.util.ArrayList;
 
 public class GradientDescentOptimizer implements OptimizerInterface {
     private static final long serialVersionUID = -7779403844463233821L;
+    private static final Logger logger = LogManager.getLogger();
     private final double alpha;
     private final AbstractLoss loss;
     private final AbstractModel model;
@@ -25,11 +28,13 @@ public class GradientDescentOptimizer implements OptimizerInterface {
     @Override
     public ArrayList<ArrayList<DMatrixRMaj>> step(DMatrixRMaj XBatch, DMatrixRMaj yBatch) throws NoTrainingComputationsPerformedException, IncompatibleShapeException {
         DMatrixRMaj yPredictionsBatch = model.computeTrain(XBatch);
-        loss.trainingCompute(yPredictionsBatch, yBatch);
+        double lossValue = loss.trainingCompute(yPredictionsBatch, yBatch);
 
         ArrayList<ArrayList<DMatrixRMaj>> modelGradients = model.getGradientComputer().computeGradients(loss);
         ArrayList<ArrayList<DMatrixRMaj>> modelParams = model.getLayersParams();
         ArrayList<ArrayList<DMatrixRMaj>> newModelParams = new ArrayList<>();
+
+        logger.info("l'erreur est de " + lossValue);
 
         for (int i = 0; i < modelParams.size(); i++) {
             ArrayList<DMatrixRMaj> params = modelParams.get(i);

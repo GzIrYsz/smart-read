@@ -81,9 +81,9 @@ public class SequentialModel extends AbstractModel implements AutoTrainableModel
     }
 
     @Override
-    public void fit(ArrayList<DMatrixRMaj> xBatch, ArrayList<DMatrixRMaj> yBatch, OptimizerInterface optimizer, AbstractLoss loss, ArrayList<AbstractMetric> metrics, int epoch, int batch_size) {
+    public void fit(ArrayList<DMatrixRMaj> xTrainBatch, ArrayList<DMatrixRMaj> yTrainBatch, ArrayList<DMatrixRMaj> xTestBatch, ArrayList<DMatrixRMaj> yTestBatch, OptimizerInterface optimizer, AbstractLoss loss, ArrayList<AbstractMetric> metrics, int epoch, int batch_size) {
         try {
-            SequentialModelFitter.fit(this, xBatch, yBatch, optimizer, metrics, epoch, batch_size);
+            SequentialModelFitter.fit(this, xTrainBatch, yTrainBatch, xTestBatch, yTestBatch, optimizer, metrics, epoch, batch_size);
         } catch (IncompatibleShapeException | NoTrainingComputationsPerformedException e) {
             throw new RuntimeException(e);
         }
