@@ -3,7 +3,7 @@ package fr.cyu.smartread.app.wrappers.deeplearning;
 import fr.cyu.smartread.app.util.imagetransform.ImageTransformations;
 import fr.cyu.smartread.app.util.loading.EncodedLabelReader;
 import fr.cyu.smartread.app.util.serialization.SerializationUtil;
-import fr.cyu.smartread.deeplearning.model.AbstractModel;
+import fr.cyu.smartread.deeplearning.model.SequentialModel;
 import org.ejml.data.DMatrixRMaj;
 
 import java.awt.image.BufferedImage;
@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class OCRDetector {
-    private final AbstractModel model;
+    private final SequentialModel model;
     private static final int IMG_SIZE = 41;
     private static final String MODEL_SERIALIZED_PATH = "app/src/main/resources/model/model75x4.ta";
     private static final String ENCODED_LABEL_CSV_PATH = "app/src/main/resources/model/label_encodage.csv";
@@ -21,7 +21,7 @@ public class OCRDetector {
     private static OCRDetector ocrDetector;
 
     private OCRDetector() throws IOException, ClassNotFoundException {
-        this.model = (AbstractModel) SerializationUtil.deserialize(new File(MODEL_SERIALIZED_PATH));
+        this.model = (SequentialModel) SerializationUtil.deserialize(new File(MODEL_SERIALIZED_PATH));
         decoderLabelHM = EncodedLabelReader.getDecoderLabelFromCsv(ENCODED_LABEL_CSV_PATH);
     }
 
