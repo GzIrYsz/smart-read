@@ -24,7 +24,7 @@ public class CardModel extends Observable {
         cardId = getCardModelId();
         setDrawingZoneImg(blankImg);
         try {
-            ocrDetector = new OCRDetector();
+            ocrDetector = OCRDetector.getDetector();
         } catch (IOException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
