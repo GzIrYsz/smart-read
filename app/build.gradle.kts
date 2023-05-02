@@ -9,6 +9,7 @@ plugins {
 }
 
 dependencies {
+    implementation("org.jfree:jfreechart:1.5.4")
     implementation("org.apache.commons:commons-text")
     implementation(project(":deeplearning"))
     implementation(project(":spellchecking"))

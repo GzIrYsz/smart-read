@@ -18,8 +18,8 @@ public class CardFooterView extends JPanel {
 
     protected void init() {
         clearCardButton = new CardFooterButton("app/src/main/resources/icons/icon-effacer.png");
-        statsButton = new CardFooterButton("app/src/main/resources/icons/icon-effacer.png");
-        removeCardButton = new CardFooterButton("app/src/main/resources/icons/icon-effacer.png");
+        statsButton = new CardFooterButton("app/src/main/resources/icons/icon-stats.png");
+        removeCardButton = new CardFooterButton("app/src/main/resources/icons/icon-cross.png");
 
         add(clearCardButton);
         add(statsButton);
