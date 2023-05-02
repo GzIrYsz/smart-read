@@ -1,0 +1,26 @@
+@startuml "GLP_Ecriture_2023_classes-de-donnees"
+
+skinparam backgroundColor #FFF
+skinparam linetype ortho
+'skinparam ClassAttributeIconSize 0
+
+hide members
+
+set namespaceSeparator .
+
+title Projet Ecriture - Classes de données
+
+package fr.cyu.smartread {
+    package app {
+        class PredictedLetter
+        class Dataset
+    }
+    package spellchecking {
+        class WordScore
+        class Dictionary
+        class DictionaryByNumberOfCharacter extends Dictionary
+        class CellLevArray
+    }
+}
+
+@enduml

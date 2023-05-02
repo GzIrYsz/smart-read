@@ -2,13 +2,11 @@ package fr.cyu.smartread.deeplearning.initializers;
 
 import org.ejml.data.DMatrixRMaj;
 
-public class Zeros extends AbstractInitializer {
-    public Zeros(int shape) {
-        super(shape);
-    }
+public class Zeros implements InitializerInterface {
+    private static final long serialVersionUID = -4431939167394019122L;
 
     @Override
-    public AbstractInitializer init(DMatrixRMaj matrix) {
+    public InitializerInterface init(DMatrixRMaj matrix) {
         matrix.fill(0);
         return this;
     }

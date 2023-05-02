@@ -1,0 +1,35 @@
+Configuration:
+  status: warn
+  properties:
+    property:
+      - name: logDir
+        value: log
+      - name: traceFilename
+        value: ${logDir}/unit-tests_trace.log
+      - name: errFilename
+        value: ${logDir}/unit-tests_err.log
+  appenders:
+    Console:
+      name: ConsoleOut
+      target: SYSTEM_OUT
+      PatternLayout:
+        Pattern: "%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"
+    File:
+      - name: TraceFile
+        fileName: ${traceFilename}
+        PatternLayout:
+          Pattern: "%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"
+      - name: ErrFile
+        fileName: ${errFilename}
+        Filters:
+          ThresholdFilter:
+            level: error
+        PatternLayout:
+          Pattern: "%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"
+  Loggers:
+    Root:
+      level: trace
+      AppenderRef:
+        - ref: ConsoleOut
+        - ref: TraceFile
+        - ref: ErrFile

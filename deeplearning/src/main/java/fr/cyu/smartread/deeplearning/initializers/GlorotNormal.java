@@ -1,19 +1,15 @@
 package fr.cyu.smartread.deeplearning.initializers;
 
 import org.ejml.data.DMatrixRMaj;
-import org.ejml.dense.row.CommonOps_DDRM;
-import org.ejml.dense.row.RandomMatrices_DDRM;
-import org.ejml.simple.ops.SimpleOperations_DDRM;
-
-import java.util.Random;
 
 public class GlorotNormal extends RandomNormal {
-    public GlorotNormal(int shape, int fanIn, int fanOut) {
-        super(shape, Math.sqrt(2.0 / (fanIn + fanOut)));
-    }
+    private static final long serialVersionUID = -6649467534539318886L;
 
     @Override
-    public AbstractInitializer init(DMatrixRMaj matrix) {
-        return super.init(matrix);
+    public InitializerInterface init(DMatrixRMaj matrix) {
+        int fanIn = matrix.getNumRows();
+        int fanOut = matrix.getNumCols();
+        double stDev = Math.sqrt(2.0 / (fanIn + fanOut));
+        return super.init(matrix, stDev);
     }
 }

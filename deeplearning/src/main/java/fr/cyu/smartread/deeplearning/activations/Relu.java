@@ -3,6 +3,8 @@ package fr.cyu.smartread.deeplearning.activations;
 import org.ejml.data.DMatrixRMaj;
 
 public class Relu extends AbstractActivation {
+    private static final long serialVersionUID = 3660067130304583683L;
+
     @Override
     public DMatrixRMaj compute(DMatrixRMaj Z) {
         for (int i = 0; i < Z.getNumRows(); i++) {
@@ -16,9 +18,12 @@ public class Relu extends AbstractActivation {
     @Override
     public DMatrixRMaj compute_DA_DZ_derivative() {
         DMatrixRMaj lastActivation = getLastActivation();
+
         int lastActRowNumCount = lastActivation.getNumRows();
         int lastActColNumCount = lastActivation.getNumCols();
+
         DMatrixRMaj derivative = new DMatrixRMaj(lastActRowNumCount, lastActColNumCount);
+
         for (int i = 0; i < lastActRowNumCount; i++) {
             for (int j = 0; j < lastActColNumCount; j++) {
                 derivative.set(i, j, lastActivation.get(i, j) > 0 ? 1 : 0);

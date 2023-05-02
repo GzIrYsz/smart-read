@@ -1,5 +1,7 @@
 package fr.cyu.smartread.deeplearning.layers;
 
+import fr.cyu.smartread.deeplearning.UtilityOperationsMatrix;
+import fr.cyu.smartread.deeplearning.activations.NoTrainingComputationsPerformedException;
 import org.ejml.EjmlUnitTests;
 import org.ejml.data.DMatrixRMaj;
 import org.ejml.dense.row.CommonOps_DDRM;
@@ -24,9 +26,7 @@ class DropoutTest {
     @Test
     void shouldThrownAnExceptionIfProbabilitiesSuperiorTo1() {
         final float probabilities = 1;
-        IllegalArgumentException thrown = Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            new Dropout(probabilities);
-        });
+        IllegalArgumentException thrown = Assertions.assertThrows(IllegalArgumentException.class, () -> new Dropout(probabilities));
 
         assertEquals(String.format("The probability must be located in the interval [0, 1[, but currently probabilities=%f", probabilities), thrown.getMessage());
     }
@@ -34,9 +34,7 @@ class DropoutTest {
     @Test
     void shouldThrownAnExceptionIfProbabilitiesInferiorTo0() {
         final float probabilities = -0.1f;
-        IllegalArgumentException thrown = Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            new Dropout(probabilities);
-        });
+        IllegalArgumentException thrown = Assertions.assertThrows(IllegalArgumentException.class, () -> new Dropout(probabilities));
 
         assertEquals(String.format("The probability must be located in the interval [0, 1[, but currently probabilities=%f", probabilities), thrown.getMessage());
     }
@@ -45,7 +43,7 @@ class DropoutTest {
     void shouldVerifyDeactivateNeuronsOnBatch() {
         DMatrixRMaj data = getData();
 
-        DMatrixRMaj result = layer.compute(data);
+        DMatrixRMaj result = layer.rawCompute(data);
         verifyDeactivateNeuronsOnBatch(result);
         System.out.println(result);
     }
@@ -53,11 +51,33 @@ class DropoutTest {
     @Test
     void shouldGetRightDerivative() {
         DMatrixRMaj data = getData();
-        layer.compute(data);
+        layer.rawCompute(data);
 
-        DMatrixRMaj rightDerivative = ((Dropout) layer).getCurrentMask();
+        DMatrixRMaj rightDerivative = UtilityOperationsMatrix.zeros(1, 1);
         DMatrixRMaj derivative = layer.compute_DZ_DParams_derivative().get(0);
         EjmlUnitTests.assertEquals(rightDerivative, derivative);
+    }
+
+    @Test
+    void shouldGetRightDA_DZ_derivative() throws NoTrainingComputationsPerformedException {
+        DMatrixRMaj data = getData();
+        layer.rawCompute(data);
+
+        DMatrixRMaj rightDerivative = UtilityOperationsMatrix.ones(1, 1);
+        DMatrixRMaj derivative = layer.get_DA_DZ_derivative();
+
+        EjmlUnitTests.assertEquals(rightDerivative, derivative);
+    }
+
+    @Test
+    void shouldGetRightDZ_DA_derivative() throws NoTrainingComputationsPerformedException {
+        DMatrixRMaj data = getData();
+        layer.rawCompute(data);
+        Dropout dropout = (Dropout) layer;
+
+        DMatrixRMaj derivative = layer.get_DZ_DA_derivative();
+
+        EjmlUnitTests.assertEquals(dropout.getCurrentMask(), derivative);
     }
 
     private void verifyDeactivateNeuronsOnBatch(DMatrixRMaj dropoutOutput) {

@@ -1,9 +1,11 @@
 package fr.cyu.smartread.deeplearning;
 
 import org.ejml.data.DMatrixRMaj;
+import org.ejml.dense.row.CommonOps_DDRM;
 import scala.Array;
 
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 public class UtilityOperationsMatrix {
     public static boolean areShapeEqual(@NotNull DMatrixRMaj matrix1, @NotNull DMatrixRMaj matrix2) {
@@ -20,11 +22,11 @@ public class UtilityOperationsMatrix {
         return UtilityOperations.mean(row.getData());
     }
 
-    private static boolean hasJustOneRow(DMatrixRMaj matrix) {
+    private static boolean hasJustOneRow(@NotNull DMatrixRMaj matrix) {
         return matrix.getNumRows() == 1;
     }
 
-    public static DMatrixRMaj clip(DMatrixRMaj matrix, double min, double max) {
+    public static DMatrixRMaj clip(@NotNull DMatrixRMaj matrix, double min, double max) {
         double[] values = matrix.getData();
 
         if (values.length == 0)
@@ -49,14 +51,30 @@ public class UtilityOperationsMatrix {
         if (row == 0 || columns == 0)
             throw new IllegalArgumentException(String.format("rows or columns must not be 0, current value row: %d, column: %d", row, columns));
 
-        final int nbElems = row * columns;
-        double[] matrixData = new double[nbElems];
+        DMatrixRMaj ones = new DMatrixRMaj(row, columns);
+        ones.fill(1.0);
 
-        for (int i = 0; i < nbElems; i++) {
-            matrixData[i] = 1;
-        }
+        return ones;
+    }
 
-        return new DMatrixRMaj(row, columns, true, matrixData);
+    public static DMatrixRMaj ones(DMatrixRMaj matrix) {
+        return ones(matrix.getNumRows(), matrix.getNumCols());
+    }
+
+    public static DMatrixRMaj zeros(int row, int columns) {
+        if (row == 0 || columns == 0)
+            throw new IllegalArgumentException(String.format("rows or columns must not be 0, current value row: %d, column: %d", row, columns));
+
+        DMatrixRMaj zero = new DMatrixRMaj(row, columns);
+        zero.fill(0.0);
+
+        return zero;
+    }
+
+    public static DMatrixRMaj scale(double k, @NotNull DMatrixRMaj matrix) {
+        DMatrixRMaj result = new DMatrixRMaj(matrix);
+        CommonOps_DDRM.scale(k, matrix, result);
+        return result;
     }
 
     public static DMatrixRMaj mask(float probabilities, @NotNull DMatrixRMaj originalMatrix) {
@@ -82,7 +100,7 @@ public class UtilityOperationsMatrix {
         return mask;
     }
 
-    public static DMatrixRMaj duplicateRow(DMatrixRMaj row, int numberOfRowExpected) throws NotARowException{
+    public static DMatrixRMaj duplicateRow(@NotNull DMatrixRMaj row, int numberOfRowExpected) throws NotARowException{
         if(!hasJustOneRow(row))
             throw new NotARowException(row);
 
@@ -99,5 +117,11 @@ public class UtilityOperationsMatrix {
         }
 
         return new DMatrixRMaj(numberOfRowExpected, rowColumns, true, entireMatrixMaskData);
+    }
+
+    public static DMatrixRMaj createMatrixFromListRowByRow(@NotNull List<DMatrixRMaj> batch) {
+        DMatrixRMaj[] batchMatrix = batch.toArray(new DMatrixRMaj[0]);
+
+        return CommonOps_DDRM.concatRowsMulti(batchMatrix);
     }
 }

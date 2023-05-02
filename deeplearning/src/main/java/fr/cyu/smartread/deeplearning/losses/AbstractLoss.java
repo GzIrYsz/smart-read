@@ -5,7 +5,10 @@ import fr.cyu.smartread.deeplearning.UtilityOperationsMatrix;
 import fr.cyu.smartread.deeplearning.activations.NoTrainingComputationsPerformedException;
 import org.ejml.data.DMatrixRMaj;
 
-public abstract class AbstractLoss {
+import java.io.Serializable;
+
+public abstract class AbstractLoss implements Serializable {
+    private static final long serialVersionUID = 1996703775968613670L;
     private DMatrixRMaj lastPrediction;
     private DMatrixRMaj lastLabel;
 
@@ -17,8 +20,13 @@ public abstract class AbstractLoss {
         return computeRaw(yPrediction, yLabel);
     }
     public abstract double computeRaw(DMatrixRMaj yPrediction, DMatrixRMaj yLabel);
-    public double trainingCompute(DMatrixRMaj yPrediction, DMatrixRMaj yLabel) throws IncompatibleShapeException {
-        double result = compute(yPrediction, yLabel);
+    public double trainingCompute(DMatrixRMaj yPrediction, DMatrixRMaj yLabel) {
+        double result;
+        try {
+            result = compute(yPrediction, yLabel);
+        } catch (IncompatibleShapeException e) {
+            throw new RuntimeException(e);
+        }
         setLastPrediction(yPrediction);
         setLastLabel(yLabel);
 

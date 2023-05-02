@@ -6,6 +6,7 @@ import org.ejml.data.DMatrixRMaj;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -119,9 +120,7 @@ public class UtilityOperationsMatrixTest {
                 {1, 1, 1},
         });
 
-        NotARowException thrown = Assertions.assertThrows(NotARowException.class, () -> {
-            UtilityOperationsMatrix.meanOneRow(matrix);
-        });
+        NotARowException thrown = Assertions.assertThrows(NotARowException.class, () -> UtilityOperationsMatrix.meanOneRow(matrix));
 
         assertEquals("the matrix entered in parameter is not a row, current number of row " + matrix.getNumRows(), thrown.getMessage());
     }
@@ -152,9 +151,7 @@ public class UtilityOperationsMatrixTest {
     void shouldThrowIllegalArgumentExceptionIfRowOrColumnsAreNull() {
         int rows = 1;
         int columns = 0;
-        IllegalArgumentException thrown = Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            UtilityOperationsMatrix.ones(rows, columns);
-        });
+        IllegalArgumentException thrown = Assertions.assertThrows(IllegalArgumentException.class, () -> UtilityOperationsMatrix.ones(rows, columns));
 
         String msgErrorExpected = String.format("rows or columns must not be 0, current value row: %d, column: %d", rows, columns);
         assertEquals(msgErrorExpected, thrown.getMessage());
@@ -171,6 +168,62 @@ public class UtilityOperationsMatrixTest {
         for (double matrixNumber : matrixData) {
             assertEquals(1, matrixNumber);
         }
+    }
+
+    @Test
+    void shouldReturnAOnesMatrix3x3SecondConstructor() {
+        DMatrixRMaj matrix = new DMatrixRMaj(3, 3);
+        DMatrixRMaj onesMatrix = UtilityOperationsMatrix.ones(matrix);
+        double[] matrixData = onesMatrix.getData();
+
+        for (double matrixNumber : matrixData) {
+            assertEquals(1, matrixNumber);
+        }
+    }
+
+    @Test
+    void shouldThrowIllegalArgumentExceptionIfRowOrColumnsAreNullZero() {
+        int rows = 1;
+        int columns = 0;
+        IllegalArgumentException thrown = Assertions.assertThrows(IllegalArgumentException.class, () -> UtilityOperationsMatrix.zeros(rows, columns));
+
+        String msgErrorExpected = String.format("rows or columns must not be 0, current value row: %d, column: %d", rows, columns);
+        assertEquals(msgErrorExpected, thrown.getMessage());
+    }
+
+    @Test
+    void shouldReturnAZeroMatrix3x3() {
+        int rows = 3;
+        int columns = 3;
+
+        DMatrixRMaj zeroMatrix = UtilityOperationsMatrix.zeros(rows, columns);
+        double[] matrixData = zeroMatrix.getData();
+
+        for (double matrixNumber : matrixData) {
+            assertEquals(0, matrixNumber);
+        }
+    }
+
+    @Test
+    void shouldReturnAZeroMatrix() {
+        DMatrixRMaj rightResult = UtilityOperationsMatrix.zeros(4, 4);
+        DMatrixRMaj data = UtilityOperationsMatrix.ones(4, 4);
+
+        DMatrixRMaj result = UtilityOperationsMatrix.scale(0f, data);
+        EjmlUnitTests.assertEquals(rightResult, result);
+    }
+
+    @Test
+    void shouldReturnA5Matrix() {
+        DMatrixRMaj rightResult = new DMatrixRMaj(new double[][]{
+                {5, 5, 5},
+                {5, 5, 5},
+                {5, 5, 5},
+        });
+        DMatrixRMaj data = UtilityOperationsMatrix.ones(3, 3);
+
+        DMatrixRMaj result = UtilityOperationsMatrix.scale(5f, data);
+        EjmlUnitTests.assertEquals(rightResult, result);
     }
 
     @Test
@@ -204,9 +257,7 @@ public class UtilityOperationsMatrixTest {
                 {1, 1, 1},
         });
 
-        NotARowException thrown = Assertions.assertThrows(NotARowException.class, () -> {
-            UtilityOperationsMatrix.duplicateRow(row, 3);
-        });
+        NotARowException thrown = Assertions.assertThrows(NotARowException.class, () -> UtilityOperationsMatrix.duplicateRow(row, 3));
 
         assertEquals("the matrix entered in parameter is not a row, current number of row " + row.getNumRows(), thrown.getMessage());
     }
@@ -228,7 +279,30 @@ public class UtilityOperationsMatrixTest {
         DMatrixRMaj result = UtilityOperationsMatrix.duplicateRow(row, numberOfRowsExpected);
 
         EjmlUnitTests.assertEquals(rightResult, result);
+    }
 
+    @Test
+    void shouldGet5x5WithSamePatternMatrix() {
+        DMatrixRMaj row = new DMatrixRMaj(new double[][]{
+                {1, 2, 3},
+        });
+        DMatrixRMaj row2 = new DMatrixRMaj(new double[][]{
+                {5, 2, 8},
+        });
+
+        ArrayList<DMatrixRMaj> listMatrixData = new ArrayList<>();
+        listMatrixData.add(row);
+        listMatrixData.add(row);
+        listMatrixData.add(row2);
+
+        DMatrixRMaj matrix = UtilityOperationsMatrix.createMatrixFromListRowByRow(listMatrixData);
+        DMatrixRMaj rightMatrix = new DMatrixRMaj(new double[][]{
+                {1, 2, 3},
+                {1, 2, 3},
+                {5, 2, 8}
+        });
+
+        EjmlUnitTests.assertEquals(rightMatrix, matrix);
     }
 
     private void testMask(float probabilities, DMatrixRMaj mask) {

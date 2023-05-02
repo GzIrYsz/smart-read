@@ -7,27 +7,31 @@ import org.ejml.simple.ops.SimpleOperations_DDRM;
 
 import java.util.Random;
 
-public class RandomNormal extends AbstractInitializer {
+public class RandomNormal implements InitializerInterface {
+    private static final long serialVersionUID = -1816881356343348139L;
     private double stDev;
     private final SimpleOperations_DDRM simpleOps = new SimpleOperations_DDRM();
 
-    public RandomNormal(int shape) {
-        this(shape, 0.05);
+    public RandomNormal() {
+        this(0.05);
     }
 
-    public RandomNormal(int shape, double stDev) {
-        super(shape);
+    public RandomNormal(double stDev) {
         this.stDev = stDev;
     }
 
     @Override
-    public AbstractInitializer init(DMatrixRMaj matrix) {
+    public InitializerInterface init(DMatrixRMaj matrix) {
+        return this.init(matrix, this.stDev);
+    }
+
+    public InitializerInterface init(DMatrixRMaj matrix, double stDev) {
         int colCount = matrix.getNumCols();
         int startRow = 0;
 
         for (int i = 0; i < colCount; i++) {
             DMatrixRMaj currentCol = CommonOps_DDRM.extractColumn(matrix, i, null);
-            RandomMatrices_DDRM.fillGaussian(currentCol, 0.0, this.stDev, new Random());
+            RandomMatrices_DDRM.fillGaussian(currentCol, 0.0, stDev, new Random());
             simpleOps.setColumn(matrix, i, startRow, currentCol.getData());
         }
         return this;

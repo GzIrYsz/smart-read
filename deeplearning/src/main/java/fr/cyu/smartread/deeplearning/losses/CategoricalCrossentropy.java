@@ -7,6 +7,7 @@ import org.ejml.dense.row.CommonOps_DDRM;
 
 public class CategoricalCrossentropy extends AbstractLoss {
 
+    private static final long serialVersionUID = 7329358764693563549L;
     final private double epsilon = 1e-7;
     final private double max = 1 - epsilon;
     @Override
@@ -26,13 +27,19 @@ public class CategoricalCrossentropy extends AbstractLoss {
         return batchLossMean(batchLoss);
     }
 
-    @Override
-    public DMatrixRMaj compute_DJ_DA_derivative() {
-        final DMatrixRMaj lastPrediction = getLastPrediction();
-        final DMatrixRMaj lastLabel = getLastLabel();
+     @Override
+     public DMatrixRMaj compute_DJ_DA_derivative() {
+         final DMatrixRMaj lastPrediction = getLastPrediction();
+         final DMatrixRMaj lastLabel = getLastLabel();
 
-        return CommonOps_DDRM.subtract(lastPrediction, lastLabel, null);
-    }
+         DMatrixRMaj oneMinusLabel = CommonOps_DDRM.subtract(1., lastLabel, null);
+         DMatrixRMaj oneMinusPred = CommonOps_DDRM.subtract(1., lastPrediction, null);
+
+         DMatrixRMaj labelDividePred = CommonOps_DDRM.elementDiv(lastLabel, lastPrediction, null);
+         DMatrixRMaj oneMinusLabelDivideOneMinusPred = CommonOps_DDRM.elementDiv(oneMinusLabel, oneMinusPred, null);
+
+         return CommonOps_DDRM.subtract(labelDividePred, oneMinusLabelDivideOneMinusPred, null);
+     }
 
     private double computeRowLoss(DMatrixRMaj yPredRow, DMatrixRMaj yLabelRow) {
         DMatrixRMaj logYPred = CommonOps_DDRM.elementLog(yPredRow, null);

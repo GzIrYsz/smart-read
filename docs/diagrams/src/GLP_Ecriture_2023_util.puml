@@ -1,0 +1,37 @@
+@startuml "GLP_Ecriture_2023_Dataset_Loading"
+
+skinparam linetype ortho
+
+set namespaceSeparator .
+
+title Projet Ecriture - Dataset Loading
+
+package fr.cyu.smartread.app.util {
+    package loading {
+        class CsvReader {
+            -fileName: String
+        }
+        class DatasetLoader {
+            -reader: CsvReader
+            -binarizer: Binarizer
+
+            +loadDataset(): Dataset
+            -splitArrayFrom2ColsTo1Col(): void
+        }
+    }
+    package encoding {
+        class Binarizer {
+            -HashMap<String, DMatrixRMaj>
+            -HashMap<DMatrixRMaj, String>
+
+            +encode(ArrayList<String> labels): ArrayList<DMatrixRMaj>
+            +decode(ArrayList<DMatrixRMaj> labels): ArrayList<String>
+        }
+    }
+    class Dataset {
+        -x: ArrayList<DMatrixRMaj>
+        -y: ArrayList<DMatrixRMaj>
+    }
+}
+
+@enduml

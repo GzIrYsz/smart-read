@@ -5,6 +5,7 @@ import org.ejml.dense.row.CommonOps_DDRM;
 import org.ejml.simple.ops.SimpleOperations_DDRM;
 
 public class Softmax extends AbstractActivation {
+    private static final long serialVersionUID = -5866984817447577502L;
     private final SimpleOperations_DDRM simpleOperation = new SimpleOperations_DDRM();
     @Override
     public DMatrixRMaj compute(DMatrixRMaj Z) {  // Vn = exp(xn) / 1 + sum(exp(x1), exp(x2), ..., exp(xn))
