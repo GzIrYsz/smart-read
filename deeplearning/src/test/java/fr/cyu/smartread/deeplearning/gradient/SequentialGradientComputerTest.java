@@ -41,6 +41,7 @@ class SequentialGradientComputerTest {
 
         ArrayList<ArrayList<DMatrixRMaj>> rightResult = getRightResultForOneLayer3Neurons();
         ArrayList<ArrayList<DMatrixRMaj>> result = gradientComputer.computeGradients(loss);
+        System.out.println(result);
 
         assertSameGradient(rightResult, result);
     }

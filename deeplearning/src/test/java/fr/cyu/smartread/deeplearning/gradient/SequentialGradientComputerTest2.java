@@ -29,9 +29,11 @@ class SequentialGradientComputerTestModel2 {
 
         DMatrixRMaj xMatrix = new DMatrixRMaj(new double[][]{
                 {0.7,0.3, 0.},
+                {0.7,0.3, 0.},
         });
 
         DMatrixRMaj yLabel = new DMatrixRMaj(new double[][]{
+                {1., 0., 0.},
                 {1., 0., 0.},
         });
 

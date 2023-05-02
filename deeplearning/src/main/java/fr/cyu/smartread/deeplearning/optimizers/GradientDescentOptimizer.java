@@ -9,6 +9,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.ejml.data.DMatrixRMaj;
 import org.ejml.dense.row.CommonOps_DDRM;
+import org.ejml.dense.row.CommonOps_MT_DDRM;
 
 import java.util.ArrayList;
 
@@ -26,15 +27,14 @@ public class GradientDescentOptimizer implements OptimizerInterface {
     }
 
     @Override
-    public ArrayList<ArrayList<DMatrixRMaj>> step(DMatrixRMaj XBatch, DMatrixRMaj yBatch) throws NoTrainingComputationsPerformedException, IncompatibleShapeException {
+    public ArrayList<ArrayList<DMatrixRMaj>> step(DMatrixRMaj XBatch, DMatrixRMaj yBatch, Double lossValue) throws NoTrainingComputationsPerformedException, IncompatibleShapeException {
         DMatrixRMaj yPredictionsBatch = model.computeTrain(XBatch);
-        double lossValue = loss.trainingCompute(yPredictionsBatch, yBatch);
+        lossValue = loss.trainingCompute(yPredictionsBatch, yBatch);
 
         ArrayList<ArrayList<DMatrixRMaj>> modelGradients = model.getGradientComputer().computeGradients(loss);
         ArrayList<ArrayList<DMatrixRMaj>> modelParams = model.getLayersParams();
         ArrayList<ArrayList<DMatrixRMaj>> newModelParams = new ArrayList<>();
 
-        logger.info("l'erreur est de " + lossValue);
 
         for (int i = 0; i < modelParams.size(); i++) {
             ArrayList<DMatrixRMaj> params = modelParams.get(i);
@@ -56,6 +56,7 @@ public class GradientDescentOptimizer implements OptimizerInterface {
         for (int i = 0; i < params.size(); i++) {
             DMatrixRMaj gradient = gradients.get(i);
             DMatrixRMaj gradsTimesAlpha= UtilityOperationsMatrix.scale(alpha, gradient);
+            CommonOps_MT_DDRM.transpose(gradsTimesAlpha);
 
             DMatrixRMaj param = params.get(i);
 

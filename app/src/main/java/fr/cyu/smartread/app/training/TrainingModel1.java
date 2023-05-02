@@ -26,8 +26,10 @@ public class TrainingModel1 {
     private static final String Y_TRAIN = "yTrain";
     private static final String X_TEST = "xTest";
     private static final String Y_TEST = "yTest";
-    private static final String PATH_TRAIN = "app/src/main/resources/data/nist_processed_train.csv";
-    private static final String PATH_TEST = "app/src/main/resources/data/nist_processed_test.csv";
+    //private static final String PATH_TRAIN = "app/src/main/resources/data/nist_processed_train.csv";
+    //private static final String PATH_TEST = "app/src/main/resources/data/nist_processed_test.csv";
+    private static final String PATH_TRAIN = "/home/alexandre/Programmation/Python/smart-read-prototypes/data/processed/NIST-dataset/train/nist_processed_train.csv";
+    private static final String PATH_TEST = "/home/alexandre/Programmation/Python/smart-read-prototypes/data/processed/NIST-dataset/test/nist_processed_test.csv";
     private static final String[] labels = new String[]{"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p",
             "q", "r", "s", "t", "u", "v", "w", "x", "y", "z",
             "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U",
@@ -37,10 +39,10 @@ public class TrainingModel1 {
     public static void main(String[] args) {
         CategoricalCrossentropy loss = new CategoricalCrossentropy();
         SequentialModel model = new SequentialModel(
-                new Dense(200, new Relu()),
-                new Dense(200, new Relu()),
-                new Dense(200, new Relu()),
-                new Dense(200, new Relu()),
+                new Dense(100, new Relu()),
+                new Dense(100, new Relu()),
+                new Dense(100, new Relu()),
+                new Dense(100, new Relu()),
                 new Dense(52, new Relu())
         );
 
@@ -52,7 +54,7 @@ public class TrainingModel1 {
         ArrayList<DMatrixRMaj> xTest = datasetTrainTest.get(X_TEST);
         ArrayList<DMatrixRMaj> yTest = datasetTrainTest.get(Y_TEST);
 
-        model.fit(xTrain, yTrain, xTest, yTest, new GradientDescentOptimizer(gamma, loss, model), loss, null, 2, 0);
+        model.fit(xTrain, yTrain, xTest, yTest, new GradientDescentOptimizer(gamma, loss, model), loss, null, 10, 32);
     }
     
     public static HashMap<String, ArrayList<DMatrixRMaj>> loadDataset(String pathTrain, String pathTest) {
@@ -72,7 +74,7 @@ public class TrainingModel1 {
         ArrayList<DMatrixRMaj> imagesTrain = dsTrain.getX();
         ArrayList<DMatrixRMaj> encodedLabelsTrain = dsTrain.getY();
 
-        HashMap<String, ArrayList<DMatrixRMaj>> datasetTrainTest = new HashMap<String, ArrayList<DMatrixRMaj>>();
+        HashMap<String, ArrayList<DMatrixRMaj>> datasetTrainTest = new HashMap<>();
         datasetTrainTest.put(X_TRAIN, imagesTrain);
         datasetTrainTest.put(Y_TRAIN, encodedLabelsTrain);
 

@@ -10,6 +10,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.ejml.data.DMatrixRMaj;
 import org.ejml.dense.row.CommonOps_DDRM;
+import org.ejml.dense.row.CommonOps_MT_DDRM;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -47,7 +48,7 @@ public class SequentialGradientComputer extends GradientComputerAbstract {
                 logger.trace("previous layer derivative value: " + previousLayer.get_DZ_DParams_derivative());
                 logger.trace("activation derivative value: " + currentLayer.get_DA_DZ_derivative());
 
-                DMatrixRMaj newDZ = CommonOps_DDRM.multTransB(DZ, previousLayer.get_DZ_DA_derivative(), null);
+                DMatrixRMaj newDZ = CommonOps_MT_DDRM.multTransB(DZ, previousLayer.get_DZ_DA_derivative(), null);
 
                 DZ = CommonOps_DDRM.elementMult(newDZ, currentLayer.get_DA_DZ_derivative(), null);
             }
