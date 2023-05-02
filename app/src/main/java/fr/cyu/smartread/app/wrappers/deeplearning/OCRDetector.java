@@ -18,17 +18,17 @@ public class OCRDetector {
     private static final String MODEL_SERIALIZED_PATH = "app/src/main/resources/model/model75x4.ta";
     private static final String ENCODED_LABEL_CSV_PATH = "app/src/main/resources/model/label_encodage.csv";
     private final HashMap<Integer, Character> decoderLabelHM;
-    private static OCRDetector ocrDetector;
+    private static OCRDetector ocrDetectorInstance = null;
 
     private OCRDetector() throws IOException, ClassNotFoundException {
         this.model = (SequentialModel) SerializationUtil.deserialize(new File(MODEL_SERIALIZED_PATH));
         decoderLabelHM = EncodedLabelReader.getDecoderLabelFromCsv(ENCODED_LABEL_CSV_PATH);
     }
 
-    public static OCRDetector getDetector() throws IOException, ClassNotFoundException {
-        if (ocrDetector == null)
-            ocrDetector = new OCRDetector();
-        return ocrDetector;
+    public static OCRDetector getInstance() throws IOException, ClassNotFoundException {
+        if (ocrDetectorInstance == null)
+            ocrDetectorInstance = new OCRDetector();
+        return ocrDetectorInstance;
     }
 
     public ArrayList<PredictedLetter> detect(BufferedImage imgLetter) {
