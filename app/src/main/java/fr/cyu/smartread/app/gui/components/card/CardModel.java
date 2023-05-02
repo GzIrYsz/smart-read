@@ -3,9 +3,11 @@ package fr.cyu.smartread.app.gui.components.card;
 import fr.cyu.smartread.app.gui.components.card.events.EventStatisticUpdate;
 import fr.cyu.smartread.app.gui.components.cardswrapper.events.EventDeletingCardUpdate;
 import fr.cyu.smartread.app.gui.observer.Observable;
+import fr.cyu.smartread.app.wrappers.deeplearning.OCRDetector;
 import fr.cyu.smartread.app.wrappers.deeplearning.PredictedLetter;
 
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import static fr.cyu.smartread.app.gui.components.card.body.CardBodyView.blankImg;
@@ -15,22 +17,27 @@ public class CardModel extends Observable {
     private final int cardId;
     private ArrayList<PredictedLetter> predictionForLetters;
     private BufferedImage drawingZoneImg;
+    private final OCRDetector ocrDetector;
 
     public CardModel() {
         super();
         cardId = getCardModelId();
         setDrawingZoneImg(blankImg);
+        try {
+            ocrDetector = new OCRDetector();
+        } catch (IOException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }
 
-    private void computePredictionLetters() {
-       //TODO appeler le modèle ici
+    private ArrayList<PredictedLetter> computePredictionLetters() {
+       return ocrDetector.detect(drawingZoneImg);
     }
 
     public void setDrawingZoneImg(BufferedImage drawingZoneImg) {
         this.drawingZoneImg = drawingZoneImg;
-        //TODO appeller ici le model pour donner de nouvelles prédictions
-        computePredictionLetters();
-        setPredictionForLetters(CardTestUtility.getFakePrediction());
+        ArrayList<PredictedLetter> predictedLetters = computePredictionLetters();
+        setPredictionForLetters(predictedLetters);
         updateViewStatistics();
     }
 
