@@ -7,6 +7,7 @@ import fr.cyu.smartread.deeplearning.losses.AbstractLoss;
 import fr.cyu.smartread.deeplearning.model.AbstractModel;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.ejml.MatrixDimensionException;
 import org.ejml.data.DMatrixRMaj;
 import org.ejml.dense.row.CommonOps_DDRM;
 import org.ejml.dense.row.CommonOps_MT_DDRM;
@@ -60,7 +61,14 @@ public class GradientDescentOptimizer implements OptimizerInterface {
 
             DMatrixRMaj param = params.get(i);
 
-            DMatrixRMaj previousParamMinusGradsTimesAlpha = CommonOps_DDRM.subtract(param, gradsTimesAlpha, null);
+            DMatrixRMaj previousParamMinusGradsTimesAlpha;
+            try {
+                previousParamMinusGradsTimesAlpha = CommonOps_DDRM.subtract(param, gradsTimesAlpha, null);
+            } catch (MatrixDimensionException e) {
+                logger.trace("Incorrect dimensions !");
+                CommonOps_DDRM.transpose(gradsTimesAlpha);
+                previousParamMinusGradsTimesAlpha = CommonOps_DDRM.subtract(param, gradsTimesAlpha, null);
+            }
             newLayerParam.add(previousParamMinusGradsTimesAlpha);
         }
 
