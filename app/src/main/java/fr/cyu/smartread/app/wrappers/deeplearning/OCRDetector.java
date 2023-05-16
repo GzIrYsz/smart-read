@@ -15,7 +15,7 @@ import java.util.HashMap;
 public class OCRDetector {
     private final SequentialModel model;
     private static final int IMG_SIZE = 41;
-    private static final String MODEL_SERIALIZED_PATH = "app/src/main/resources/model/model75x4.ta";
+    private static final String MODEL_SERIALIZED_PATH = "app/src/main/resources/model.ta";
     private static final String ENCODED_LABEL_CSV_PATH = "app/src/main/resources/model/label_encodage.csv";
     private final HashMap<Integer, Character> decoderLabelHM;
     private static OCRDetector ocrDetectorInstance = null;
