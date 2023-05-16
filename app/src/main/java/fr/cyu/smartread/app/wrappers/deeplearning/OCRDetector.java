@@ -4,6 +4,8 @@ import fr.cyu.smartread.app.util.imagetransform.ImageTransformations;
 import fr.cyu.smartread.app.util.loading.EncodedLabelReader;
 import fr.cyu.smartread.app.util.serialization.SerializationUtil;
 import fr.cyu.smartread.deeplearning.model.SequentialModel;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.ejml.data.DMatrixRMaj;
 
 import java.awt.image.BufferedImage;
@@ -13,6 +15,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class OCRDetector {
+    private static final Logger logger = LogManager.getLogger();
     private final SequentialModel model;
     private static final int IMG_SIZE = 41;
     private static final String MODEL_SERIALIZED_PATH = "app/src/main/resources/model.ta";
@@ -47,8 +50,10 @@ public class OCRDetector {
        ArrayList<PredictedLetter> bestPredictions = new ArrayList<>();
 
         for (int i = 0; i < numberOfBestPred; i++) {
+            logger.trace(predictionsMatrix);
             int indexOfBestPred = argmax(predictionsMatrix);
             char letter = decoderLabelHM.get(indexOfBestPred);
+            logger.debug(letter);
             float value = (float)  predictionsMatrix.get(indexOfBestPred);
 
             PredictedLetter predictedLetter = new PredictedLetter(letter, value);
