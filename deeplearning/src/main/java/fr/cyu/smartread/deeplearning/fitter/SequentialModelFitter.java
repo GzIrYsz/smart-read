@@ -20,8 +20,13 @@ public class SequentialModelFitter {
 
     public static void fit(AbstractModel model, ArrayList<DMatrixRMaj> xTrainDataset, ArrayList<DMatrixRMaj> yTrainDataset, ArrayList<DMatrixRMaj> xTestDataset, ArrayList<DMatrixRMaj> yTestDataset, OptimizerInterface optimizer, ArrayList<AbstractMetric> metrics, int epoch, int batchSize) throws IncompatibleShapeException, NoTrainingComputationsPerformedException {
         for (int i = 0; i < epoch; i++) {
+            logger.debug("Début de l'epoch " + (i + 1));
             trainingEpochComputation(xTrainDataset, yTrainDataset, model, optimizer, batchSize);
+            logger.debug("Fin de l'apprentissage pour l'epoch " + (i + 1));
+            logger.debug("Début de la validation pour l'epoch " + i + 1);
             validationEpochComputation(xTestDataset, yTestDataset, model, batchSize);
+            logger.debug("Fin de la validation pour l'epoch " + (i + 1));
+            logger.debug("Fin de l'epoch " + (i + 1));
             //TODO ajouter les metrics
         }
     }
@@ -30,6 +35,9 @@ public class SequentialModelFitter {
         double totalLoss = 0;
 
         for (int i = 0; i < xDataset.size(); i += batch_size) {
+            if ((i % 10000) == 0) {
+                logger.debug("Etat de l'apprentissage : " + ((i * 100) / xDataset.size()));
+            }
             int start = i;
             int end = i + batch_size;
 
@@ -44,7 +52,7 @@ public class SequentialModelFitter {
 
         double meanLoss = totalLoss / xDataset.size();
 
-        logger.info("l'erreur totale pour cette epoch est " + meanLoss);
+        logger.info("L'erreur totale pour cette epoch est " + meanLoss);
     }
 
     private static void validationEpochComputation(ArrayList<DMatrixRMaj> xTestDataset, ArrayList<DMatrixRMaj> yTestDataset, AbstractModel model, int batchSize) {

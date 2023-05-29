@@ -3,7 +3,9 @@ package fr.cyu.smartread.app.wrappers.deeplearning;
 import fr.cyu.smartread.app.util.imagetransform.ImageTransformations;
 import fr.cyu.smartread.app.util.loading.EncodedLabelReader;
 import fr.cyu.smartread.app.util.serialization.SerializationUtil;
-import fr.cyu.smartread.deeplearning.model.AbstractModel;
+import fr.cyu.smartread.deeplearning.model.SequentialModel;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.ejml.data.DMatrixRMaj;
 
 import java.awt.image.BufferedImage;
@@ -13,16 +15,23 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class OCRDetector {
-    private final AbstractModel model;
+    private static final Logger logger = LogManager.getLogger();
+    private final SequentialModel model;
     private static final int IMG_SIZE = 41;
-    private final String MODEL_SERIALIZED_PATH = "app/src/main/resources/model/model75x4.ta";
-    private final String ENCODED_LABEL_CSV_PATH = "app/src/main/resources/model/label_encodage.csv";
-
+    private static final String MODEL_SERIALIZED_PATH = "app/src/main/resources/model.ta";
+    private static final String ENCODED_LABEL_CSV_PATH = "app/src/main/resources/model/label_encodage.csv";
     private final HashMap<Integer, Character> decoderLabelHM;
+    private static OCRDetector ocrDetectorInstance = null;
 
-    public OCRDetector() throws IOException, ClassNotFoundException {
-        this.model = (AbstractModel) SerializationUtil.deserialize(new File(MODEL_SERIALIZED_PATH));
+    private OCRDetector() throws IOException, ClassNotFoundException {
+        this.model = (SequentialModel) SerializationUtil.deserialize(new File(MODEL_SERIALIZED_PATH));
         decoderLabelHM = EncodedLabelReader.getDecoderLabelFromCsv(ENCODED_LABEL_CSV_PATH);
+    }
+
+    public static OCRDetector getInstance() throws IOException, ClassNotFoundException {
+        if (ocrDetectorInstance == null)
+            ocrDetectorInstance = new OCRDetector();
+        return ocrDetectorInstance;
     }
 
     public ArrayList<PredictedLetter> detect(BufferedImage imgLetter) {
@@ -41,8 +50,10 @@ public class OCRDetector {
        ArrayList<PredictedLetter> bestPredictions = new ArrayList<>();
 
         for (int i = 0; i < numberOfBestPred; i++) {
+            logger.trace(predictionsMatrix);
             int indexOfBestPred = argmax(predictionsMatrix);
             char letter = decoderLabelHM.get(indexOfBestPred);
+            logger.debug(letter);
             float value = (float)  predictionsMatrix.get(indexOfBestPred);
 
             PredictedLetter predictedLetter = new PredictedLetter(letter, value);

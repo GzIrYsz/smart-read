@@ -5,6 +5,7 @@ import com.opencsv.exceptions.CsvException;
 import fr.cyu.smartread.app.util.Dataset;
 import fr.cyu.smartread.app.util.encoding.Binarizer;
 import fr.cyu.smartread.app.util.loading.DatasetLoader;
+import fr.cyu.smartread.app.util.serialization.SerializationUtil;
 import fr.cyu.smartread.deeplearning.activations.Relu;
 import fr.cyu.smartread.deeplearning.layers.Dense;
 import fr.cyu.smartread.deeplearning.losses.CategoricalCrossentropy;
@@ -26,23 +27,21 @@ public class TrainingModel1 {
     private static final String Y_TRAIN = "yTrain";
     private static final String X_TEST = "xTest";
     private static final String Y_TEST = "yTest";
-    //private static final String PATH_TRAIN = "app/src/main/resources/data/nist_processed_train.csv";
-    //private static final String PATH_TEST = "app/src/main/resources/data/nist_processed_test.csv";
-    private static final String PATH_TRAIN = "/home/alexandre/Programmation/Python/smart-read-prototypes/data/processed/NIST-dataset/train/nist_processed_train.csv";
-    private static final String PATH_TEST = "/home/alexandre/Programmation/Python/smart-read-prototypes/data/processed/NIST-dataset/test/nist_processed_test.csv";
+    private static final String PATH_TRAIN = "app/src/main/resources/data/nist_processed_train.csv";
+    private static final String PATH_TEST = "app/src/main/resources/data/nist_processed_test.csv";
     private static final String[] labels = new String[]{"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p",
             "q", "r", "s", "t", "u", "v", "w", "x", "y", "z",
             "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U",
             "V", "W", "X", "Y", "Z"};
     private static final double gamma = 0.9;
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         CategoricalCrossentropy loss = new CategoricalCrossentropy();
         SequentialModel model = new SequentialModel(
-                new Dense(100, new Relu()),
-                new Dense(100, new Relu()),
-                new Dense(100, new Relu()),
-                new Dense(100, new Relu()),
+                new Dense(866, new Relu()),
+                new Dense(649, new Relu()),
+                new Dense(432, new Relu()),
+                new Dense(215, new Relu()),
                 new Dense(52, new Relu())
         );
 
@@ -54,7 +53,8 @@ public class TrainingModel1 {
         ArrayList<DMatrixRMaj> xTest = datasetTrainTest.get(X_TEST);
         ArrayList<DMatrixRMaj> yTest = datasetTrainTest.get(Y_TEST);
 
-        model.fit(xTrain, yTrain, xTest, yTest, new GradientDescentOptimizer(gamma, loss, model), loss, null, 10, 32);
+        model.fit(xTrain, yTrain, xTest, yTest, new GradientDescentOptimizer(gamma, loss, model), loss, null, 4, 32);
+        SerializationUtil.serialize(new File("./app/src/main/resources/model.ta"), model);
     }
     
     public static HashMap<String, ArrayList<DMatrixRMaj>> loadDataset(String pathTrain, String pathTest) {

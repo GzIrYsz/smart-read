@@ -17,21 +17,19 @@ public class CardModel extends Observable {
     private final int cardId;
     private ArrayList<PredictedLetter> predictionForLetters;
     private BufferedImage drawingZoneImg;
-    private final OCRDetector ocrDetector;
 
     public CardModel() {
         super();
         cardId = getCardModelId();
         setDrawingZoneImg(blankImg);
-        try {
-            ocrDetector = new OCRDetector();
-        } catch (IOException | ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     private ArrayList<PredictedLetter> computePredictionLetters() {
-       return ocrDetector.detect(drawingZoneImg);
+        try {
+            return OCRDetector.getInstance().detect(drawingZoneImg);
+        } catch (IOException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void setDrawingZoneImg(BufferedImage drawingZoneImg) {
